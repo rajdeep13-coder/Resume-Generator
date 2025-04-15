@@ -1,6 +1,3 @@
-// === Helper Functions ===
-
-// Default fallback text for empty fields
 function getDefaultText(field) {
   const defaults = {
     name: "John Doe",
@@ -57,7 +54,7 @@ function updatePreview() {
   const skills = document.getElementById('input-skills').value.trim() || getDefaultText('skills');
   document.getElementById('preview-skills').textContent = skills;
 
-  // Projects (as bullet points)
+  // Projects 
   const projectsList = document.getElementById('preview-projects');
   projectsList.innerHTML = '';
   const projectInputs = document.querySelectorAll('#projects-inputs .project-input');
@@ -123,7 +120,7 @@ observer.observe(document.getElementById('projects-inputs'), { childList: true }
 
 document.getElementById('downloadBtn').addEventListener('click', function(e) {
   e.preventDefault();
-  updatePreview(); // Ensure latest data
+  updatePreview(); 
   setTimeout(() => {
     const element = document.getElementById('resumeContent');
     const opt = {
@@ -134,7 +131,7 @@ document.getElementById('downloadBtn').addEventListener('click', function(e) {
       jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
     };
     html2pdf().set(opt).from(element).save();
-  }, 150); // Short delay to ensure DOM updates
+  }, 150); 
 });
 
 // === Initial Preview Fill ===
