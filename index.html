@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="icon" type="image/png" href="resume_icon.jpeg" />
+  <link rel="icon" type="image/png" href="images/resume_icon.jpeg" />
   <title>Resume Generator</title>
-
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
 </head>
@@ -30,11 +29,26 @@
       <label>Education</label>
       <textarea id="input-education" rows="3" placeholder="Your education..."></textarea>
 
+      <label>Work Experience</label>
+      <div id="experience-inputs">
+        <div class="experience-inputs">
+          <input type="text" placeholder="Experience Title" class="experience-title" />
+          <textarea placeholder="Experience description" class="experience-desc"></textarea>
+        </div>
+      </div>
+      <button type="button" id="add-experience">+ Add Experience</button>
+
       <label>Achievements</label>
-      <textarea id="input-achievements" rows="4" placeholder="Write about your academic/other achievements"></textarea>
+      <textarea id="input-achievements" rows="4" placeholder="Write about your academic/other achievements (separate by new line)"></textarea>
 
       <label>Skills</label>
       <textarea id="input-skills" rows="3" placeholder="C, Java, Python, Flutter, AI/ML"></textarea>
+
+      <label>Languages</label>
+      <textarea id="input-lang" rows="5" placeholder="Bengali (Native), English (Professional)....separate by new line"></textarea>
+
+      <label>Certifications</label>
+      <textarea id="input-cert" rows="2" placeholder="Enter certifications..."></textarea>
 
       <label>Projects</label>
       <div id="projects-inputs">
@@ -43,15 +57,15 @@
           <textarea placeholder="Project description" class="project-desc"></textarea>
         </div>
       </div>
-      <button id="add-project">+ Add Project</button>
+      <button type="button" id="add-project">+ Add Project</button>
 
-      <button id="downloadBtn">Download PDF</button>
+      <button type="button" id="downloadBtn">Download PDF</button>
     </div>
 
     <!-- === Preview Section === -->
     <div class="preview-section" id="resumeContent">
       <div class="header">
-        <h1 id="preview-name">John Doe</h1>
+        <h1 id="preview-name">Your Name</h1>
         <p id="preview-contact">Email: johndoe@example.com | Phone: +91-1234567890</p>
       </div>
 
@@ -66,6 +80,11 @@
       </div>
 
       <div class="section">
+        <h2>Work Experience</h2>
+        <ul id="preview-experience"></ul>
+      </div>
+
+      <div class="section">
         <h2>Achievements</h2>
         <ul id="preview-achievements"></ul>
       </div>
@@ -73,6 +92,16 @@
       <div class="section">
         <h2>Skills</h2>
         <p id="preview-skills"></p>
+      </div>
+
+      <div class="section">
+        <h2>Languages</h2>
+        <p id="preview-lang"></p>
+      </div>
+
+      <div class="section">
+        <h2>Certifications</h2>
+        <p id="preview-cert"></p>
       </div>
 
       <div class="section">
@@ -87,8 +116,6 @@
       <a href="mailto:rajdeeppaul427@gmail.com">Email</a>
     </div>
   </footer>
-  
-
   <script src="script.js"></script>
 </body>
 </html>
