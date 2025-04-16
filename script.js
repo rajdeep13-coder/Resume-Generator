@@ -1,138 +1,135 @@
-function getDefaultText(field) {
-  const defaults = {
-    name: "John Doe",
-    email: "johndoe@example.com",
-    phone: "+91-1234567890",
-    about: "A passionate and dedicated professional seeking to leverage skills and experience to contribute effectively.",
-    education: "B.Tech in Computer Science, XYZ University, 2024",
-    achievements: ["Write about your academic/other achievements"],
-    skills: "C, Java, Python, Flutter, AI/ML",
-    projects: [
-      { title: "Sample Project", desc: "A brief description of the project and your role in it." }
-    ]
-  };
-  return defaults[field];
-}
-
-// === Real-time Preview Update ===
-
+// === Helper Functions ===
 function updatePreview() {
-  // Name
-  const name = document.getElementById('input-name').value.trim() || getDefaultText('name');
-  document.getElementById('preview-name').textContent = name;
-
-  // Email & Phone
-  const email = document.getElementById('input-email').value.trim() || getDefaultText('email');
-  const phone = document.getElementById('input-phone').value.trim() || getDefaultText('phone');
-  document.getElementById('preview-contact').textContent = `Email: ${email} | Phone: ${phone}`;
+  // Basic Info
+  document.getElementById('preview-name').textContent = document.getElementById('input-name').value || 'John Doe';
+  document.getElementById('preview-contact').textContent =
+    `Email: ${document.getElementById('input-email').value || 'johndoe@example.com'} | Phone: ${document.getElementById('input-phone').value || '+91-1234567890'}`;
 
   // About
-  const about = document.getElementById('input-about').value.trim() || getDefaultText('about');
-  document.getElementById('preview-about').textContent = about;
+  document.getElementById('preview-about').textContent = document.getElementById('input-about').value;
 
   // Education
-  const education = document.getElementById('input-education').value.trim() || getDefaultText('education');
-  document.getElementById('preview-education').textContent = education;
+  document.getElementById('preview-education').textContent = document.getElementById('input-education').value;
 
-  // Achievements (as bullet points)
-  const achievementsInput = document.getElementById('input-achievements').value.trim();
-  const achievementsList = document.getElementById('preview-achievements');
-  achievementsList.innerHTML = '';
-  let achievementsArr = [];
-  if (achievementsInput) {
-    achievementsArr = achievementsInput.split(/\n|•/).map(s => s.trim()).filter(Boolean);
-  } else {
-    achievementsArr = getDefaultText('achievements');
-  }
-  achievementsArr.forEach(item => {
+  // Experience
+  const expList = document.getElementById('preview-experience');
+  expList.innerHTML = '';
+  document.querySelectorAll('#experience-inputs .experience-inputs').forEach(expDiv => {
+    const title = expDiv.querySelector('.experience-title').value;
+    const desc = expDiv.querySelector('.experience-desc').value;
+    if (title || desc) {
+      const li = document.createElement('li');
+      li.innerHTML = `<strong>${title}</strong><br>${desc}`;
+      expList.appendChild(li);
+    }
+  });
+
+  // Achievements
+  const achList = document.getElementById('preview-achievements');
+  achList.innerHTML = '';
+  const achievements = document.getElementById('input-achievements').value.split('\n').filter(a => a.trim());
+  achievements.forEach(a => {
     const li = document.createElement('li');
-    li.textContent = item.replace(/^•\s*/, '');
-    achievementsList.appendChild(li);
+    li.textContent = a;
+    achList.appendChild(li);
   });
 
   // Skills
-  const skills = document.getElementById('input-skills').value.trim() || getDefaultText('skills');
-  document.getElementById('preview-skills').textContent = skills;
+  document.getElementById('preview-skills').textContent = document.getElementById('input-skills').value;
 
-  // Projects 
-  const projectsList = document.getElementById('preview-projects');
-  projectsList.innerHTML = '';
-  const projectInputs = document.querySelectorAll('#projects-inputs .project-input');
-  let hasProject = false;
-  projectInputs.forEach((proj, idx) => {
-    const title = proj.querySelector('.project-title').value.trim();
-    const desc = proj.querySelector('.project-desc').value.trim();
+  // Languages
+  document.getElementById('preview-lang').textContent = document.getElementById('input-lang').value;
+
+  // Certifications
+  document.getElementById('preview-cert').textContent = document.getElementById('input-cert').value;
+
+  // Projects
+  const projList = document.getElementById('preview-projects');
+  projList.innerHTML = '';
+  document.querySelectorAll('#projects-inputs .project-input').forEach(projDiv => {
+    const title = projDiv.querySelector('.project-title').value;
+    const desc = projDiv.querySelector('.project-desc').value;
     if (title || desc) {
-      hasProject = true;
       const li = document.createElement('li');
-      li.innerHTML = `<strong>${title || "Untitled Project"}</strong>: ${desc || "No description provided."}`;
-      projectsList.appendChild(li);
+      li.innerHTML = `<strong>${title}</strong><br>${desc}`;
+      projList.appendChild(li);
     }
   });
-  if (!hasProject) {
-    // Show default project
-    const def = getDefaultText('projects')[0];
-    const li = document.createElement('li');
-    li.innerHTML = `<strong>${def.title}</strong>: ${def.desc}`;
-    projectsList.appendChild(li);
-  }
 }
 
-// === Dynamic Project Fields ===
+// === Event Listeners for Live Preview ===
+document.querySelectorAll(
+  '#input-name, #input-email, #input-phone, #input-about, #input-education, #input-achievements, #input-skills, #input-lang, #input-cert'
+).forEach(input => {
+  input.addEventListener('input', updatePreview);
+});
 
-document.getElementById('add-project').addEventListener('click', function(e) {
-  e.preventDefault();
+// Experience dynamic add/remove
+document.getElementById('add-experience').addEventListener('click', () => {
+  const container = document.getElementById('experience-inputs');
+  const div = document.createElement('div');
+  div.className = 'experience-inputs';
+  div.innerHTML = `
+    <input type="text" placeholder="Experience Title" class="experience-title" />
+    <textarea placeholder="Experience description" class="experience-desc"></textarea>
+    <button type="button" class="remove-exp">Remove</button>
+  `;
+  container.appendChild(div);
+
+  div.querySelectorAll('input, textarea').forEach(el => {
+    el.addEventListener('input', updatePreview);
+  });
+  div.querySelector('.remove-exp').addEventListener('click', () => {
+    div.remove();
+    updatePreview();
+  });
+});
+
+// Projects dynamic add/remove
+document.getElementById('add-project').addEventListener('click', () => {
   const container = document.getElementById('projects-inputs');
   const div = document.createElement('div');
   div.className = 'project-input';
   div.innerHTML = `
     <input type="text" placeholder="Project title" class="project-title" />
     <textarea placeholder="Project description" class="project-desc"></textarea>
+    <button type="button" class="remove-proj">Remove</button>
   `;
   container.appendChild(div);
-  // Add event listeners to new fields
-  div.querySelector('.project-title').addEventListener('input', updatePreview);
-  div.querySelector('.project-desc').addEventListener('input', updatePreview);
-});
 
-// === Attach Input Listeners ===
-
-[
-  'input-name', 'input-email', 'input-phone',
-  'input-about', 'input-education', 'input-achievements', 'input-skills'
-].forEach(id => {
-  document.getElementById(id).addEventListener('input', updatePreview);
-});
-
-// Initial project input listeners
-function attachProjectInputListeners() {
-  document.querySelectorAll('.project-title, .project-desc').forEach(el => {
+  div.querySelectorAll('input, textarea').forEach(el => {
     el.addEventListener('input', updatePreview);
   });
-}
-attachProjectInputListeners();
-
-// Also attach listeners to dynamically added project fields
-const observer = new MutationObserver(attachProjectInputListeners);
-observer.observe(document.getElementById('projects-inputs'), { childList: true });
-
-// === PDF Download ===
-
-document.getElementById('downloadBtn').addEventListener('click', function(e) {
-  e.preventDefault();
-  updatePreview(); 
-  setTimeout(() => {
-    const element = document.getElementById('resumeContent');
-    const opt = {
-      margin:       0.5,
-      filename:     'resume.pdf',
-      image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2 },
-      jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
-    };
-    html2pdf().set(opt).from(element).save();
-  }, 150); 
+  div.querySelector('.remove-proj').addEventListener('click', () => {
+    div.remove();
+    updatePreview();
+  });
 });
 
-// === Initial Preview Fill ===
+// Initial listeners for first experience/project
+document.querySelectorAll('#experience-inputs input, #experience-inputs textarea').forEach(el => {
+  el.addEventListener('input', updatePreview);
+});
+document.querySelectorAll('#projects-inputs input, #projects-inputs textarea').forEach(el => {
+  el.addEventListener('input', updatePreview);
+});
+
+// PDF Download
+document.getElementById('downloadBtn').addEventListener('click', () => {
+  // Hide form section for PDF
+  document.querySelector('.form-section').style.display = 'none';
+  document.querySelector('.site-footer').style.display = 'none';
+  html2pdf(document.getElementById('resumeContent'), {
+    margin: 0.5,
+    filename: 'resume.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+  }).then(() => {
+    document.querySelector('.form-section').style.display = '';
+    document.querySelector('.site-footer').style.display = '';
+  });
+});
+
+// Initial preview
 updatePreview();
