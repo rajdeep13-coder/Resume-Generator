@@ -26,7 +26,7 @@ body {
   box-shadow: 0 4px 24px rgba(0,0,0,0.07);
   padding: 2rem 2rem 1.5rem 2rem;
   flex: 1 1 0;
-  min-width: 320px;
+  min-width: 400px;
 }
 
 .form-section {
@@ -48,19 +48,7 @@ body {
   color: #3a4a5d;
 }
 
-#add-experience {
-  background: #eaf3ff;
-  color: #2563eb;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 6px;
-  font-size: 1rem;
-  margin-bottom: 1.2rem;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-
+/* Input styles */
 .form-section input[type="text"],
 .form-section input[type="email"],
 .form-section textarea {
@@ -71,16 +59,21 @@ body {
   font-size: 1rem;
   margin-bottom: 0.2rem;
   background: #f8fafc;
-  transition: border 0.2s;
+  transition: border 0.2s, box-shadow 0.2s;
 }
 
 .form-section input:focus,
 .form-section textarea:focus {
   border-color: #4f8cff;
-  outline: none;
+  outline: 2px solid #bcd6ff;
+  box-shadow: 0 0 0 2px #eaf3ff;
 }
 
-#projects-inputs .project-input {
+/* Dynamic input blocks */
+.education-inputs,
+.experience-inputs,
+.certifications-inputs,
+.project-input {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
@@ -91,7 +84,15 @@ body {
   border: 1px solid #e0e6ed;
 }
 
-#add-project {
+#education-inputs,
+#experience-inputs,
+#certifications-inputs,
+#projects-inputs {
+  margin-bottom: 0.7rem;
+}
+
+/* Add button styles */
+.form-section button[type="button"] {
   background: #eaf3ff;
   color: #2563eb;
   border: none;
@@ -100,13 +101,20 @@ body {
   font-size: 1rem;
   margin-bottom: 1.2rem;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, color 0.2s;
+  margin-right: 0.4rem;
+  margin-top: 0.2rem;
+  font-weight: 500;
 }
 
-#add-project:hover {
+.form-section button[type="button"]:hover,
+.form-section button[type="button"]:focus {
   background: #dbeafe;
+  color: #1746a0;
+  outline: none;
 }
 
+/* Download button */
 #downloadBtn {
   background: #2563eb;
   color: #fff;
@@ -118,12 +126,16 @@ body {
   margin-top: 1.2rem;
   cursor: pointer;
   box-shadow: 0 2px 8px rgba(37,99,235,0.08);
-  transition: background 0.2s;
+  transition: background 0.2s, box-shadow 0.2s;
   width: 100%;
+  letter-spacing: 0.02em;
 }
 
-#downloadBtn:hover {
+#downloadBtn:hover,
+#downloadBtn:focus {
   background: #1746a0;
+  box-shadow: 0 4px 16px rgba(37,99,235,0.13);
+  outline: none;
 }
 
 /* === Preview Section === */
@@ -132,6 +144,7 @@ body {
   max-width: 1000px;
   box-shadow: 0 4px 32px rgba(0,0,0,0.09);
   border: 1.5px solid #e0e6ed;
+  background: linear-gradient(120deg, #f8fafc 80%, #eaf3ff 100%);
 }
 
 .preview-section .header {
@@ -181,7 +194,7 @@ body {
 }
 
 /* Responsive Design */
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
   .main-container {
     flex-direction: column;
     gap: 1.5rem;
@@ -191,6 +204,9 @@ body {
     max-width: 100%;
     min-width: 0;
   }
+  .preview-section {
+    min-width: 320px;
+  }
 }
 
 @media (max-width: 600px) {
@@ -199,6 +215,17 @@ body {
   }
   .main-container {
     padding: 0;
+    gap: 0.7rem;
+  }
+  .preview-section {
+    min-width: 0;
+    font-size: 0.98rem;
+  }
+  .form-section h2 {
+    font-size: 1.1rem;
+  }
+  .preview-section h1 {
+    font-size: 1.3rem;
   }
 }
 
@@ -223,4 +250,18 @@ body {
 
 .site-footer a:hover {
   color: #1746a0;
+}
+
+/* Accessibility: Focus outline for all interactive elements */
+button:focus, input:focus, textarea:focus, a:focus {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* Minor spacing fix for stacked dynamic blocks */
+#education-inputs > .education-inputs:not(:last-child),
+#experience-inputs > .experience-inputs:not(:last-child),
+#certifications-inputs > .certifications-inputs:not(:last-child),
+#projects-inputs > .project-input:not(:last-child) {
+  margin-bottom: 0.8rem;
 }
