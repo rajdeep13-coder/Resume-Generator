@@ -10,13 +10,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
 </head>
 <body>
-  <div class="main-container">
-    <div class="form-section">
-      <div class="button-group">
-        <button class="btn-refresh" onclick="window.location.reload();">🔄 Refresh Resume</button>
-        <br>
-        <button class="btn-autofill" onclick="autofillResume()">✍️ Autofill Resume</button>
-      </div>
+    <div class="main-container">
+    <!-- Form Section -->  
       <h2>Resume Details</h2>
       <!-- Basic Info -->
       <div class="form-group">
@@ -202,6 +197,13 @@
       </div>
     </div>
   </div>
+  <footer>
+    <div class="button-group">
+      <button class="btn-refresh" onclick="window.location.reload();">🔄 Refresh Resume</button>
+      <br />
+      <button class="btn-autofill" onclick="autofillResume()">✍️ Autofill Resume</button>
+    </div>
+  </footer>
   <script src="script.js"></script>
 </body>
 </html>
