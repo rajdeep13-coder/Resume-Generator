@@ -4,6 +4,16 @@ A clean, responsive web app to create professional resumes in minutes. Fill out 
 
 ---
 
+## 🚀 Project under GSSoC'25
+
+This project is proudly part of **[GirlScript Summer of Code 2025 (GSSoC'25)](https://gssoc.girlscript.tech/)**!  
+We welcome contributions from GSSoC participants and the broader open source community.  
+If you're contributing through GSSoC'25:
+- Mention **GSSoC'25** in your pull requests.
+- Reach out to us via [official GSSoC channels](https://gssoc.girlscript.tech/) or project discussions.
+
+---
+
 ## 🚀 Features
 
 - 🔄 **Live Preview**: Instantly see your resume update as you type.
