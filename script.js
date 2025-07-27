@@ -159,3 +159,24 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
   };
   html2pdf().from(content).set(options).save();
 });
+document.addEventListener("DOMContentLoaded", () => {
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("show");
+        observer.unobserve(entry.target); // Animate only once
+      }
+    });
+  }, {
+    threshold: 0.1
+  });
+
+  document.querySelectorAll(".fade-in").forEach(el => {
+    observer.observe(el);
+  });
+});
+window.history.scrollRestoration = "manual";
+window.scrollTo(0, 0);
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  // Run observer code
+}
