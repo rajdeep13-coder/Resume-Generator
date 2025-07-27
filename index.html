@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,13 +10,17 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
 </head>
 <body>
+ main
+    <div class="main-container">
+       <!-- Form Section -->
+      <div class="form-section ">
   <div class="main-container fade-in ">
     <!-- Form Section -->
     <div class="form-section ">
+ main
       <h2>Resume Details</h2>
-
-      <!-- Basic Info -->
       <div class="form-group">
+        <!-- Basic Info -->
         <label for="input-name">Full Name</label>
         <input type="text" id="input-name" placeholder="John Doe" autofocus />
       </div>
@@ -198,6 +203,13 @@
       </div>
     </div>
   </div>
+  <footer>
+    <div class="footer-actions">
+      <button class="btn-refresh" onclick="window.location.reload();">🔄 Refresh Resume</button>
+      <br />
+      <button class="btn-autofill" onclick="autofillResume()">✍️ Autofill Resume</button>
+    </div>
+  </footer>
   <script src="script.js"></script>
 </body>
 </html>

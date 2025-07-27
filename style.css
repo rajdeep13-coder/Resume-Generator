@@ -203,3 +203,40 @@ ul li::before {
     grid-template-columns: 1fr;
   }
 }
+.footer-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  padding: 16px;
+  border-top: 1px solid #e2e8f0;
+  background-color: #ffffff;
+  position: sticky;
+  bottom: 0;
+  z-index: 100;
+}
+
+.btn-refresh,
+.btn-autofill {
+  background-color: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #1e293b;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-refresh:hover,
+.btn-autofill:hover {
+  background-color: #e2e8f0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-refresh:active,
+.btn-autofill:active {
+  transform: scale(0.98);
+}
+
