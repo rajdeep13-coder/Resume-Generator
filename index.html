@@ -8,19 +8,18 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html-docx-js/0.4.0/html-docx.min.js"></script>
+
 </head>
 <body>
- main
-    <div class="main-container">
-       <!-- Form Section -->
-      <div class="form-section ">
   <div class="main-container fade-in ">
     <!-- Form Section -->
     <div class="form-section ">
- main
       <h2>Resume Details</h2>
+
+      <!-- Basic Info -->
       <div class="form-group">
-        <!-- Basic Info -->
         <label for="input-name">Full Name</label>
         <input type="text" id="input-name" placeholder="John Doe" autofocus />
       </div>
@@ -31,7 +30,7 @@
       <div class="form-group">
         <label for="input-phone">Phone</label>
         <input type="tel" id="input-phone" placeholder="+91-9876543210" />
-      </div>
+        </div>
       <div class="form-group">
         <label for="input-linkedin">LinkedIn</label>
         <input type="url" id="input-linkedin" placeholder="linkedin.com/in/john" />
@@ -131,6 +130,8 @@
 
       <div class="form-group fade-in">
         <button type="button" id="downloadBtn" class="download-btn fade-in">Download PDF</button>
+        <button type="button" id="downloadDocxBtn" class="download-btn fade-in">Download Word (.docx)</button>
+
       </div>
     </div>
 
