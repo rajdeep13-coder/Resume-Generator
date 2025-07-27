@@ -180,3 +180,29 @@ window.scrollTo(0, 0);
 if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   // Run observer code
 }
+document.getElementById("downloadDocxBtn").addEventListener("click", () => {
+  const resumeContent = document.getElementById("resumeContent").cloneNode(true);
+
+  // Optional: remove animations if you want cleaner output
+  resumeContent.querySelectorAll(".fade-in, .show").forEach(el => el.classList.remove("fade-in", "show"));
+
+  const html = `
+    <html xmlns:o='urn:schemas-microsoft-com:office:office' 
+          xmlns:w='urn:schemas-microsoft-com:office:word' 
+          xmlns='http://www.w3.org/TR/REC-html40'>
+      <head><meta charset='utf-8'><title>Export HTML to Word</title></head>
+      <body>${resumeContent.innerHTML}</body>
+    </html>`;
+
+  const blob = new Blob(['\ufeff', html], {
+    type: 'application/msword'
+  });
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'resume.doc';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+});
