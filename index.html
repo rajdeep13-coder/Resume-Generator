@@ -9,9 +9,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
 </head>
 <body>
-  <div class="main-container">
+  <div class="main-container fade-in ">
     <!-- Form Section -->
-    <div class="form-section">
+    <div class="form-section ">
       <h2>Resume Details</h2>
 
       <!-- Basic Info -->
@@ -41,10 +41,10 @@
       </div>
 
       <!-- Education -->
-      <div class="form-group">
+      <div class="form-group fade-in">
         <label>Education</label>
         <div id="education-inputs">
-          <div class="education-inputs">
+          <div class="education-inputs fade-in">
             <input type="text" placeholder="Institution" class="education-institution" />
             <input type="text" placeholder="Degree" class="education-degree" />
             <input type="text" placeholder="GPA" class="education-gpa" />
@@ -52,13 +52,13 @@
             <input type="text" placeholder="Dates" class="education-dates" />
           </div>
         </div>
-        <button type="button" id="add-education" class="add-btn">+ Add Education</button>
+        <button type="button" id="add-education" class="add-btn fade-in">+ Add Education</button>
       </div>
 
       <!-- Skills Summary -->
-      <div class="form-group">
+      <div class="form-group fade-in">
         <label>Skills Summary</label>
-        <div class="skills-grid">
+        <div class="skills-grid fade-in">
           <div>
             <label>Languages</label>
             <textarea id="input-languages" placeholder="JavaScript, Python"></textarea>
@@ -83,10 +83,10 @@
       </div>
 
       <!-- Work Experience -->
-      <div class="form-group">
+      <div class="form-group fade-in">
         <label>Work Experience</label>
         <div id="experience-inputs">
-          <div class="experience-inputs">
+          <div class="experience-inputs fade-in">
             <input type="text" placeholder="Role" class="experience-role" />
             <input type="text" placeholder="Company" class="experience-company" />
             <input type="text" placeholder="Company Link" class="experience-link" />
@@ -94,65 +94,65 @@
             <textarea placeholder="Key achievements (1 per line)" class="experience-desc"></textarea>
           </div>
         </div>
-        <button type="button" id="add-experience" class="add-btn">+ Add Experience</button>
+        <button type="button" id="add-experience" class="add-btn fade-in">+ Add Experience</button>
       </div>
 
       <!-- Certificates -->
-      <div class="form-group">
+      <div class="form-group fade-in">
         <label>Certificates</label>
         <div id="certifications-inputs">
-          <div class="certifications-inputs">
+          <div class="certifications-inputs fade-in">
             <input type="text" placeholder="Certificate Name" class="certificate-title" />
             <input type="text" placeholder="Issuing Organization" class="certificate-issuer" />
             <input type="text" placeholder="Date" class="certificate-date" />
             <textarea placeholder="Description (1 per line)" class="certificate-desc"></textarea>
           </div>
         </div>
-        <button type="button" id="add-certificate" class="add-btn">+ Add Certificate</button>
+        <button type="button" id="add-certificate" class="add-btn fade-in">+ Add Certificate</button>
       </div>
 
       <!-- Projects -->
-      <div class="form-group">
+      <div class="form-group fade-in">
         <label>Projects</label>
         <div id="projects-inputs">
-          <div class="project-input">
+          <div class="project-input ">
             <input type="text" placeholder="Project Title" class="project-title" />
             <input type="url" placeholder="Project Link (URL)" class="project-link" />
             <textarea placeholder="Key achievements (1 per line)" class="project-desc"></textarea>
           </div>
         </div>
-        <button type="button" id="add-project" class="add-btn">+ Add Project</button>
+        <button type="button" id="add-project" class="add-btn fade-in">+ Add Project</button>
       </div>
 
-      <div class="form-group">
-        <button type="button" id="downloadBtn" class="download-btn">Download PDF</button>
+      <div class="form-group fade-in">
+        <button type="button" id="downloadBtn" class="download-btn fade-in">Download PDF</button>
       </div>
     </div>
 
     <!-- Preview Section -->
-    <div class="preview-section" id="resumeContent">
+    <div class="preview-section fade-in" id="resumeContent">
       <div class="header">
         <h1 id="preview-name">John Doe</h1>
-        <div class="contact-info" id="preview-contact">
+        <div class="contact-info fade-in" id="preview-contact">
           <span id="preview-email">john@example.com</span>
           <span id="preview-phone">+91-9876543210</span>
           <span id="preview-linkedin">linkedin.com/in/john</span>
           <span id="preview-github">github.com/john</span>
         </div>
       </div>
-      <div class="section">
+      <div class="section fade-in">
         <h2>Professional Summary</h2>
         <p id="preview-about">Passionate developer with 3 years of experience...</p>
       </div>
-      <div class="section">
+      <div class="section fade-in">
         <h2>Education</h2>
         <ul id="preview-education">
           <li><strong>IIT Bombay</strong>, B.Tech in Computer Science<br>GPA: 9.2 | Mumbai, India | 2018-2022</li>
         </ul>
       </div>
-      <div class="section">
+      <div class="section fade-in">
         <h2>Skills Summary</h2>
-        <div class="skills-grid">
+        <div class="skills-grid fade-in">
           <div><strong>Languages:</strong> <span id="preview-languages">JavaScript, Python</span></div>
           <div><strong>Frameworks:</strong> <span id="preview-frameworks">React, Django</span></div>
           <div><strong>Tools:</strong> <span id="preview-tools">Git, VS Code</span></div>
@@ -160,7 +160,7 @@
           <div><strong>Soft Skills:</strong> <span id="preview-soft-skills">Leadership, Communication</span></div>
         </div>
       </div>
-      <div class="section">
+      <div class="section fade-in">
         <h2>Work Experience</h2>
         <ul id="preview-experience">
           <li>
@@ -172,7 +172,7 @@
           </li>
         </ul>
       </div>
-      <div class="section">
+      <div class="section fade-in">
         <h2>Certificates</h2>
         <ul id="preview-cert">
           <li>
@@ -183,12 +183,12 @@
          </li>
         </ul>
       </div>
-      <div class="section">
+      <div class="section fade-in">
        <h2>Projects</h2>
         <ul id="preview-projects">
         <li>
             <strong>Resume Generator</strong>
-            <div class="project-links"><a href="https://github.com/john/resume-generator" target="_blank">LINK</a></div>
+            <div class="project-links fade-in"><a href="https://github.com/john/resume-generator" target="_blank">LINK</a></div>
             <ul>
               <li><strong>Built:</strong> Full-stack resume builder using React</li>
               <li><strong>Integrated:</strong> PDF export feature</li>
