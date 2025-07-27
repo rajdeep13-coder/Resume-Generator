@@ -40,11 +40,11 @@ Thank you for your interest in contributing to this project! Follow the steps be
 
 4. **Make Your Changes**  
   
-Work on the feature or bug assigned to you.
+   Work on the feature or bug assigned to you.
 
-Make sure your code is clean, well-commented, and follows the project’s coding standards.
+   Make sure your code is clean, well-commented, and follows the project’s coding standards.
 
-If necessary, update documentation or add helpful comments.
+   If necessary, update documentation or add helpful comments.
 
 5. **Stage and Commit Changes**
     ```bash
@@ -57,14 +57,15 @@ If necessary, update documentation or add helpful comments.
     git push origin feature/your-branch-name
     ```
 
-7. **Create a Pull Request(PR)**  
-Open your forked repository on GitHub.
+7. **Create a Pull Request(PR)**
 
-Click the "Compare & pull request" button.
+    Open your forked repository on GitHub.
 
-Write a clear and concise title and description for your PR.
+    Click the "Compare & pull request" button.
 
-Submit the PR.
+    Write a clear and concise title and description for your PR.
+
+    Submit the PR.
 
 
 ---
