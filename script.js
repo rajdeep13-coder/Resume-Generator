@@ -231,10 +231,12 @@ toggle.addEventListener('click', () => {
   if (isDark) {
     icon.classList.remove('fa-sun');  // Remove sun
     icon.classList.add('fa-moon');    // Add moon for dark mode
+    icon.style.color = 'white';
     localStorage.setItem('theme', 'dark');
   } else {
     icon.classList.remove('fa-moon'); // Remove moon
     icon.classList.add('fa-sun');     // Add sun for light mode
+    icon.style.color = '#FFB300';
     localStorage.setItem('theme', 'light');
   }
 });
