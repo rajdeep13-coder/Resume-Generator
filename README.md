@@ -39,3 +39,42 @@ Clone the repository:
 ```bash
 git clone https://github.com/rajdeep13-coder/resume-generator.git
 cd resume-generator
+```
+
+Open `index.html` in your browser to start using the resume generator.
+
+---
+
+## 👥 Contributors
+
+We appreciate all the amazing contributors who have helped make this project better! 🎉
+
+<!-- Contributors section - Add your profile here when contributing -->
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/rajdeep13-coder">
+        <img src="https://github.com/rajdeep13-coder.png" width="100px;" alt="Rajdeep"/><br />
+        <sub><b>Rajdeep</b></sub>
+      </a><br />
+      <sub>Project Maintainer</sub>
+    </td>
+    <td align="center">
+      <a href="https://github.com/Amitk003">
+        <img src="https://github.com/Amitk003.png" width="100px;" alt="Amit"/><br />
+        <sub><b>Amit</b></sub>
+      </a><br />
+      <sub>GSSoC'25 Contributor</sub>
+    </td>
+    <!-- Add more contributors here -->
+  </tr>
+</table>
+
+### How to Add Your Profile
+When contributing to this project, add your profile to the contributors table above:
+1. Fork the repository
+2. Add your entry in the contributors table
+3. Include your GitHub profile picture and link
+4. Submit a pull request
+
+---
