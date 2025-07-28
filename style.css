@@ -306,3 +306,10 @@ body.dark .footer {
 body.dark .footer-link {
   color: #ffcc00; /* dark yellow for better contrast */
 }
+.error-message {
+  color: #dc2626; 
+  font-size: 0.8rem;
+  margin-top: -0.2rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
