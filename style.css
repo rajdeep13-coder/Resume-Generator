@@ -275,10 +275,6 @@ ul li::before {
   color: inherit;
   transition: transform 0.2s ease;
 }
-body:not(.dark) #themeToggle .fa-moon {
-  color: inherit;
-}
-
-body.dark #themeToggle .fa-sun {
-  color: yellow;
+#themeToggle i.fa-sun {
+  color: #FFD700 !important;
 }
