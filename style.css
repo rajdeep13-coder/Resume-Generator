@@ -278,3 +278,11 @@ ul li::before {
 #themeToggle i.fa-sun {
   color: #FFD700 !important;
 }
+.char-count {
+  font-size: 0.75rem; 
+  color: var(--muted); 
+  display: block;
+  margin-top: -0.2rem; 
+  text-align: right; 
+  padding-right: 0.7rem; 
+}

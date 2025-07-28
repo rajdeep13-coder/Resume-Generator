@@ -24,6 +24,27 @@ bindInputToPreview("input-tools", "preview-tools");
 bindInputToPreview("input-platforms", "preview-platforms");
 bindInputToPreview("input-soft-skills", "preview-soft-skills");
 
+// handles live character counting
+function setupCharacterCounter(inputId) {
+  const inputElement = document.getElementById(inputId);
+  const charCountElement = document.getElementById(`charCount-${inputId}`);
+  if (inputElement && charCountElement) {
+    const maxLength = inputElement.getAttribute('maxlength');
+    const updateCount = () => {
+      const currentLength = inputElement.value.length;
+      charCountElement.textContent = `${currentLength}/${maxLength} characters`;
+      if (currentLength > maxLength) {
+        charCountElement.classList.add('exceeded');
+      } else {
+        charCountElement.classList.remove('exceeded');
+      }
+    };
+    updateCount();
+    inputElement.addEventListener('input', updateCount);
+  }
+}
+setupCharacterCounter("input-about");
+
 // Dynamic Section Helpers
 function createRemoveBtn() {
   const btn = document.createElement("button");
