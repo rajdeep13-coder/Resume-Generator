@@ -5,9 +5,16 @@ function bindInputToPreview(inputId, previewId, isLink = false) {
 
     input.addEventListener("input", () => {
         if (isLink && input.value) {
-            preview.innerHTML = `<a href="${input.value}" target="_blank">${input.value}</a>`;
+            const linkText = inputId === "input-linkedin" ? "LinkedIn" : (inputId === "input-github" ? "GitHub" : "Click here");
+            preview.innerHTML = `<a href="${input.value}" target="_blank">${linkText}</a>`;
         } else {
-            preview.textContent = input.value;
+            let displayText = input.value;
+            if (inputId === "input-email" && input.value) {
+                displayText = `Email: ${input.value}`;
+            } else if (inputId === "input-phone" && input.value) {
+                displayText = `Ph no: ${input.value}`;
+            }
+            preview.textContent = displayText;
         }
     });
 }
