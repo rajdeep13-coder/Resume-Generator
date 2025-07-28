@@ -1,216 +1,299 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Resume Generator</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+  <title>Resume Generator Pro</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html-docx-js/0.4.0/html-docx.min.js"></script>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html-docx-js/0.4.0/html-docx.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 </head>
 <body>
-  <div class="main-container fade-in ">
+  <!-- Animated Background -->
+  <div class="animated-bg">
+    <div class="floating-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+      <div class="shape shape-4"></div>
+      <div class="shape shape-5"></div>
+    </div>
+  </div>
+
+  <!-- Custom Cursor -->
+  <div class="cursor"></div>
+  <div class="cursor-follower"></div>
+
+  <!-- Theme Toggle -->
+  <button id="themeToggle" class="theme-toggle" aria-label="Toggle Theme">
+    <i class="fas fa-moon"></i>
+    <i class="fas fa-sun"></i>
+  </button>
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-content">
+      <h1 class="app-title">
+        <i class="fas fa-file-alt"></i>
+        Resume Generator Pro
+      </h1>
+      <p class="app-subtitle">Create professional resumes in minutes</p>
+    </div>
+  </header>
+
+  <div class="main-container">
     <!-- Form Section -->
-    <div class="form-section ">
-      <h2>Resume Details</h2>
+    <div class="form-section glass-card">
+      <div class="section-header">
+        <h2><i class="fas fa-edit"></i> Resume Details</h2>
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+      </div>
 
       <!-- Basic Info -->
-      <div class="form-group">
-        <label for="input-name">Full Name</label>
+      <div class="form-group animate-on-scroll">
+        <label for="input-name"><i class="fas fa-user"></i> Full Name</label>
         <input type="text" id="input-name" placeholder="John Doe" autofocus />
       </div>
-      <div class="form-group">
-        <label for="input-email">Email</label>
+
+      <div class="form-group animate-on-scroll">
+        <label for="input-email"><i class="fas fa-envelope"></i> Email</label>
         <input type="email" id="input-email" placeholder="john@example.com" />
       </div>
-      <div class="form-group">
-        <label for="input-phone">Phone</label>
+
+      <div class="form-group animate-on-scroll">
+        <label for="input-phone"><i class="fas fa-phone"></i> Phone</label>
         <input type="tel" id="input-phone" placeholder="+91-9876543210" />
-        </div>
-      <div class="form-group">
-        <label for="input-linkedin">LinkedIn</label>
+      </div>
+
+      <div class="form-group animate-on-scroll">
+        <label for="input-linkedin"><i class="fab fa-linkedin"></i> LinkedIn</label>
         <input type="url" id="input-linkedin" placeholder="linkedin.com/in/john" />
       </div>
-      <div class="form-group">
-        <label for="input-github">GitHub</label>
+
+      <div class="form-group animate-on-scroll">
+        <label for="input-github"><i class="fab fa-github"></i> GitHub</label>
         <input type="url" id="input-github" placeholder="github.com/john" />
       </div>
-      <div class="form-group">
-        <label for="input-about">Professional Summary</label>
+
+      <div class="form-group animate-on-scroll">
+        <label for="input-about"><i class="fas fa-user-tie"></i> Professional Summary</label>
         <textarea id="input-about" placeholder="Passionate developer with 3 years of experience..."></textarea>
+        <div class="char-count">0/500 characters</div>
       </div>
 
       <!-- Education -->
-      <div class="form-group fade-in">
-        <label>Education</label>
+      <div class="form-group animate-on-scroll">
+        <label><i class="fas fa-graduation-cap"></i> Education</label>
         <div id="education-inputs">
-          <div class="education-inputs fade-in">
+          <div class="education-inputs input-group">
             <input type="text" placeholder="Institution" class="education-institution" />
             <input type="text" placeholder="Degree" class="education-degree" />
             <input type="text" placeholder="GPA" class="education-gpa" />
             <input type="text" placeholder="Location" class="education-location" />
             <input type="text" placeholder="Dates" class="education-dates" />
+            <button type="button" class="remove-btn" onclick="removeEducation(this)">
+              <i class="fas fa-trash"></i>
+            </button>
           </div>
         </div>
-        <button type="button" id="add-education" class="add-btn fade-in">+ Add Education</button>
+        <button type="button" id="add-education" class="add-btn">
+          <i class="fas fa-plus"></i> Add Education
+        </button>
       </div>
 
       <!-- Skills Summary -->
-      <div class="form-group fade-in">
-        <label>Skills Summary</label>
-        <div class="skills-grid fade-in">
-          <div>
-            <label>Languages</label>
+      <div class="form-group animate-on-scroll">
+        <label><i class="fas fa-cogs"></i> Skills Summary</label>
+        <div class="skills-grid">
+          <div class="skill-category">
+            <label><i class="fas fa-code"></i> Languages</label>
             <textarea id="input-languages" placeholder="JavaScript, Python"></textarea>
           </div>
-          <div>
-            <label>Frameworks</label>
+          <div class="skill-category">
+            <label><i class="fas fa-layer-group"></i> Frameworks</label>
             <textarea id="input-frameworks" placeholder="React, Django"></textarea>
           </div>
-          <div>
-            <label>Tools</label>
+          <div class="skill-category">
+            <label><i class="fas fa-tools"></i> Tools</label>
             <textarea id="input-tools" placeholder="Git, VS Code"></textarea>
           </div>
-          <div>
-            <label>Platforms</label>
+          <div class="skill-category">
+            <label><i class="fas fa-cloud"></i> Platforms</label>
             <textarea id="input-platforms" placeholder="AWS, Firebase"></textarea>
           </div>
-          <div>
-            <label>Soft Skills</label>
+          <div class="skill-category">
+            <label><i class="fas fa-handshake"></i> Soft Skills</label>
             <textarea id="input-soft-skills" placeholder="Leadership, Communication"></textarea>
           </div>
         </div>
       </div>
 
       <!-- Work Experience -->
-      <div class="form-group fade-in">
-        <label>Work Experience</label>
+      <div class="form-group animate-on-scroll">
+        <label><i class="fas fa-briefcase"></i> Work Experience</label>
         <div id="experience-inputs">
-          <div class="experience-inputs fade-in">
+          <div class="experience-inputs input-group">
             <input type="text" placeholder="Role" class="experience-role" />
             <input type="text" placeholder="Company" class="experience-company" />
             <input type="text" placeholder="Company Link" class="experience-link" />
             <input type="text" placeholder="Dates" class="experience-dates" />
             <textarea placeholder="Key achievements (1 per line)" class="experience-desc"></textarea>
+            <button type="button" class="remove-btn" onclick="removeExperience(this)">
+              <i class="fas fa-trash"></i>
+            </button>
           </div>
         </div>
-        <button type="button" id="add-experience" class="add-btn fade-in">+ Add Experience</button>
+        <button type="button" id="add-experience" class="add-btn">
+          <i class="fas fa-plus"></i> Add Experience
+        </button>
       </div>
 
       <!-- Certificates -->
-      <div class="form-group fade-in">
-        <label>Certificates</label>
+      <div class="form-group animate-on-scroll">
+        <label><i class="fas fa-certificate"></i> Certificates</label>
         <div id="certifications-inputs">
-          <div class="certifications-inputs fade-in">
+          <div class="certifications-inputs input-group">
             <input type="text" placeholder="Certificate Name" class="certificate-title" />
             <input type="text" placeholder="Issuing Organization" class="certificate-issuer" />
             <input type="text" placeholder="Date" class="certificate-date" />
             <textarea placeholder="Description (1 per line)" class="certificate-desc"></textarea>
+            <button type="button" class="remove-btn" onclick="removeCertificate(this)">
+              <i class="fas fa-trash"></i>
+            </button>
           </div>
         </div>
-        <button type="button" id="add-certificate" class="add-btn fade-in">+ Add Certificate</button>
+        <button type="button" id="add-certificate" class="add-btn">
+          <i class="fas fa-plus"></i> Add Certificate
+        </button>
       </div>
 
       <!-- Projects -->
-      <div class="form-group fade-in">
-        <label>Projects</label>
+      <div class="form-group animate-on-scroll">
+        <label><i class="fas fa-project-diagram"></i> Projects</label>
         <div id="projects-inputs">
-          <div class="project-input ">
+          <div class="project-input input-group">
             <input type="text" placeholder="Project Title" class="project-title" />
             <input type="url" placeholder="Project Link (URL)" class="project-link" />
             <textarea placeholder="Key achievements (1 per line)" class="project-desc"></textarea>
+            <button type="button" class="remove-btn" onclick="removeProject(this)">
+              <i class="fas fa-trash"></i>
+            </button>
           </div>
         </div>
-        <button type="button" id="add-project" class="add-btn fade-in">+ Add Project</button>
+        <button type="button" id="add-project" class="add-btn">
+          <i class="fas fa-plus"></i> Add Project
+        </button>
       </div>
 
-      <div class="form-group fade-in">
-        <button type="button" id="downloadBtn" class="download-btn fade-in">Download PDF</button>
-        <button type="button" id="downloadDocxBtn" class="download-btn fade-in">Download Word (.docx)</button>
-
+      <div class="form-group download-section animate-on-scroll">
+        <button type="button" id="downloadBtn" class="download-btn primary">
+          <i class="fas fa-file-pdf"></i> Download PDF
+        </button>
+        <button type="button" id="downloadDocxBtn" class="download-btn secondary">
+          <i class="fas fa-file-word"></i> Download Word
+        </button>
       </div>
     </div>
 
     <!-- Preview Section -->
-    <div class="preview-section fade-in" id="resumeContent">
-      <div class="header">
-        <h1 id="preview-name">John Doe</h1>
-        <div class="contact-info fade-in" id="preview-contact">
-          <span id="preview-email">john@example.com</span>
-          <span id="preview-phone">+91-9876543210</span>
-          <span id="preview-linkedin">linkedin.com/in/john</span>
-          <span id="preview-github">github.com/john</span>
+    <div class="preview-section glass-card" id="resumeContent">
+      <div class="preview-header">
+        <h3><i class="fas fa-eye"></i> Live Preview</h3>
+        <div class="preview-actions">
+          <button class="btn-icon" onclick="window.location.reload();" title="Refresh">
+            <i class="fas fa-sync-alt"></i>
+          </button>
+          <button class="btn-icon" onclick="autofillResume()" title="Autofill">
+            <i class="fas fa-magic"></i>
+          </button>
         </div>
       </div>
-      <div class="section fade-in">
-        <h2>Professional Summary</h2>
-        <p id="preview-about">Passionate developer with 3 years of experience...</p>
-      </div>
-      <div class="section fade-in">
-        <h2>Education</h2>
-        <ul id="preview-education">
-          <li><strong>IIT Bombay</strong>, B.Tech in Computer Science<br>GPA: 9.2 | Mumbai, India | 2018-2022</li>
-        </ul>
-      </div>
-      <div class="section fade-in">
-        <h2>Skills Summary</h2>
-        <div class="skills-grid fade-in">
-          <div><strong>Languages:</strong> <span id="preview-languages">JavaScript, Python</span></div>
-          <div><strong>Frameworks:</strong> <span id="preview-frameworks">React, Django</span></div>
-          <div><strong>Tools:</strong> <span id="preview-tools">Git, VS Code</span></div>
-          <div><strong>Platforms:</strong> <span id="preview-platforms">AWS, Firebase</span></div>
-          <div><strong>Soft Skills:</strong> <span id="preview-soft-skills">Leadership, Communication</span></div>
+
+      <div class="resume-content">
+        <div class="header">
+          <h1 id="preview-name">John Doe</h1>
+          <div class="contact-info" id="preview-contact">
+            <span id="preview-email"><i class="fas fa-envelope"></i> john@example.com</span>
+            <span id="preview-phone"><i class="fas fa-phone"></i> +91-9876543210</span>
+            <span id="preview-linkedin"><i class="fab fa-linkedin"></i> linkedin.com/in/john</span>
+            <span id="preview-github"><i class="fab fa-github"></i> github.com/john</span>
+          </div>
         </div>
-      </div>
-      <div class="section fade-in">
-        <h2>Work Experience</h2>
-        <ul id="preview-experience">
-          <li>
-            <strong>Software Engineer</strong>, <a href="https://google.com" target="_blank">Google</a> | 2022-Present
-            <ul>
-              <li><strong>Built:</strong> Scalable backend services using Node.js</li>
-              <li><strong>Optimized:</strong> API response times by 40%</li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-      <div class="section fade-in">
-        <h2>Certificates</h2>
-        <ul id="preview-cert">
-          <li>
-            <strong>AWS Certified Developer</strong> (AWS) | 2023
-            <ul>
-              <li>Demonstrated proficiency in cloud architecture</li>
-            </ul>
-         </li>
-        </ul>
-      </div>
-      <div class="section fade-in">
-       <h2>Projects</h2>
-        <ul id="preview-projects">
-        <li>
-            <strong>Resume Generator</strong>
-            <div class="project-links fade-in"><a href="https://github.com/john/resume-generator" target="_blank">LINK</a></div>
-            <ul>
-              <li><strong>Built:</strong> Full-stack resume builder using React</li>
-              <li><strong>Integrated:</strong> PDF export feature</li>
-            </ul>
-          </li>
-        </ul>
+
+        <div class="section">
+          <h2><i class="fas fa-user-tie"></i> Professional Summary</h2>
+          <p id="preview-about">Passionate developer with 3 years of experience...</p>
+        </div>
+
+        <div class="section">
+          <h2><i class="fas fa-graduation-cap"></i> Education</h2>
+          <ul id="preview-education">
+            <li><strong>IIT Bombay</strong>, B.Tech in Computer Science<br>GPA: 9.2 | Mumbai, India | 2018-2022</li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h2><i class="fas fa-cogs"></i> Skills Summary</h2>
+          <div class="skills-preview">
+            <div><strong>Languages:</strong> <span id="preview-languages">JavaScript, Python</span></div>
+            <div><strong>Frameworks:</strong> <span id="preview-frameworks">React, Django</span></div>
+            <div><strong>Tools:</strong> <span id="preview-tools">Git, VS Code</span></div>
+            <div><strong>Platforms:</strong> <span id="preview-platforms">AWS, Firebase</span></div>
+            <div><strong>Soft Skills:</strong> <span id="preview-soft-skills">Leadership, Communication</span></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2><i class="fas fa-briefcase"></i> Work Experience</h2>
+          <ul id="preview-experience">
+            <li>
+              <strong>Software Engineer</strong>, <a href="https://google.com" target="_blank">Google</a> | 2022-Present
+              <ul>
+                <li><strong>Built:</strong> Scalable backend services using Node.js</li>
+                <li><strong>Optimized:</strong> API response times by 40%</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h2><i class="fas fa-certificate"></i> Certificates</h2>
+          <ul id="preview-cert">
+            <li>
+              <strong>AWS Certified Developer</strong> (AWS) | 2023
+              <ul>
+                <li>Demonstrated proficiency in cloud architecture</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h2><i class="fas fa-project-diagram"></i> Projects</h2>
+          <ul id="preview-projects">
+            <li>
+              <strong>Resume Generator</strong>
+              <div class="project-links">
+                <a href="https://github.com/john/resume-generator" target="_blank">
+                  <i class="fas fa-external-link-alt"></i> View Project
+                </a>
+              </div>
+              <ul>
+                <li><strong>Built:</strong> Full-stack resume builder using React</li>
+                <li><strong>Integrated:</strong> PDF export feature</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
-  <footer>
-    <div class="footer-actions">
-      <button class="btn-refresh" onclick="window.location.reload();">🔄 Refresh Resume</button>
-      <br />
-      <button class="btn-autofill" onclick="autofillResume()">✍️ Autofill Resume</button>
-    </div>
-  </footer>
+
   <script src="script.js"></script>
 </body>
 </html>
