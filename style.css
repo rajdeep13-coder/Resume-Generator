@@ -263,3 +263,18 @@ ul li::before {
   color: var(--text);
   border-radius: 4px;
 }
+#themeToggle {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 32px; /* Increased size */
+  cursor: pointer;
+  z-index: 1000;
+  color: inherit;
+  transition: transform 0.2s ease;
+}
+#themeToggle i.fa-sun {
+  color: #FFD700 !important;
+}
