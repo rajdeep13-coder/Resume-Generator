@@ -1,22 +1,27 @@
-// Live Preview Bindings
 function bindInputToPreview(inputId, previewId, isLink = false) {
     const input = document.getElementById(inputId);
     const preview = document.getElementById(previewId);
 
-    input.addEventListener("input", () => {
-        if (isLink && input.value) {
-            const linkText = inputId === "input-linkedin" ? "LinkedIn" : (inputId === "input-github" ? "GitHub" : "Click here");
-            preview.innerHTML = `<a href="${input.value}" target="_blank">${linkText}</a>`;
-        } else {
-            let displayText = input.value;
-            if (inputId === "input-email" && input.value) {
-                displayText = `Email: ${input.value}`;
-            } else if (inputId === "input-phone" && input.value) {
-                displayText = `Ph no: ${input.value}`;
+    if (input && preview) {
+        input.addEventListener("input", () => {
+            if (isLink && input.value) {
+                // This part handles LinkedIn and GitHub links
+                const linkText = inputId === "input-linkedin" ? "LinkedIn" : (inputId === "input-github" ? "GitHub" : "Click here");
+                preview.innerHTML = `<a href="${input.value}" target="_blank">${linkText}</a>`;
+            } else {
+                // This part handles email and phone number prefixes
+                let displayText = input.value;
+                if (inputId === "input-email" && input.value) {
+                    displayText = `Email: ${input.value}`;
+                } else if (inputId === "input-phone" && input.value) {
+                    displayText = `Ph no: ${input.value}`;
+                }
+                preview.textContent = displayText;
             }
-            preview.textContent = displayText;
-        }
-    });
+            // If you had an updateProgressBar() call, re-add it here
+            // updateProgressBar(); // Uncomment this line if you need it
+        });
+    }
 }
 
 bindInputToPreview("input-name", "preview-name");
