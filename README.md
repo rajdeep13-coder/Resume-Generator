@@ -54,14 +54,14 @@ We appreciate all the amazing contributors who have helped make this project bet
   <tr>
     <td align="center">
       <a href="https://github.com/rajdeep13-coder">
-        <img src="https://github.com/rajdeep13-coder.png" width="60px;" style="border-radius: 50%;" alt="Rajdeep"/><br />
+        <img src="https://github.com/rajdeep13-coder.png" width="60px" height="60px" style="border-radius: 50%; object-fit: cover;" alt="Rajdeep"/><br />
         <sub><b>Rajdeep</b></sub>
       </a><br />
       <sub>Project Maintainer</sub>
     </td>
     <td align="center">
       <a href="https://github.com/Amitk003">
-        <img src="https://github.com/Amitk003.png" width="60px;" style="border-radius: 50%;" alt="Amit"/><br />
+        <img src="https://github.com/Amitk003.png" width="60px" height="60px" style="border-radius: 50%; object-fit: cover;" alt="Amit"/><br />
         <sub><b>Amit</b></sub>
       </a><br />
       <sub>GSSoC'25 Contributor</sub>
