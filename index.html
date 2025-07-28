@@ -19,7 +19,7 @@
 </head>
 <body>
   <button id="themeToggle" aria-label="Toggle Theme">
-  <i class="fas fa-sun" style="color: yellow;"></i>
+  <i class="fas fa-moon"></i>
 </button>
 
   <div class="main-container fade-in ">
@@ -50,8 +50,7 @@
       </div>
       <div class="form-group">
         <label for="input-about">Professional Summary</label>
-        <textarea id="input-about" placeholder="Passionate developer with 3 years of experience..."maxlength="300"></textarea>
-        <span id="charCount-input-about" class="char-count">0/300 characters</span>
+        <textarea id="input-about" placeholder="Passionate developer with 3 years of experience..."></textarea>
       </div>
 
       <!-- Education -->
@@ -212,14 +211,15 @@
           </li>
         </ul>
       </div>
-    </div>
-  </div>
-  <footer>
-    <div class="footer-actions">
+      <div class="footer-actions">
       <button class="btn-refresh" onclick="window.location.reload();">🔄 Refresh Resume</button>
       <br />
       <button class="btn-autofill" onclick="autofillResume()">✍️ Autofill Resume</button>
     </div>
+    </div>
+  </div>
+  <footer>
+    
   </footer>
   <script src="script.js"></script>
 </body>
