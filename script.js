@@ -168,7 +168,8 @@ handleAddSection(
     }
 );
 
-// GLOBAL FUNCTIONS FOR VALIDATION
+
+// --- GLOBAL FUNCTIONS FOR VALIDATION ---
 function clearErrors() {
     document.querySelectorAll('.error-message').forEach(span => {
         span.textContent = '';
@@ -176,18 +177,18 @@ function clearErrors() {
 }
 
 function validateForm() {
-    clearErrors(); 
+    clearErrors(); // Clear any existing errors first
 
-    let isValid = true; 
+    let isValid = true; // Assume valid until an error is found
 
-    // Validate Full Name: Min 3 characters
+    // Validate Full Name: Minimum 3 characters
     const nameInput = document.getElementById('input-name');
     if (nameInput.value.trim().length < 3) {
         document.getElementById('error-name').textContent = 'Full Name must be at least 3 characters.';
         isValid = false;
     }
 
-    // Validate Email: Basic email format 
+    // Validate Email: Basic email format (e.g., user@example.com)
     const emailInput = document.getElementById('input-email');
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(emailInput.value.trim())) {
@@ -195,7 +196,7 @@ function validateForm() {
         isValid = false;
     }
 
-    // Validate Phone Number: At least 10 digits 
+    // Validate Phone Number: At least 10 digits (allowing optional + and spaces/hyphens)
     const phoneInput = document.getElementById('input-phone');
     const phonePattern = /^\+?[0-9\s-]{10,}$/;
     if (!phonePattern.test(phoneInput.value.trim())) {
@@ -203,7 +204,7 @@ function validateForm() {
         isValid = false;
     }
 
-    // Validate LinkedIn Link
+    // Validate LinkedIn Link (optional field, so only validate if value exists)
     const linkedinInput = document.getElementById('input-linkedin');
     const linkedinPattern = /^(https?:\/\/(www\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?)$/i;
     if (linkedinInput.value.trim() && !linkedinPattern.test(linkedinInput.value.trim())) {
@@ -211,7 +212,7 @@ function validateForm() {
         isValid = false;
     }
 
-    // Validate GitHub Link 
+    // Validate GitHub Link (optional field, so only validate if value exists)
     const githubInput = document.getElementById('input-github');
     const githubPattern = /^(https?:\/\/(www\.)?github\.com\/[a-zA-Z0-9_-]+\/?)$/i;
     if (githubInput.value.trim() && !githubPattern.test(githubInput.value.trim())) {
@@ -219,25 +220,26 @@ function validateForm() {
         isValid = false;
     }
 
-    // Validate Professional Summary: Min 50 characters
+    // Validate Professional Summary: Minimum 50 characters
     const aboutInput = document.getElementById('input-about');
     if (aboutInput.value.trim().length < 50) {
         document.getElementById('error-about').textContent = 'Professional Summary should be at least 50 characters.';
         isValid = false;
     }
 
-    return isValid; 
+    return isValid;
 }
 
 
-// PDF Download Button 
+// --- PDF Download Button ---
 document.getElementById("downloadBtn").addEventListener("click", () => {
-    if (!validateForm()) { 
+    // Call validateForm() at the very beginning of the click handler
+    if (!validateForm()) { // If validation returns false (meaning there are errors)
         alert("Please correct the highlighted errors in the form before downloading your resume.");
-        return; 
+        return; // STOP the function execution here. This prevents the PDF download.
     }
 
-    // If validation passes 
+    // If validation passes (validateForm() returned true), then proceed with download
     const content = document.getElementById("resumeContent");
     const options = {
         margin: 0.5,
@@ -249,15 +251,19 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
     html2pdf().from(content).set(options).save();
 });
 
-// DOCX Download Button
+// --- DOCX Download Button ---
 document.getElementById("downloadDocxBtn").addEventListener("click", () => {
-    if (!validateForm()) { 
+    // Call validateForm() at the very beginning of the click handler
+    if (!validateForm()) { // If validation returns false (meaning there are errors)
         alert("Please correct the highlighted errors in the form before downloading your resume.");
-        return;
+        return; // STOP the function execution here. This prevents the DOCX download.
     }
 
-    // If validation passes then proceed with download
+    // If validation passes (validateForm() returned true), then proceed with download
     const resumeContent = document.getElementById("resumeContent").cloneNode(true);
+
+    // Optional: remove animations if you want cleaner output
+    resumeContent.querySelectorAll(".fade-in, .show").forEach(el => el.classList.remove("fade-in", "show"));
 
     const html = `
         <html xmlns:o='urn:schemas-microsoft-com:office:office'
@@ -280,6 +286,7 @@ document.getElementById("downloadDocxBtn").addEventListener("click", () => {
     document.body.removeChild(link);
 });
 
+// --- DOMContentLoaded Listener for fade-in animations ---
 document.addEventListener("DOMContentLoaded", () => {
     const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
@@ -299,10 +306,10 @@ document.addEventListener("DOMContentLoaded", () => {
 window.history.scrollRestoration = "manual";
 window.scrollTo(0, 0);
 if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    // Run observer code
+    // Run observer code if motion is not reduced
 }
 
-
+// --- Theme Toggle functionality ---
 const toggle = document.getElementById('themeToggle');
 const icon = toggle.querySelector('i');
 
