@@ -206,8 +206,35 @@ document.getElementById("downloadDocxBtn").addEventListener("click", () => {
   link.click();
   document.body.removeChild(link);
 });
+
 const toggle = document.getElementById('themeToggle');
+const icon = toggle.querySelector('i');
+
+// Check localStorage on load
+window.addEventListener('DOMContentLoaded', () => {
+  const savedTheme = localStorage.getItem('theme');
+
+  if (savedTheme === 'dark') {
+    document.body.classList.add('dark');
+    icon.classList.remove('fa-sun'); // Ensure sun is not there
+    icon.classList.add('fa-moon');   // Add moon for dark mode
+  } else {
+    document.body.classList.remove('dark'); // Ensure light mode
+    icon.classList.remove('fa-moon'); // Ensure moon is not there
+    icon.classList.add('fa-sun');    // Add sun for light mode
+  }
+});
 
 toggle.addEventListener('click', () => {
-  document.body.classList.toggle('dark');
+  const isDark = document.body.classList.toggle('dark');
+
+  if (isDark) {
+    icon.classList.remove('fa-sun');  // Remove sun
+    icon.classList.add('fa-moon');    // Add moon for dark mode
+    localStorage.setItem('theme', 'dark');
+  } else {
+    icon.classList.remove('fa-moon'); // Remove moon
+    icon.classList.add('fa-sun');     // Add sun for light mode
+    localStorage.setItem('theme', 'light');
+  }
 });
