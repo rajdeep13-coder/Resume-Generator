@@ -39,3 +39,20 @@ Clone the repository:
 ```bash
 git clone https://github.com/rajdeep13-coder/resume-generator.git
 cd resume-generator
+```
+
+Open `index.html` in your browser to start using the resume generator.
+
+---
+
+## 👥 Contributors
+
+We appreciate all the amazing contributors who have helped make this project better! 🎉
+
+<a href="https://github.com/rajdeep13-coder/Resume-Generator/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=rajdeep13-coder/Resume-Generator" />
+</a>
+
+Made with [contrib.rocks](https://contrib.rocks).
+
+---
