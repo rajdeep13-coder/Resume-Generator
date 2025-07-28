@@ -68,7 +68,7 @@ label {
 }
 
 input, textarea {
-  width: 100%;
+  width: 90%;
   padding: 0.5rem 0.7rem;
   border: 1px solid var(--border);
   border-radius: 6px;
