@@ -221,7 +221,7 @@ ul li::before {
   padding: 16px;
   border-top: 1px solid var(--border);
   background-color: var(--input-bg);
-  position: sticky;
+  position: absolute;
   bottom: 0;
   z-index: 100;
 }
@@ -285,4 +285,24 @@ ul li::before {
   margin-top: -0.2rem; 
   text-align: right; 
   padding-right: 0.7rem; 
+}
+.footer {
+  background-color: #f1f1f1; /* light mode background */
+  color: #333;
+}
+
+.footer-link {
+  color: #333;
+  text-decoration: none;
+}
+
+body.dark .footer {
+  background-color: #1a1a1a;  /* darker shade for footer in dark mode */
+  color: #eee;
+  border-top: 1px solid #444;  /* subtle top border */
+  box-shadow: 0 -2px 5px rgba(255, 255, 255, 0.05); /* soft top glow effect */
+}
+
+body.dark .footer-link {
+  color: #ffcc00; /* dark yellow for better contrast */
 }
