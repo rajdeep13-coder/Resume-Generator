@@ -5,15 +5,27 @@
   --muted: #64748b;
   --border: #94a3b8;
   --bg: #f8fafc;
+  --input-bg: #fff;
+}
+
+body.dark {
+  --primary: #3b82f6;
+  --primary-hover: #2563eb;
+  --text: #f5f5f5;
+  --muted: #cbd5e1;
+  --border: #64748b;
+  --bg: #121212;
+  --input-bg: #1e1e1e;
 }
 
 body {
   font-family: 'Inter', sans-serif;
   line-height: 1.5;
   color: var(--text);
-  background: var(--bg);
+  background-color: var(--bg);
   margin: 0;
   padding: 1rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .main-container {
@@ -25,7 +37,8 @@ body {
 }
 
 .form-section, .preview-section {
-  background: #fff;
+  background-color: var(--input-bg);
+  color: var(--text);
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.07);
   padding: 1.5rem;
@@ -42,7 +55,6 @@ body {
   font-size: 13px;
 }
 
-/* Form Group Styling */
 .form-group {
   margin-bottom: 1.2rem;
 }
@@ -62,8 +74,9 @@ input, textarea {
   border-radius: 6px;
   font-size: 13px;
   margin-bottom: 0.4rem;
-  background: #fff;
-  transition: border 0.2s;
+  background-color: var(--input-bg);
+  color: var(--text);
+  transition: border 0.2s ease;
 }
 
 input:focus, textarea:focus {
@@ -75,9 +88,8 @@ textarea {
   min-height: 80px;
 }
 
-/* Buttons */
 .add-btn, .download-btn {
-  background: var(--primary);
+  background-color: var(--primary);
   color: #fff;
   border: none;
   padding: 0.5rem 1rem;
@@ -85,23 +97,21 @@ textarea {
   font-size: 13px;
   margin-top: 0.5rem;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background-color 0.2s ease;
 }
 
 .add-btn:hover, .download-btn:hover {
-  background: var(--primary-hover);
+  background-color: var(--primary-hover);
 }
 
-/* Dynamic Input Groups */
 .education-inputs, .experience-inputs, .certifications-inputs, .project-input {
   margin-bottom: 0.8rem;
   border: 1px solid var(--border);
   border-radius: 6px;
   padding: 0.8rem;
-  background: #f8fafc;
+  background-color: var(--bg);
 }
 
-/* Skills Grid */
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -118,7 +128,6 @@ textarea {
   margin-bottom: 0.3rem;
 }
 
-/* Preview Section Styling */
 .header h1 {
   font-size: 1.4rem;
   color: var(--primary);
@@ -174,6 +183,7 @@ ul li::before {
   content: "🌐";
   margin-right: 0.3rem;
 }
+
 .fade-in {
   opacity: 0;
   transform: translateY(30px);
@@ -186,30 +196,31 @@ ul li::before {
   transform: translateY(0);
 }
 
-
-/* Responsive Layout */
 @media (max-width: 900px) {
   .main-container {
     flex-direction: column;
     gap: 1rem;
     padding: 0 0.5rem;
   }
+
   .form-section, .preview-section {
     max-width: 100%;
     min-width: 0;
     padding: 1rem;
   }
+
   .skills-grid {
     grid-template-columns: 1fr;
   }
 }
+
 .footer-actions {
   display: flex;
   justify-content: center;
   gap: 16px;
   padding: 16px;
-  border-top: 1px solid #e2e8f0;
-  background-color: #ffffff;
+  border-top: 1px solid var(--border);
+  background-color: var(--input-bg);
   position: sticky;
   bottom: 0;
   z-index: 100;
@@ -217,9 +228,9 @@ ul li::before {
 
 .btn-refresh,
 .btn-autofill {
-  background-color: #f1f5f9;
-  border: 1px solid #cbd5e1;
-  color: #1e293b;
+  background-color: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
   padding: 10px 16px;
   border-radius: 8px;
   font-family: 'Inter', sans-serif;
@@ -231,7 +242,7 @@ ul li::before {
 
 .btn-refresh:hover,
 .btn-autofill:hover {
-  background-color: #e2e8f0;
+  background-color: var(--input-bg);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -240,3 +251,15 @@ ul li::before {
   transform: scale(0.98);
 }
 
+#themeToggle {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 999;
+  padding: 6px 12px;
+  cursor: pointer;
+  border: none;
+  background-color: var(--input-bg);
+  color: var(--text);
+  border-radius: 4px;
+}
