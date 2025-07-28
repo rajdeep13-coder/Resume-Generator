@@ -31,12 +31,11 @@ function bindInputToPreview(inputId, previewId, isLink = false) {
           displayContent = "Click here"; // Generic link text for other links
         }
       } else {
-        
+        // If link input is empty, revert to the span's initial content (e.g., "linkedin.com/in/john")
         displayContent = preview.dataset.initialContent || '';
-        
       }
     } else {
-      
+      // For other fields (name, about, skills), use input value or the span's initial text
       displayContent = inputValue || preview.dataset.initialContent || '';
     }
 
@@ -48,7 +47,8 @@ function bindInputToPreview(inputId, previewId, isLink = false) {
     }
   };
 
-  
+  // Store the initial content of the preview span so we can revert to it if the input is empty
+  // This is crucial for keeping the placeholder text in the resume preview.
   preview.dataset.initialContent = preview.textContent;
 
   // Attach the 'input' event listener for real-time updates as the user types
@@ -325,7 +325,7 @@ toggle.addEventListener('click', () => {
   }
 });
 
-// Autofill function - Adding this based on your HTML button, assuming you want it to work
+// Autofill function
 function autofillResume() {
   // Basic Info
   document.getElementById("input-name").value = "John Doe";
@@ -380,4 +380,3 @@ function autofillResume() {
   document.getElementById("certifications-inputs").dispatchEvent(new Event('input', { bubbles: true }));
   document.getElementById("projects-inputs").dispatchEvent(new Event('input', { bubbles: true }));
 }
-
