@@ -206,3 +206,8 @@ document.getElementById("downloadDocxBtn").addEventListener("click", () => {
   link.click();
   document.body.removeChild(link);
 });
+const toggle = document.getElementById('themeToggle');
+
+toggle.addEventListener('click', () => {
+  document.body.classList.toggle('dark');
+});
