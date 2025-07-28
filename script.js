@@ -29,7 +29,6 @@ toggle.addEventListener("click", () => {
     icon.style.color = "#FFB300"
     localStorage.setItem("theme", "light")
   }
-
   toggle.style.transform = "scale(0.9)"
   setTimeout(() => {
     toggle.style.transform = "scale(1)"
@@ -39,7 +38,6 @@ toggle.addEventListener("click", () => {
 // Custom Cursor
 const cursor = document.querySelector(".cursor")
 const cursorFollower = document.querySelector(".cursor-follower")
-
 let mouseX = 0
 let mouseY = 0
 let followerX = 0
@@ -48,7 +46,6 @@ let followerY = 0
 document.addEventListener("mousemove", (e) => {
   mouseX = e.clientX
   mouseY = e.clientY
-
   cursor.style.left = mouseX + "px"
   cursor.style.top = mouseY + "px"
 })
@@ -56,13 +53,10 @@ document.addEventListener("mousemove", (e) => {
 function animateFollower() {
   const distX = mouseX - followerX
   const distY = mouseY - followerY
-
   followerX += distX * 0.12
   followerY += distY * 0.12
-
   cursorFollower.style.left = followerX + "px"
   cursorFollower.style.top = followerY + "px"
-
   requestAnimationFrame(animateFollower)
 }
 animateFollower()
@@ -73,17 +67,14 @@ document.querySelectorAll("button, input, textarea, a, .add-btn, .download-btn, 
     cursor.classList.add("hover")
     cursorFollower.classList.add("hover")
   })
-
   el.addEventListener("mouseleave", () => {
     cursor.classList.remove("hover")
     cursorFollower.classList.remove("hover")
   })
-
   el.addEventListener("mousedown", () => {
     cursor.classList.add("click")
     cursorFollower.classList.add("click")
   })
-
   el.addEventListener("mouseup", () => {
     cursor.classList.remove("click")
     cursorFollower.classList.remove("click")
@@ -94,13 +85,11 @@ document.querySelectorAll("button, input, textarea, a, .add-btn, .download-btn, 
 function updateProgressBar() {
   const formInputs = document.querySelectorAll("input, textarea")
   let filledInputs = 0
-
   formInputs.forEach((input) => {
     if (input.value.trim() !== "") {
       filledInputs++
     }
   })
-
   const progress = (filledInputs / formInputs.length) * 100
   document.querySelector(".progress-fill").style.width = progress + "%"
 }
@@ -133,21 +122,30 @@ bindInputToPreview("input-tools", "preview-tools")
 bindInputToPreview("input-platforms", "preview-platforms")
 bindInputToPreview("input-soft-skills", "preview-soft-skills")
 
-// handles live character counting
+// Character Counter Setup
 function setupCharacterCounter(inputId) {
   const inputElement = document.getElementById(inputId)
-  const charCountElement = inputElement?.parentNode.querySelector(".char-count")
+  const charCountElement = inputElement?.parentNode.querySelector(".char-count") || 
+                          document.getElementById(`charCount-${inputId}`)
+  
   if (inputElement && charCountElement) {
-    const maxLength = 500
+    const maxLength = inputElement.getAttribute('maxlength') || 500
     const updateCount = () => {
       const currentLength = inputElement.value.length
       charCountElement.textContent = `${currentLength}/${maxLength} characters`
-      if (currentLength > maxLength * 0.9) {
+      
+      if (currentLength > maxLength) {
+        charCountElement.classList.add('exceeded')
         charCountElement.style.color = "var(--error)"
-      } else if (currentLength > maxLength * 0.8) {
-        charCountElement.style.color = "var(--warning)"
       } else {
-        charCountElement.style.color = "var(--text-muted)"
+        charCountElement.classList.remove('exceeded')
+        if (currentLength > maxLength * 0.9) {
+          charCountElement.style.color = "var(--error)"
+        } else if (currentLength > maxLength * 0.8) {
+          charCountElement.style.color = "var(--warning)"
+        } else {
+          charCountElement.style.color = "var(--text-muted)"
+        }
       }
     }
     updateCount()
@@ -169,13 +167,13 @@ function handleAddSection(buttonId, containerId, inputClass, previewContainerId,
   const button = document.getElementById(buttonId)
   const container = document.getElementById(containerId)
   const previewContainer = document.getElementById(previewContainerId)
-
+  
   if (button && container && previewContainer) {
     button.addEventListener("click", () => {
       const original = container.querySelector(`.${inputClass}`)
       const clone = original.cloneNode(true)
       clone.querySelectorAll("input, textarea").forEach((input) => (input.value = ""))
-
+      
       const removeBtn = createRemoveBtn()
       removeBtn.addEventListener("click", () => {
         clone.style.transition = "all 0.3s ease"
@@ -187,20 +185,19 @@ function handleAddSection(buttonId, containerId, inputClass, previewContainerId,
           updateProgressBar()
         }, 300)
       })
-
+      
       clone.appendChild(removeBtn)
-
+      
       // Add animation
       clone.style.opacity = "0"
       clone.style.transform = "translateY(20px)"
       container.appendChild(clone)
-
       setTimeout(() => {
         clone.style.transition = "all 0.3s ease"
         clone.style.opacity = "1"
         clone.style.transform = "translateY(0)"
       }, 10)
-
+      
       // Add event listeners
       clone.querySelectorAll("input, textarea").forEach((input) => {
         input.addEventListener("input", () => {
@@ -209,7 +206,7 @@ function handleAddSection(buttonId, containerId, inputClass, previewContainerId,
         })
       })
     })
-
+    
     container.addEventListener("input", () => {
       updatePreviewList(container, previewContainer, inputClass, generateHTML)
     })
@@ -253,11 +250,11 @@ handleAddSection("add-experience", "experience-inputs", "experience-inputs", "pr
     .join("")
   if (role || comp || dates || desc) {
     return `
-        <li>
-          <strong>${role}</strong>, <a href="${link}" target="_blank">${comp}</a> | ${dates}
-          <ul>${desc}</ul>
-        </li>
-      `
+      <li>
+        <strong>${role}</strong>, <a href="${link}" target="_blank">${comp}</a> | ${dates}
+        <ul>${desc}</ul>
+      </li>
+    `
   }
   return ""
 })
@@ -276,11 +273,11 @@ handleAddSection("add-certificate", "certifications-inputs", "certifications-inp
     .join("")
   if (title || issuer || date || desc) {
     return `
-        <li>
-          <strong>${title}</strong> (${issuer}) | ${date}
-          <ul>${desc}</ul>
-        </li>
-      `
+      <li>
+        <strong>${title}</strong> (${issuer}) | ${date}
+        <ul>${desc}</ul>
+      </li>
+    `
   }
   return ""
 })
@@ -298,14 +295,162 @@ handleAddSection("add-project", "projects-inputs", "project-input", "preview-pro
     .join("")
   if (title || link || desc) {
     return `
-        <li>
-          <strong>${title}</strong>
-          <div class="project-links"><a href="${link}" target="_blank">LINK</a></div>
-          <ul>${desc}</ul>
-        </li>
-      `
+      <li>
+        <strong>${title}</strong>
+        <div class="project-links"><a href="${link}" target="_blank">LINK</a></div>
+        <ul>${desc}</ul>
+      </li>
+    `
   }
   return ""
+})
+
+// Form Validation Functions
+function clearErrors() {
+  document.querySelectorAll('.error-message').forEach(span => {
+    span.textContent = ''
+  })
+}
+
+function validateForm() {
+  clearErrors()
+  let isValid = true
+
+  // Validate Full Name: Minimum 3 characters
+  const nameInput = document.getElementById('input-name')
+  if (nameInput.value.trim().length < 3) {
+    document.getElementById('error-name').textContent = 'Full Name must be at least 3 characters.'
+    isValid = false
+  }
+
+  // Validate Email: Basic email format
+  const emailInput = document.getElementById('input-email')
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (!emailPattern.test(emailInput.value.trim())) {
+    document.getElementById('error-email').textContent = 'Please enter a valid email address.'
+    isValid = false
+  }
+
+  // Validate Phone Number: At least 10 digits
+  const phoneInput = document.getElementById('input-phone')
+  const phonePattern = /^\+?[0-9\s-]{10,}$/
+  if (!phonePattern.test(phoneInput.value.trim())) {
+    document.getElementById('error-phone').textContent = 'Please enter a valid phone number (at least 10 digits).'
+    isValid = false
+  }
+
+  // Validate LinkedIn Link (optional)
+  const linkedinInput = document.getElementById('input-linkedin')
+  const linkedinPattern = /^(https?:\/\/(www\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?)$/i
+  if (linkedinInput.value.trim() && !linkedinPattern.test(linkedinInput.value.trim())) {
+    document.getElementById('error-linkedin').textContent = 'Please enter a valid LinkedIn profile URL.'
+    isValid = false
+  }
+
+  // Validate GitHub Link (optional)
+  const githubInput = document.getElementById('input-github')
+  const githubPattern = /^(https?:\/\/(www\.)?github\.com\/[a-zA-Z0-9_-]+\/?)$/i
+  if (githubInput.value.trim() && !githubPattern.test(githubInput.value.trim())) {
+    document.getElementById('error-github').textContent = 'Please enter a valid GitHub profile URL.'
+    isValid = false
+  }
+
+  // Validate Professional Summary: Minimum 50 characters
+  const aboutInput = document.getElementById('input-about')
+  if (aboutInput.value.trim().length < 50) {
+    document.getElementById('error-about').textContent = 'Professional Summary should be at least 50 characters.'
+    isValid = false
+  }
+
+  return isValid
+}
+
+// PDF Download Button
+document.getElementById("downloadBtn").addEventListener("click", () => {
+  // Validate form before download
+  if (!validateForm()) {
+    alert("Please correct the highlighted errors in the form before downloading your resume.")
+    return
+  }
+
+  const button = document.getElementById("downloadBtn")
+  const originalText = button.innerHTML
+  button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating PDF...'
+  button.disabled = true
+
+  const content = document.getElementById("resumeContent")
+  const options = {
+    margin: 0.5,
+    filename: "resume.pdf",
+    image: { type: "jpeg", quality: 0.98 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+  }
+
+  if (window.html2pdf) {
+    window.html2pdf()
+      .from(content)
+      .set(options)
+      .save()
+      .then(() => {
+        button.innerHTML = originalText
+        button.disabled = false
+        button.style.background = "var(--success)"
+        setTimeout(() => {
+          button.style.background = "var(--primary)"
+        }, 2000)
+      })
+  } else {
+    console.error("html2pdf is not loaded")
+    button.innerHTML = originalText
+    button.disabled = false
+  }
+})
+
+// DOCX Download
+document.getElementById("downloadDocxBtn").addEventListener("click", () => {
+  // Validate form before download
+  if (!validateForm()) {
+    alert("Please correct the highlighted errors in the form before downloading your resume.")
+    return
+  }
+
+  const button = document.getElementById("downloadDocxBtn")
+  const originalText = button.innerHTML
+  button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating DOCX...'
+  button.disabled = true
+
+  const resumeContent = document.getElementById("resumeContent").cloneNode(true)
+  resumeContent.querySelectorAll(".fade-in, .show").forEach((el) => el.classList.remove("fade-in", "show"))
+
+  const html = `
+    <html xmlns:o='urn:schemas-microsoft-com:office:office'
+          xmlns:w='urn:schemas-microsoft-com:office:word'
+          xmlns='http://www.w3.org/TR/REC-html40'>
+      <head><meta charset='utf-8'><title>Export HTML to Word</title></head>
+      <body>${resumeContent.innerHTML}</body>
+    </html>`
+
+  const blob = new Blob(["\ufeff", html], {
+    type: "application/msword",
+  })
+
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement("a")
+  link.href = url
+  link.download = "resume.doc"
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+
+  setTimeout(() => {
+    button.innerHTML = originalText
+    button.disabled = false
+    button.style.background = "var(--success)"
+    setTimeout(() => {
+      button.style.background = "var(--secondary)"
+    }, 2000)
+  }, 1000)
 })
 
 // Autofill function
@@ -316,8 +461,7 @@ function autofillResume() {
     "input-phone": "+1-555-0123",
     "input-linkedin": "linkedin.com/in/alexjohnson",
     "input-github": "github.com/alexjohnson",
-    "input-about":
-      "Experienced full-stack developer with 5+ years of expertise in building scalable web applications. Passionate about clean code, user experience, and emerging technologies.",
+    "input-about": "Experienced full-stack developer with 5+ years of expertise in building scalable web applications. Passionate about clean code, user experience, and emerging technologies.",
     "input-languages": "JavaScript, TypeScript, Python, Java, Go",
     "input-frameworks": "React, Next.js, Node.js, Express, Django, Spring Boot",
     "input-tools": "Git, Docker, Kubernetes, VS Code, Figma, Postman",
@@ -364,79 +508,6 @@ function autofillResume() {
   }, 2000)
 }
 
-// PDF Download
-document.getElementById("downloadBtn").addEventListener("click", () => {
-  const button = document.getElementById("downloadBtn")
-  const originalText = button.innerHTML
-
-  button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating PDF...'
-  button.disabled = true
-
-  const content = document.getElementById("resumeContent")
-  const options = {
-    margin: 0.5,
-    filename: "resume.pdf",
-    image: { type: "jpeg", quality: 0.98 },
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
-  }
-
-  window
-    .html2pdf()
-    .from(content)
-    .set(options)
-    .save()
-    .then(() => {
-      button.innerHTML = originalText
-      button.disabled = false
-      button.style.background = "var(--success)"
-      setTimeout(() => {
-        button.style.background = "var(--primary)"
-      }, 2000)
-    })
-})
-
-// DOCX Download
-document.getElementById("downloadDocxBtn").addEventListener("click", () => {
-  const button = document.getElementById("downloadDocxBtn")
-  const originalText = button.innerHTML
-
-  button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating DOCX...'
-  button.disabled = true
-
-  const resumeContent = document.getElementById("resumeContent").cloneNode(true)
-  resumeContent.querySelectorAll(".fade-in, .show").forEach((el) => el.classList.remove("fade-in", "show"))
-
-  const html = `
-    <html xmlns:o='urn:schemas-microsoft-com:office:office'
-          xmlns:w='urn:schemas-microsoft-com:office:word'
-          xmlns='http://www.w3.org/TR/REC-html40'>
-      <head><meta charset='utf-8'><title>Export HTML to Word</title></head>
-      <body>${resumeContent.innerHTML}</body>
-    </html>`
-
-  const blob = new Blob(["\ufeff", html], {
-    type: "application/msword",
-  })
-
-  const url = URL.createObjectURL(blob)
-  const link = document.createElement("a")
-  link.href = url
-  link.download = "resume.doc"
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
-
-  setTimeout(() => {
-    button.innerHTML = originalText
-    button.disabled = false
-    button.style.background = "var(--success)"
-    setTimeout(() => {
-      button.style.background = "var(--secondary)"
-    }, 2000)
-  }, 1000)
-})
-
 // Keyboard shortcuts
 document.addEventListener("keydown", (e) => {
   if ((e.ctrlKey || e.metaKey) && e.key === "s") {
@@ -468,6 +539,7 @@ document.querySelectorAll("button").forEach((button) => {
     ripple.classList.add("ripple")
 
     this.appendChild(ripple)
+
     setTimeout(() => {
       ripple.remove()
     }, 600)
@@ -484,13 +556,13 @@ const rippleStyles = `
     animation: ripple-animation 0.6s linear;
     pointer-events: none;
 }
+
 @keyframes ripple-animation {
     to {
         transform: scale(4);
         opacity: 0;
     }
-}
-`
+}`
 
 const styleSheet = document.createElement("style")
 styleSheet.textContent = rippleStyles
@@ -518,7 +590,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Setup character counters for all textareas
   document.querySelectorAll("textarea").forEach((textarea) => {
-    const maxLength = 500
+    const maxLength = textarea.getAttribute('maxlength') || 500
     const charCount = textarea.parentNode.querySelector(".char-count")
     if (charCount) {
       textarea.addEventListener("input", () => {
@@ -538,6 +610,7 @@ document.addEventListener("DOMContentLoaded", () => {
   updateProgressBar()
 })
 
+// Scroll restoration and animations
 window.history.scrollRestoration = "manual"
 window.scrollTo(0, 0)
 
@@ -565,20 +638,12 @@ if (autofillBtn) {
 // Make autofillResume globally available
 window.autofillResume = autofillResume
 
-// Declare html2pdf variable
-window.html2pdf =
-  window.html2pdf ||
-  function () {
-    console.error("html2pdf is not defined. Please import it before using.")
-    return {
-      set: () => {
-        return this
-      },
-      from: () => {
-        return this
-      },
-      save: () => {
-        return Promise.resolve()
-      },
-    }
+// Declare html2pdf fallback
+window.html2pdf = window.html2pdf || function () {
+  console.error("html2pdf is not defined. Please import it before using.")
+  return {
+    set: () => this,
+    from: () => this,
+    save: () => Promise.resolve(),
   }
+}

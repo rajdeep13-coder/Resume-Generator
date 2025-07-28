@@ -1,299 +1,1246 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Resume Generator Pro</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html-docx-js/0.4.0/html-docx.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Generator Pro</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html-docx-js/0.4.0/html-docx.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #3b82f6;
+            --secondary-color: #1e40af;
+            --accent-color: #f59e0b;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --border-color: #e5e7eb;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #60a5fa;
+            --secondary-color: #3b82f6;
+            --accent-color: #fbbf24;
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --bg-primary: #111827;
+            --bg-secondary: #1f2937;
+            --border-color: #374151;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+            cursor: none;
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary-color);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+        }
+
+        .cursor-follower {
+            width: 8px;
+            height: 8px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transition: transform 0.15s ease;
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .floating-shapes {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape-1 {
+            width: 80px;
+            height: 80px;
+            background: var(--primary-color);
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape-2 {
+            width: 120px;
+            height: 120px;
+            background: var(--accent-color);
+            top: 60%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+
+        .shape-3 {
+            width: 60px;
+            height: 60px;
+            background: var(--secondary-color);
+            bottom: 30%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        .shape-4 {
+            width: 100px;
+            height: 100px;
+            background: var(--primary-color);
+            top: 10%;
+            right: 30%;
+            animation-delay: 1s;
+        }
+
+        .shape-5 {
+            width: 90px;
+            height: 90px;
+            background: var(--accent-color);
+            bottom: 20%;
+            right: 40%;
+            animation-delay: 3s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .theme-toggle .fa-sun {
+            display: none;
+        }
+
+        [data-theme="dark"] .theme-toggle .fa-moon {
+            display: none;
+        }
+
+        [data-theme="dark"] .theme-toggle .fa-sun {
+            display: block;
+        }
+
+        /* Header */
+        .app-header {
+            text-align: center;
+            padding: 2rem 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .app-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .app-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Form Styles */
+        .form-section {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .section-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: var(--bg-secondary);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .char-count {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-top: 0.5rem;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .download-btn {
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .primary:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .secondary:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .add-btn {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .add-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .remove-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 1rem;
+        }
+
+        .remove-btn:hover {
+            background: #dc2626;
+        }
+
+        /* Dynamic Sections */
+        .dynamic-section {
+            border: 2px dashed var(--border-color);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        /* Preview Styles */
+        .preview-section {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            position: sticky;
+            top: 2rem;
+            max-height: calc(100vh - 4rem);
+            overflow-y: auto;
+        }
+
+        .preview-header {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .preview-header h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .preview-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-icon {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .btn-icon:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .resume-content {
+            padding: 2rem;
+            font-family: 'Times New Roman', serif;
+            line-height: 1.4;
+            color: #000;
+            background: white;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #333;
+            padding-bottom: 1rem;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .contact-info {
+            font-size: 12px;
+            color: #666;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .contact-info span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section {
+            margin-bottom: 15px;
+        }
+
+        .section h2 {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 2px;
+        }
+
+        .skills-preview {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .skills-preview div {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .skills-preview strong {
+            margin-right: 0.5rem;
+        }
+
+        .project-links {
+            margin-top: 0.5rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .project-links a {
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .project-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .app-title {
+                font-size: 2rem;
+            }
+
+            .form-section,
+            .preview-section {
+                padding: 1rem;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            body {
+                cursor: auto;
+            }
+
+            .cursor,
+            .cursor-follower {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
-  <!-- Animated Background -->
-  <div class="animated-bg">
-    <div class="floating-shapes">
-      <div class="shape shape-1"></div>
-      <div class="shape shape-2"></div>
-      <div class="shape shape-3"></div>
-      <div class="shape shape-4"></div>
-      <div class="shape shape-5"></div>
-    </div>
-  </div>
-
-  <!-- Custom Cursor -->
-  <div class="cursor"></div>
-  <div class="cursor-follower"></div>
-
-  <!-- Theme Toggle -->
-  <button id="themeToggle" class="theme-toggle" aria-label="Toggle Theme">
-    <i class="fas fa-moon"></i>
-    <i class="fas fa-sun"></i>
-  </button>
-
-  <!-- Header -->
-  <header class="app-header">
-    <div class="header-content">
-      <h1 class="app-title">
-        <i class="fas fa-file-alt"></i>
-        Resume Generator Pro
-      </h1>
-      <p class="app-subtitle">Create professional resumes in minutes</p>
-    </div>
-  </header>
-
-  <div class="main-container">
-    <!-- Form Section -->
-    <div class="form-section glass-card">
-      <div class="section-header">
-        <h2><i class="fas fa-edit"></i> Resume Details</h2>
-        <div class="progress-bar">
-          <div class="progress-fill"></div>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+            <div class="shape shape-4"></div>
+            <div class="shape shape-5"></div>
         </div>
-      </div>
-
-      <!-- Basic Info -->
-      <div class="form-group animate-on-scroll">
-        <label for="input-name"><i class="fas fa-user"></i> Full Name</label>
-        <input type="text" id="input-name" placeholder="John Doe" autofocus />
-      </div>
-
-      <div class="form-group animate-on-scroll">
-        <label for="input-email"><i class="fas fa-envelope"></i> Email</label>
-        <input type="email" id="input-email" placeholder="john@example.com" />
-      </div>
-
-      <div class="form-group animate-on-scroll">
-        <label for="input-phone"><i class="fas fa-phone"></i> Phone</label>
-        <input type="tel" id="input-phone" placeholder="+91-9876543210" />
-      </div>
-
-      <div class="form-group animate-on-scroll">
-        <label for="input-linkedin"><i class="fab fa-linkedin"></i> LinkedIn</label>
-        <input type="url" id="input-linkedin" placeholder="linkedin.com/in/john" />
-      </div>
-
-      <div class="form-group animate-on-scroll">
-        <label for="input-github"><i class="fab fa-github"></i> GitHub</label>
-        <input type="url" id="input-github" placeholder="github.com/john" />
-      </div>
-
-      <div class="form-group animate-on-scroll">
-        <label for="input-about"><i class="fas fa-user-tie"></i> Professional Summary</label>
-        <textarea id="input-about" placeholder="Passionate developer with 3 years of experience..."></textarea>
-        <div class="char-count">0/500 characters</div>
-      </div>
-
-      <!-- Education -->
-      <div class="form-group animate-on-scroll">
-        <label><i class="fas fa-graduation-cap"></i> Education</label>
-        <div id="education-inputs">
-          <div class="education-inputs input-group">
-            <input type="text" placeholder="Institution" class="education-institution" />
-            <input type="text" placeholder="Degree" class="education-degree" />
-            <input type="text" placeholder="GPA" class="education-gpa" />
-            <input type="text" placeholder="Location" class="education-location" />
-            <input type="text" placeholder="Dates" class="education-dates" />
-            <button type="button" class="remove-btn" onclick="removeEducation(this)">
-              <i class="fas fa-trash"></i>
-            </button>
-          </div>
-        </div>
-        <button type="button" id="add-education" class="add-btn">
-          <i class="fas fa-plus"></i> Add Education
-        </button>
-      </div>
-
-      <!-- Skills Summary -->
-      <div class="form-group animate-on-scroll">
-        <label><i class="fas fa-cogs"></i> Skills Summary</label>
-        <div class="skills-grid">
-          <div class="skill-category">
-            <label><i class="fas fa-code"></i> Languages</label>
-            <textarea id="input-languages" placeholder="JavaScript, Python"></textarea>
-          </div>
-          <div class="skill-category">
-            <label><i class="fas fa-layer-group"></i> Frameworks</label>
-            <textarea id="input-frameworks" placeholder="React, Django"></textarea>
-          </div>
-          <div class="skill-category">
-            <label><i class="fas fa-tools"></i> Tools</label>
-            <textarea id="input-tools" placeholder="Git, VS Code"></textarea>
-          </div>
-          <div class="skill-category">
-            <label><i class="fas fa-cloud"></i> Platforms</label>
-            <textarea id="input-platforms" placeholder="AWS, Firebase"></textarea>
-          </div>
-          <div class="skill-category">
-            <label><i class="fas fa-handshake"></i> Soft Skills</label>
-            <textarea id="input-soft-skills" placeholder="Leadership, Communication"></textarea>
-          </div>
-        </div>
-      </div>
-
-      <!-- Work Experience -->
-      <div class="form-group animate-on-scroll">
-        <label><i class="fas fa-briefcase"></i> Work Experience</label>
-        <div id="experience-inputs">
-          <div class="experience-inputs input-group">
-            <input type="text" placeholder="Role" class="experience-role" />
-            <input type="text" placeholder="Company" class="experience-company" />
-            <input type="text" placeholder="Company Link" class="experience-link" />
-            <input type="text" placeholder="Dates" class="experience-dates" />
-            <textarea placeholder="Key achievements (1 per line)" class="experience-desc"></textarea>
-            <button type="button" class="remove-btn" onclick="removeExperience(this)">
-              <i class="fas fa-trash"></i>
-            </button>
-          </div>
-        </div>
-        <button type="button" id="add-experience" class="add-btn">
-          <i class="fas fa-plus"></i> Add Experience
-        </button>
-      </div>
-
-      <!-- Certificates -->
-      <div class="form-group animate-on-scroll">
-        <label><i class="fas fa-certificate"></i> Certificates</label>
-        <div id="certifications-inputs">
-          <div class="certifications-inputs input-group">
-            <input type="text" placeholder="Certificate Name" class="certificate-title" />
-            <input type="text" placeholder="Issuing Organization" class="certificate-issuer" />
-            <input type="text" placeholder="Date" class="certificate-date" />
-            <textarea placeholder="Description (1 per line)" class="certificate-desc"></textarea>
-            <button type="button" class="remove-btn" onclick="removeCertificate(this)">
-              <i class="fas fa-trash"></i>
-            </button>
-          </div>
-        </div>
-        <button type="button" id="add-certificate" class="add-btn">
-          <i class="fas fa-plus"></i> Add Certificate
-        </button>
-      </div>
-
-      <!-- Projects -->
-      <div class="form-group animate-on-scroll">
-        <label><i class="fas fa-project-diagram"></i> Projects</label>
-        <div id="projects-inputs">
-          <div class="project-input input-group">
-            <input type="text" placeholder="Project Title" class="project-title" />
-            <input type="url" placeholder="Project Link (URL)" class="project-link" />
-            <textarea placeholder="Key achievements (1 per line)" class="project-desc"></textarea>
-            <button type="button" class="remove-btn" onclick="removeProject(this)">
-              <i class="fas fa-trash"></i>
-            </button>
-          </div>
-        </div>
-        <button type="button" id="add-project" class="add-btn">
-          <i class="fas fa-plus"></i> Add Project
-        </button>
-      </div>
-
-      <div class="form-group download-section animate-on-scroll">
-        <button type="button" id="downloadBtn" class="download-btn primary">
-          <i class="fas fa-file-pdf"></i> Download PDF
-        </button>
-        <button type="button" id="downloadDocxBtn" class="download-btn secondary">
-          <i class="fas fa-file-word"></i> Download Word
-        </button>
-      </div>
     </div>
 
-    <!-- Preview Section -->
-    <div class="preview-section glass-card" id="resumeContent">
-      <div class="preview-header">
-        <h3><i class="fas fa-eye"></i> Live Preview</h3>
-        <div class="preview-actions">
-          <button class="btn-icon" onclick="window.location.reload();" title="Refresh">
-            <i class="fas fa-sync-alt"></i>
-          </button>
-          <button class="btn-icon" onclick="autofillResume()" title="Autofill">
-            <i class="fas fa-magic"></i>
-          </button>
-        </div>
-      </div>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
 
-      <div class="resume-content">
-        <div class="header">
-          <h1 id="preview-name">John Doe</h1>
-          <div class="contact-info" id="preview-contact">
-            <span id="preview-email"><i class="fas fa-envelope"></i> john@example.com</span>
-            <span id="preview-phone"><i class="fas fa-phone"></i> +91-9876543210</span>
-            <span id="preview-linkedin"><i class="fab fa-linkedin"></i> linkedin.com/in/john</span>
-            <span id="preview-github"><i class="fab fa-github"></i> github.com/john</span>
-          </div>
+    <!-- Theme Toggle -->
+    <button id="themeToggle" class="theme-toggle" aria-label="Toggle Theme">
+        <i class="fas fa-moon"></i>
+        <i class="fas fa-sun"></i>
+    </button>
+
+    <!-- Header -->
+    <header class="app-header">
+        <div class="header-content">
+            <h1 class="app-title">
+                <i class="fas fa-file-alt"></i>
+                Resume Generator Pro
+            </h1>
+            <p class="app-subtitle">Create professional resumes in minutes</p>
+        </div>
+    </header>
+
+    <div class="main-container fade-in">
+        <!-- Form Section -->
+        <div class="form-section glass-card">
+            <div class="section-header">
+                <h2><i class="fas fa-edit"></i> Resume Details</h2>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
+            
+            <!-- Basic Info -->
+            <div class="form-group animate-on-scroll">
+                <label for="input-name"><i class="fas fa-user"></i> Full Name</label>
+                <input type="text" id="input-name" placeholder="John Doe" autofocus />
+                <span class="error-message" id="error-name"></span>
+            </div>
+            
+            <div class="form-group animate-on-scroll">
+                <label for="input-email"><i class="fas fa-envelope"></i> Email</label>
+                <input type="email" id="input-email" placeholder="john@example.com" />
+                <span class="error-message" id="error-email"></span>
+            </div>
+            
+            <div class="form-group animate-on-scroll">
+                <label for="input-phone"><i class="fas fa-phone"></i> Phone</label>
+                <input type="tel" id="input-phone" placeholder="+91-9876543210" />
+                <span class="error-message" id="error-phone"></span>
+            </div>
+            
+            <div class="form-group animate-on-scroll">
+                <label for="input-linkedin"><i class="fab fa-linkedin"></i> LinkedIn</label>
+                <input type="url" id="input-linkedin" placeholder="linkedin.com/in/john" />
+                <span class="error-message" id="error-linkedin"></span>
+            </div>
+            
+            <div class="form-group animate-on-scroll">
+                <label for="input-github"><i class="fab fa-github"></i> GitHub</label>
+                <input type="url" id="input-github" placeholder="github.com/john" />
+                <span class="error-message" id="error-github"></span>
+            </div>
+            
+            <div class="form-group animate-on-scroll">
+                <label for="input-about"><i class="fas fa-user-tie"></i> Professional Summary</label>
+                <textarea id="input-about" placeholder="Passionate developer with 3 years of experience..." maxlength="500"></textarea>
+                <div class="char-count" id="charCount-input-about">0/500 characters</div>
+                <span class="error-message" id="error-about"></span>
+            </div>
+
+            <!-- Education -->
+            <div class="form-group animate-on-scroll">
+                <label><i class="fas fa-graduation-cap"></i> Education</label>
+                <div id="education-inputs">
+                    <div class="education-inputs input-group">
+                        <input type="text" placeholder="Institution" class="education-institution" />
+                        <input type="text" placeholder="Degree" class="education-degree" />
+                        <input type="text" placeholder="GPA" class="education-gpa" />
+                        <input type="text" placeholder="Location" class="education-location" />
+                        <input type="text" placeholder="Dates" class="education-dates" />
+                        <button type="button" class="remove-btn" onclick="removeEducation(this)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="button" id="add-education" class="add-btn">
+                    <i class="fas fa-plus"></i> Add Education
+                </button>
+            </div>
+
+            <!-- Skills Summary -->
+            <div class="form-group animate-on-scroll">
+                <label><i class="fas fa-cogs"></i> Skills Summary</label>
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <label><i class="fas fa-code"></i> Languages</label>
+                        <textarea id="input-languages" placeholder="JavaScript, Python"></textarea>
+                    </div>
+                    <div class="skill-category">
+                        <label><i class="fas fa-layer-group"></i> Frameworks</label>
+                        <textarea id="input-frameworks" placeholder="React, Django"></textarea>
+                    </div>
+                    <div class="skill-category">
+                        <label><i class="fas fa-tools"></i> Tools</label>
+                        <textarea id="input-tools" placeholder="Git, VS Code"></textarea>
+                    </div>
+                    <div class="skill-category">
+                        <label><i class="fas fa-cloud"></i> Platforms</label>
+                        <textarea id="input-platforms" placeholder="AWS, Firebase"></textarea>
+                    </div>
+                    <div class="skill-category">
+                        <label><i class="fas fa-handshake"></i> Soft Skills</label>
+                        <textarea id="input-soft-skills" placeholder="Leadership, Communication"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Work Experience -->
+            <div class="form-group animate-on-scroll">
+                <label><i class="fas fa-briefcase"></i> Work Experience</label>
+                <div id="experience-inputs">
+                    <div class="experience-inputs input-group">
+                        <input type="text" placeholder="Role" class="experience-role" />
+                        <input type="text" placeholder="Company" class="experience-company" />
+                        <input type="text" placeholder="Company Link" class="experience-link" />
+                        <input type="text" placeholder="Dates" class="experience-dates" />
+                        <textarea placeholder="Key achievements (1 per line)" class="experience-desc"></textarea>
+                        <button type="button" class="remove-btn" onclick="removeExperience(this)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="button" id="add-experience" class="add-btn">
+                    <i class="fas fa-plus"></i> Add Experience
+                </button>
+            </div>
+
+            <!-- Certificates -->
+            <div class="form-group animate-on-scroll">
+                <label><i class="fas fa-certificate"></i> Certificates</label>
+                <div id="certifications-inputs">
+                    <div class="certifications-inputs input-group">
+                        <input type="text" placeholder="Certificate Name" class="certificate-title" />
+                        <input type="text" placeholder="Issuing Organization" class="certificate-issuer" />
+                        <input type="text" placeholder="Date" class="certificate-date" />
+                        <textarea placeholder="Description (1 per line)" class="certificate-desc"></textarea>
+                        <button type="button" class="remove-btn" onclick="removeCertificate(this)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="button" id="add-certificate" class="add-btn">
+                    <i class="fas fa-plus"></i> Add Certificate
+                </button>
+            </div>
+
+            <!-- Projects -->
+            <div class="form-group animate-on-scroll">
+                <label><i class="fas fa-project-diagram"></i> Projects</label>
+                <div id="projects-inputs">
+                    <div class="project-input input-group">
+                        <input type="text" placeholder="Project Title" class="project-title" />
+                        <input type="url" placeholder="Project Link (URL)" class="project-link" />
+                        <textarea placeholder="Key achievements (1 per line)" class="project-desc"></textarea>
+                        <button type="button" class="remove-btn" onclick="removeProject(this)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="button" id="add-project" class="add-btn">
+                    <i class="fas fa-plus"></i> Add Project
+                </button>
+            </div>
+
+            <!-- Download Section -->
+            <div class="form-group download-section animate-on-scroll">
+                <button type="button" id="downloadBtn" class="download-btn primary">
+                    <i class="fas fa-file-pdf"></i> Download PDF
+                </button>
+                <button type="button" id="downloadDocxBtn" class="download-btn secondary">
+                    <i class="fas fa-file-word"></i> Download Word
+                </button>
+            </div>
+
+            <!-- Footer Actions -->
+            <div class="footer-actions no-print">
+                <button class="btn-refresh" onclick="window.location.reload();">
+                    <i class="fas fa-sync-alt"></i> Refresh Resume
+                </button>
+                <button class="btn-autofill" onclick="autofillResume()">
+                    <i class="fas fa-magic"></i> Autofill Resume
+                </button>
+            </div>
         </div>
 
-        <div class="section">
-          <h2><i class="fas fa-user-tie"></i> Professional Summary</h2>
-          <p id="preview-about">Passionate developer with 3 years of experience...</p>
-        </div>
+        <!-- Preview Section -->
+        <div class="preview-section glass-card" id="resumeContent">
+            <div class="preview-header">
+                <h3><i class="fas fa-eye"></i> Live Preview</h3>
+                <div class="preview-actions">
+                    <button class="btn-icon" onclick="window.location.reload();" title="Refresh">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <button class="btn-icon" onclick="autofillResume()" title="Autofill">
+                        <i class="fas fa-magic"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="resume-content">
+                <div class="header">
+                    <h1 id="preview-name">John Doe</h1>
+                    <div class="contact-info" id="preview-contact">
+                        <span id="preview-email"><i class="fas fa-envelope"></i> john@example.com</span>
+                        <span id="preview-phone"><i class="fas fa-phone"></i> +91-9876543210</span>
+                        <span id="preview-linkedin"><i class="fab fa-linkedin"></i> linkedin.com/in/john</span>
+                        <span id="preview-github"><i class="fab fa-github"></i> github.com/john</span>
+                    </div>
+                </div>
 
-        <div class="section">
-          <h2><i class="fas fa-graduation-cap"></i> Education</h2>
-          <ul id="preview-education">
-            <li><strong>IIT Bombay</strong>, B.Tech in Computer Science<br>GPA: 9.2 | Mumbai, India | 2018-2022</li>
-          </ul>
-        </div>
+                <div class="section">
+                    <h2><i class="fas fa-user-tie"></i> Professional Summary</h2>
+                    <p id="preview-about">Passionate developer with 3 years of experience...</p>
+                </div>
 
-        <div class="section">
-          <h2><i class="fas fa-cogs"></i> Skills Summary</h2>
-          <div class="skills-preview">
-            <div><strong>Languages:</strong> <span id="preview-languages">JavaScript, Python</span></div>
-            <div><strong>Frameworks:</strong> <span id="preview-frameworks">React, Django</span></div>
-            <div><strong>Tools:</strong> <span id="preview-tools">Git, VS Code</span></div>
-            <div><strong>Platforms:</strong> <span id="preview-platforms">AWS, Firebase</span></div>
-            <div><strong>Soft Skills:</strong> <span id="preview-soft-skills">Leadership, Communication</span></div>
-          </div>
-        </div>
+                <div class="section">
+                    <h2><i class="fas fa-graduation-cap"></i> Education</h2>
+                    <ul id="preview-education">
+                        <li><strong>IIT Bombay</strong>, B.Tech in Computer Science<br>GPA: 9.2 | Mumbai, India | 2018-2022</li>
+                    </ul>
+                </div>
 
-        <div class="section">
-          <h2><i class="fas fa-briefcase"></i> Work Experience</h2>
-          <ul id="preview-experience">
-            <li>
-              <strong>Software Engineer</strong>, <a href="https://google.com" target="_blank">Google</a> | 2022-Present
-              <ul>
-                <li><strong>Built:</strong> Scalable backend services using Node.js</li>
-                <li><strong>Optimized:</strong> API response times by 40%</li>
-              </ul>
-            </li>
-          </ul>
-        </div>
+                <div class="section">
+                    <h2><i class="fas fa-cogs"></i> Skills Summary</h2>
+                    <div class="skills-preview">
+                        <div><strong>Languages:</strong> <span id="preview-languages">JavaScript, Python</span></div>
+                        <div><strong>Frameworks:</strong> <span id="preview-frameworks">React, Django</span></div>
+                        <div><strong>Tools:</strong> <span id="preview-tools">Git, VS Code</span></div>
+                        <div><strong>Platforms:</strong> <span id="preview-platforms">AWS, Firebase</span></div>
+                        <div><strong>Soft Skills:</strong> <span id="preview-soft-skills">Leadership, Communication</span></div>
+                    </div>
+                </div>
 
-        <div class="section">
-          <h2><i class="fas fa-certificate"></i> Certificates</h2>
-          <ul id="preview-cert">
-            <li>
-              <strong>AWS Certified Developer</strong> (AWS) | 2023
-              <ul>
-                <li>Demonstrated proficiency in cloud architecture</li>
-              </ul>
-            </li>
-          </ul>
-        </div>
+                <div class="section">
+                    <h2><i class="fas fa-briefcase"></i> Work Experience</h2>
+                    <ul id="preview-experience">
+                        <li>
+                            <strong>Software Engineer</strong>, <a href="https://google.com" target="_blank">Google</a> | 2022-Present
+                            <ul>
+                                <li><strong>Built:</strong> Scalable backend services using Node.js</li>
+                                <li><strong>Optimized:</strong> API response times by 40%</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
 
-        <div class="section">
-          <h2><i class="fas fa-project-diagram"></i> Projects</h2>
-          <ul id="preview-projects">
-            <li>
-              <strong>Resume Generator</strong>
-              <div class="project-links">
-                <a href="https://github.com/john/resume-generator" target="_blank">
-                  <i class="fas fa-external-link-alt"></i> View Project
-                </a>
-              </div>
-              <ul>
-                <li><strong>Built:</strong> Full-stack resume builder using React</li>
-                <li><strong>Integrated:</strong> PDF export feature</li>
-              </ul>
-            </li>
-          </ul>
+                <div class="section">
+                    <h2><i class="fas fa-certificate"></i> Certificates</h2>
+                    <ul id="preview-cert">
+                        <li>
+                            <strong>AWS Certified Developer</strong> (AWS) | 2023
+                            <ul>
+                                <li>Demonstrated proficiency in cloud architecture</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h2><i class="fas fa-project-diagram"></i> Projects</h2>
+                    <ul id="preview-projects">
+                        <li>
+                            <strong>Resume Generator</strong>
+                            <div class="project-links">
+                                <a href="https://github.com/john/resume-generator" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i> View Project
+                                </a>
+                            </div>
+                            <ul>
+                                <li><strong>Built:</strong> Full-stack resume builder using React</li>
+                                <li><strong>Integrated:</strong> PDF export feature</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 
-  <script src="script.js"></script>
+    <footer class="footer">
+        <!-- Footer content can be added here if needed -->
+    </footer>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        body.setAttribute('data-theme', savedTheme);
+
+        // Custom Cursor
+        const cursor = document.querySelector('.cursor');
+        const cursorFollower = document.querySelector('.cursor-follower');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            setTimeout(() => {
+                cursorFollower.style.left = e.clientX + 'px';
+                cursorFollower.style.top = e.clientY + 'px';
+            }, 100);
+        });
+
+        // Dynamic Education Sections
+        function addEducation() {
+            const container = document.getElementById('education-inputs');
+            const newSection = document.createElement('div');
+            newSection.className = 'education-inputs input-group';
+            newSection.innerHTML = `
+                <input type="text" placeholder="Institution" class="education-institution" />
+                <input type="text" placeholder="Degree" class="education-degree" />
+                <input type="text" placeholder="GPA" class="education-gpa" />
+                <input type="text" placeholder="Location" class="education-location" />
+                <input type="text" placeholder="Dates" class="education-dates" />
+                <button type="button" class="remove-btn" onclick="removeEducation(this)">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+            container.appendChild(newSection);
+        }
+
+        function removeEducation(button) {
+            button.parentElement.remove();
+        }
+
+        // Dynamic Experience Sections
+        function addExperience() {
+            const container = document.getElementById('experience-inputs');
+            const newSection = document.createElement('div');
+            newSection.className = 'experience-inputs input-group';
+            newSection.innerHTML = `
+                <input type="text" placeholder="Role" class="experience-role" />
+                <input type="text" placeholder="Company" class="experience-company" />
+                <input type="text" placeholder="Company Link" class="experience-link" />
+                <input type="text" placeholder="Dates" class="experience-dates" />
+                <textarea placeholder="Key achievements (1 per line)" class="experience-desc"></textarea>
+                <button type="button" class="remove-btn" onclick="removeExperience(this)">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+            container.appendChild(newSection);
+        }
+
+        function removeExperience(button) {
+            button.parentElement.remove();
+        }
+
+        // Dynamic Certificate Sections
+        function addCertificate() {
+            const container = document.getElementById('certifications-inputs');
+            const newSection = document.createElement('div');
+            newSection.className = 'certifications-inputs input-group';
+            newSection.innerHTML = `
+                <input type="text" placeholder="Certificate Name" class="certificate-title" />
+                <input type="text" placeholder="Issuing Organization" class="certificate-issuer" />
+                <input type="text" placeholder="Date" class="certificate-date" />
+                <textarea placeholder="Description (1 per line)" class="certificate-desc"></textarea>
+                <button type="button" class="remove-btn" onclick="removeCertificate(this)">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+            container.appendChild(newSection);
+        }
+
+        function removeCertificate(button) {
+            button.parentElement.remove();
+        }
+
+        // Dynamic Project Sections
+        function addProject() {
+            const container = document.getElementById('projects-inputs');
+            const newSection = document.createElement('div');
+            newSection.className = 'project-input input-group';
+            newSection.innerHTML = `
+                <input type="text" placeholder="Project Title" class="project-title" />
+                <input type="url" placeholder="Project Link (URL)" class="project-link" />
+                <textarea placeholder="Key achievements (1 per line)" class="project-desc"></textarea>
+                <button type="button" class="remove-btn" onclick="removeProject(this)">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+            container.appendChild(newSection);
+        }
+
+        function removeProject(button) {
+            button.parentElement.remove();
+        }
+
+        // Generate Preview
+        function generatePreview() {
+            const previewName = document.getElementById('preview-name');
+            const previewContact = document.getElementById('preview-contact');
+            const previewAbout = document.getElementById('preview-about');
+            const previewEducation = document.getElementById('preview-education');
+            const previewLanguages = document.getElementById('preview-languages');
+            const previewFrameworks = document.getElementById('preview-frameworks');
+            const previewTools = document.getElementById('preview-tools');
+            const previewPlatforms = document.getElementById('preview-platforms');
+            const previewSoftSkills = document.getElementById('preview-soft-skills');
+            const previewExperience = document.getElementById('preview-experience');
+            const previewCert = document.getElementById('preview-cert');
+            const previewProjects = document.getElementById('preview-projects');
+
+            // Personal Information
+            const fullName = document.getElementById('input-name').value || 'Your Name';
+            const email = document.getElementById('input-email').value || 'your.email@example.com';
+            const phone = document.getElementById('input-phone').value || '(555) 123-4567';
+            const linkedin = document.getElementById('input-linkedin').value;
+            const github = document.getElementById('input-github').value;
+            const summary = document.getElementById('input-about').value || 'Your professional summary will appear here...';
+
+            // Build contact info
+            let contactInfo = '';
+            if (email) contactInfo += `<span id="preview-email"><i class="fas fa-envelope"></i> ${email}</span>`;
+            if (phone) contactInfo += `<span id="preview-phone"><i class="fas fa-phone"></i> ${phone}</span>`;
+            if (linkedin) contactInfo += `<span id="preview-linkedin"><i class="fab fa-linkedin"></i> ${linkedin}</span>`;
+            if (github) contactInfo += `<span id="preview-github"><i class="fab fa-github"></i> ${github}</span>`;
+
+            // Update preview
+            previewName.textContent = fullName;
+            previewContact.innerHTML = contactInfo;
+            previewAbout.textContent = summary;
+
+            // Education
+            const educationSections = document.querySelectorAll('#education-inputs .education-inputs');
+            let educationHTML = '';
+            educationSections.forEach(section => {
+                const institution = section.querySelector('.education-institution').value;
+                const degree = section.querySelector('.education-degree').value;
+                const gpa = section.querySelector('.education-gpa').value;
+                const location = section.querySelector('.education-location').value;
+                const dates = section.querySelector('.education-dates').value;
+                
+                if (institution || degree) {
+                    educationHTML += `
+                        <li><strong>${institution || 'Institution'}</strong>, ${degree || 'Degree'}<br>GPA: ${gpa || 'N/A'} | ${location || 'Location'} | ${dates || 'Dates'}</li>
+                    `;
+                }
+            });
+            previewEducation.innerHTML = educationHTML || '<li>No education added yet.</li>';
+
+            // Skills
+            const languages = document.getElementById('input-languages').value || 'Your skills will be listed here...';
+            const frameworks = document.getElementById('input-frameworks').value || 'Your skills will be listed here...';
+            const tools = document.getElementById('input-tools').value || 'Your skills will be listed here...';
+            const platforms = document.getElementById('input-platforms').value || 'Your skills will be listed here...';
+            const softSkills = document.getElementById('input-soft-skills').value || 'Your skills will be listed here...';
+
+            previewLanguages.textContent = languages;
+            previewFrameworks.textContent = frameworks;
+            previewTools.textContent = tools;
+            previewPlatforms.textContent = platforms;
+            previewSoftSkills.textContent = softSkills;
+
+            // Experience
+            const experienceSections = document.querySelectorAll('#experience-inputs .experience-inputs');
+            let experienceHTML = '';
+            experienceSections.forEach(section => {
+                const role = section.querySelector('.experience-role').value;
+                const company = section.querySelector('.experience-company').value;
+                const companyLink = section.querySelector('.experience-link').value;
+                const dates = section.querySelector('.experience-dates').value;
+                const description = section.querySelector('.experience-desc').value;
+                
+                if (role || company) {
+                    experienceHTML += `
+                        <li>
+                            <strong>${role || 'Role'}</strong>, <a href="${companyLink || '#'}" target="_blank">${company || 'Company'}</a> | ${dates || 'Dates'}
+                            <ul>
+                                ${description.split('\n').map(line => `<li>${line}</li>`).join('')}
+                            </ul>
+                        </li>
+                    `;
+                }
+            });
+            previewExperience.innerHTML = experienceHTML || '<li>No experience added yet.</li>';
+
+            // Certificates
+            const certificateSections = document.querySelectorAll('#certifications-inputs .certifications-inputs');
+            let certificateHTML = '';
+            certificateSections.forEach(section => {
+                const title = section.querySelector('.certificate-title').value;
+                const issuer = section.querySelector('.certificate-issuer').value;
+                const date = section.querySelector('.certificate-date').value;
+                const description = section.querySelector('.certificate-desc').value;
+                
+                if (title || issuer) {
+                    certificateHTML += `
+                        <li>
+                            <strong>${title || 'Certificate Name'}</strong> (${issuer || 'Issuing Organization'}) | ${date || 'Date'}
+                            <ul>
+                                ${description.split('\n').map(line => `<li>${line}</li>`).join('')}
+                            </ul>
+                        </li>
+                    `;
+                }
+            });
+            previewCert.innerHTML = certificateHTML || '<li>No certificate added yet.</li>';
+
+            // Projects
+            const projectSections = document.querySelectorAll('#projects-inputs .project-input');
+            let projectHTML = '';
+            projectSections.forEach(section => {
+                const title = section.querySelector('.project-title').value;
+                const projectLink = section.querySelector('.project-link').value;
+                const description = section.querySelector('.project-desc').value;
+                
+                if (title || projectLink) {
+                    projectHTML += `
+                        <li>
+                            <strong>${title || 'Project Title'}</strong>
+                            <div class="project-links">
+                                <a href="${projectLink || '#'}" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i> View Project
+                                </a>
+                            </div>
+                            <ul>
+                                ${description.split('\n').map(line => `<li>${line}</li>`).join('')}
+                            </ul>
+                        </li>
+                    `;
+                }
+            });
+            previewProjects.innerHTML = projectHTML || '<li>No project added yet.</li>';
+        }
+
+        // Download Resume as PDF
+        document.getElementById('downloadBtn').addEventListener('click', () => {
+            generatePreview();
+            const resumeContent = document.getElementById('resumeContent');
+            html2pdf().set({ margin: 10 }).from(resumeContent).save();
+        });
+
+        // Download Resume as DOCX
+        document.getElementById('downloadDocxBtn').addEventListener('click', () => {
+            generatePreview();
+            const resumeContent = document.getElementById('resumeContent').innerHTML;
+            
+            const htmlContent = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <style>
+                        body { font-family: 'Times New Roman', serif; line-height: 1.4; }
+                        .resume-header { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #333; padding-bottom: 10px; }
+                        .resume-name { font-size: 24px; font-weight: bold; margin-bottom: 5px; }
+                        .resume-contact { font-size: 12px; color: #666; }
+                        .resume-section { margin-bottom: 15px; }
+                        .resume-section h3 { font-size: 16px; font-weight: bold; margin-bottom: 5px; color: #333; border-bottom: 1px solid #ccc; padding-bottom: 2px; }
+                        .resume-item { margin-bottom: 10px; }
+                        .resume-item h4 { font-weight: bold; margin-bottom: 2px; }
+                        .resume-item .meta { font-style: italic; color: #666; margin-bottom: 2px; }
+                    </style>
+                </head>
+                <body>${resumeContent}</body>
+                </html>
+            `;
+            
+            const converted = htmlDocx.asBlob(htmlContent);
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(converted);
+            link.download = 'resume.docx';
+            link.click();
+        });
+
+        // Auto-generate preview on input
+        document.addEventListener('input', () => {
+            setTimeout(generatePreview, 300);
+        });
+
+        // Initial preview generation
+        generatePreview();
+
+        // Autofill Resume
+        function autofillResume() {
+            document.getElementById('input-name').value = 'John Doe';
+            document.getElementById('input-email').value = 'john.doe@email.com';
+            document.getElementById('input-phone').value = '+1 (555) 123-4567';
+            document.getElementById('input-linkedin').value = 'https://linkedin.com/in/johndoe';
+            document.getElementById('input-github').value = 'https://github.com/johndoe';
+            document.getElementById('input-about').value = 'Experienced software developer with a passion for building scalable web applications.';
+            document.getElementById('input-languages').value = 'JavaScript, Python, Java';
+            document.getElementById('input-frameworks').value = 'React, Django, Spring Boot';
+            document.getElementById('input-tools').value = 'Git, Docker, Jenkins';
+            document.getElementById('input-platforms').value = 'AWS, Azure, Google Cloud';
+            document.getElementById('input-soft-skills').value = 'Problem-solving, Teamwork, Communication';
+
+            const educationContainer = document.getElementById('education-inputs');
+            educationContainer.innerHTML = `
+                <div class="education-inputs input-group">
+                    <input type="text" placeholder="Institution" class="education-institution" value="Tech University" />
+                    <input type="text" placeholder="Degree" class="education-degree" value="B.Sc. Computer Science" />
+                    <input type="text" placeholder="GPA" class="education-gpa" value="3.8" />
+                    <input type="text" placeholder="Location" class="education-location" value="Tech City" />
+                    <input type="text" placeholder="Dates" class="education-dates" value="2015-2019" />
+                    <button type="button" class="remove-btn" onclick="removeEducation(this)">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+
+            const experienceContainer = document.getElementById('experience-inputs');
+            experienceContainer.innerHTML = `
+                <div class="experience-inputs input-group">
+                    <input type="text" placeholder="Role" class="experience-role" value="Software Engineer" />
+                    <input type="text" placeholder="Company" class="experience-company" value="Tech Solutions Inc." />
+                    <input type="text" placeholder="Company Link" class="experience-link" value="https://techsolutions.com" />
+                    <input type="text" placeholder="Dates" class="experience-dates" value="2019-Present" />
+                    <textarea placeholder="Key achievements (1 per line)" class="experience-desc">Developed and maintained web applications.\nOptimized database queries for better performance.\nCollaborated with cross-functional teams to deliver projects.</textarea>
+                    <button type="button" class="remove-btn" onclick="removeExperience(this)">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+
+            const certificateContainer = document.getElementById('certifications-inputs');
+            certificateContainer.innerHTML = `
+                <div class="certifications-inputs input-group">
+                    <input type="text" placeholder="Certificate Name" class="certificate-title" value="AWS Certified Developer" />
+                    <input type="text" placeholder="Issuing Organization" class="certificate-issuer" value="AWS" />
+                    <input type="text" placeholder="Date" class="certificate-date" value="2023" />
+                    <textarea placeholder="Description (1 per line)" class="certificate-desc">Demonstrated proficiency in cloud architecture.\nSuccessfully deployed multiple applications on AWS.</textarea>
+                    <button type="button" class="remove-btn" onclick="removeCertificate(this)">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+
+            const projectContainer = document.getElementById('projects-inputs');
+            projectContainer.innerHTML = `
+                <div class="project-input input-group">
+                    <input type="text" placeholder="Project Title" class="project-title" value="Resume Generator Pro" />
+                    <input type="url" placeholder="Project Link (URL)" class="project-link" value="https://github.com/johndoe/resume-generator-pro" />
+                    <textarea placeholder="Key achievements (1 per line)" class="project-desc">Built a full-stack resume generator using React.\nImplemented PDF export functionality.\nReceived positive feedback from users.</textarea>
+                    <button type="button" class="remove-btn" onclick="removeProject(this)">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+
+            generatePreview();
+        }
+    </script>
 </body>
 </html>
