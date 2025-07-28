@@ -170,6 +170,7 @@ handleAddSection(
 
 // PDF Download
 document.getElementById("downloadBtn").addEventListener("click", () => {
+  document.querySelectorAll('.no-print').forEach(el => el.style.display = 'none');
   const content = document.getElementById("resumeContent");
   const options = {
     margin:       0.5,
@@ -202,6 +203,7 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   // Run observer code
 }
 document.getElementById("downloadDocxBtn").addEventListener("click", () => {
+  document.querySelectorAll('.no-print').forEach(el => el.style.display = 'none');
   const resumeContent = document.getElementById("resumeContent").cloneNode(true);
 
   // Optional: remove animations if you want cleaner output

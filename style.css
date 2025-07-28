@@ -306,3 +306,8 @@ body.dark .footer {
 body.dark .footer-link {
   color: #ffcc00; /* dark yellow for better contrast */
 }
+@media print {
+  .no-print{
+    display: none !important;
+  }
+}
