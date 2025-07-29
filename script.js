@@ -674,14 +674,17 @@ const dot = document.querySelector('.cursor-dot');
       previewName.forEach(el => el.textContent = inputName.value);
     });
 
-    document.getElementById("downloadBtn").addEventListener("click", () => {
-      const element = document.getElementById("resumeContent");
-      const opt = {
-        margin: 0.5,
-        filename: 'resume.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-      };
-      html2pdf().set(opt).from(element).save();
-    });
+document.getElementById('downloadBtn').addEventListener('click', () => {
+  const resumeOnly = document.querySelector('.resume-content'); //  Only resume inner part
+
+  html2pdf()
+    .from(resumeOnly)
+    .set({
+      margin: 0.5,
+      filename: 'resume.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    })
+    .save();
+});
