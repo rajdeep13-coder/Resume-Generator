@@ -387,6 +387,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+const scrollUpBtn = document.querySelector(".scroll-up-btn");
+
+scrollUpBtn.addEventListener("click", () => {
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+});
+
 /*  // Undo Button
   document.getElementById("undoBtn").addEventListener("click", () => {
     if (undoStack.length > 1) {
