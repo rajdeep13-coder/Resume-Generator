@@ -1,26 +1,24 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Resume Generator</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html-docx-js/0.4.0/html-docx.min.js"></script>
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html-docx-js/0.4.0/html-docx.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
 
 </head>
+
 <body>
   <button id="themeToggle" aria-label="Toggle Theme">
-  <i class="fas fa-moon"></i>
-</button>
+    <i class="fas fa-moon"></i>
+  </button>
 
   <div class="main-container fade-in ">
     <!-- Form Section -->
@@ -42,7 +40,7 @@
         <label for="input-phone">Phone</label>
         <input type="tel" id="input-phone" placeholder="+91-9876543210" />
         <span class="error-message" id="error-phone"></span>
-        </div>
+      </div>
       <div class="form-group">
         <label for="input-linkedin">LinkedIn</label>
         <input type="url" id="input-linkedin" placeholder="linkedin.com/in/john" />
@@ -55,7 +53,8 @@
       </div>
       <div class="form-group">
         <label for="input-about">Professional Summary</label>
-        <textarea id="input-about" placeholder="Passionate developer with 3 years of experience..." maxlength="300"></textarea>
+        <textarea id="input-about" placeholder="Passionate developer with 3 years of experience..."
+          maxlength="300"></textarea>
         <span class="char-count" id="charCount-input-about"></span>
         <span class="error-message" id="error-about"></span>
       </div>
@@ -153,81 +152,89 @@
 
     <!-- Preview Section -->
     <div class="preview-section fade-in" id="resumeContent">
-      <div class="header">
-        <h1 id="preview-name">John Doe</h1>
-        <div class="contact-info fade-in" id="preview-contact">
-          <span id="preview-email">john@example.com</span>
-          <span id="preview-phone">+91-9876543210</span>
-          <span id="preview-linkedin">linkedin.com/in/john</span>
-          <span id="preview-github">github.com/john</span>
+    <!--  <div id="controls">
+        <button id="undoBtn">Undo</button>
+        <button id="redoBtn">Redo</button>
+      </div> -->
+      <div id="resume-sections">
+        <div class="header">
+          <h1 id="preview-name">John Doe</h1>
+          <div class="contact-info fade-in" id="preview-contact">
+            <span id="preview-email">john@example.com</span>
+            <span id="preview-phone">+91-9876543210</span>
+            <span id="preview-linkedin">linkedin.com/in/john</span>
+            <span id="preview-github">github.com/john</span>
+          </div>
+        </div>
+        <div class="section fade-in" draggable="true" data-id="summary">
+          <h2>Professional Summary</h2>
+          <p id="preview-about">Passionate developer with 3 years of experience...</p>
+        </div>
+        <div class="section fade-in" draggable="true" data-id="Education">
+          <h2>Education</h2>
+          <ul id="preview-education">
+            <li><strong>IIT Bombay</strong>, B.Tech in Computer Science<br>GPA: 9.2 | Mumbai, India | 2018-2022</li>
+          </ul>
+        </div>
+        <div class="section fade-in" draggable="true" data-id="skills-summary">
+          <h2>Skills Summary</h2>
+          <div class="skills-grid fade-in">
+            <div><strong>Languages:</strong> <span id="preview-languages">JavaScript, Python</span></div>
+            <div><strong>Frameworks:</strong> <span id="preview-frameworks">React, Django</span></div>
+            <div><strong>Tools:</strong> <span id="preview-tools">Git, VS Code</span></div>
+            <div><strong>Platforms:</strong> <span id="preview-platforms">AWS, Firebase</span></div>
+            <div><strong>Soft Skills:</strong> <span id="preview-soft-skills">Leadership, Communication</span></div>
+          </div>
+        </div>
+        <div class="section fade-in" draggable="true" data-id="experience">
+          <h2>Work Experience</h2>
+          <ul id="preview-experience">
+            <li>
+              <strong>Software Engineer</strong>, <a href="https://google.com" target="_blank">Google</a> | 2022-Present
+              <ul>
+                <li><strong>Built:</strong> Scalable backend services using Node.js</li>
+                <li><strong>Optimized:</strong> API response times by 40%</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div class="section fade-in" draggable="true" data-id="Certificates">
+          <h2>Certificates</h2>
+          <ul id="preview-cert">
+            <li>
+              <strong>AWS Certified Developer</strong> (AWS) | 2023
+              <ul>
+                <li>Demonstrated proficiency in cloud architecture</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div class="section fade-in" draggable="true" data-id="Projects">
+          <h2>Projects</h2>
+          <ul id="preview-projects">
+            <li>
+              <strong>Resume Generator</strong>
+              <div class="project-links fade-in"><a href="https://github.com/john/resume-generator"
+                  target="_blank">LINK</a></div>
+              <ul>
+                <li><strong>Built:</strong> Full-stack resume builder using React</li>
+                <li><strong>Integrated:</strong> PDF export feature</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div class="footer-actions no-print">
+          <button class="btn-refresh" onclick="window.location.reload();">🔄 Refresh Resume</button>
+          <br />
+          <button class="btn-autofill" onclick="autofillResume()">✍️ Autofill Resume</button>
         </div>
       </div>
-      <div class="section fade-in">
-        <h2>Professional Summary</h2>
-        <p id="preview-about">Passionate developer with 3 years of experience...</p>
-      </div>
-      <div class="section fade-in">
-        <h2>Education</h2>
-        <ul id="preview-education">
-          <li><strong>IIT Bombay</strong>, B.Tech in Computer Science<br>GPA: 9.2 | Mumbai, India | 2018-2022</li>
-        </ul>
-      </div>
-      <div class="section fade-in">
-        <h2>Skills Summary</h2>
-        <div class="skills-grid fade-in">
-          <div><strong>Languages:</strong> <span id="preview-languages">JavaScript, Python</span></div>
-          <div><strong>Frameworks:</strong> <span id="preview-frameworks">React, Django</span></div>
-          <div><strong>Tools:</strong> <span id="preview-tools">Git, VS Code</span></div>
-          <div><strong>Platforms:</strong> <span id="preview-platforms">AWS, Firebase</span></div>
-          <div><strong>Soft Skills:</strong> <span id="preview-soft-skills">Leadership, Communication</span></div>
-        </div>
-      </div>
-      <div class="section fade-in">
-        <h2>Work Experience</h2>
-        <ul id="preview-experience">
-          <li>
-            <strong>Software Engineer</strong>, <a href="https://google.com" target="_blank">Google</a> | 2022-Present
-            <ul>
-              <li><strong>Built:</strong> Scalable backend services using Node.js</li>
-              <li><strong>Optimized:</strong> API response times by 40%</li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-      <div class="section fade-in">
-        <h2>Certificates</h2>
-        <ul id="preview-cert">
-          <li>
-            <strong>AWS Certified Developer</strong> (AWS) | 2023
-            <ul>
-              <li>Demonstrated proficiency in cloud architecture</li>
-            </ul>
-         </li>
-        </ul>
-      </div>
-      <div class="section fade-in">
-       <h2>Projects</h2>
-        <ul id="preview-projects">
-        <li>
-            <strong>Resume Generator</strong>
-            <div class="project-links fade-in"><a href="https://github.com/john/resume-generator" target="_blank">LINK</a></div>
-            <ul>
-              <li><strong>Built:</strong> Full-stack resume builder using React</li>
-              <li><strong>Integrated:</strong> PDF export feature</li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-      <div class="footer-actions no-print">
-      <button class="btn-refresh" onclick="window.location.reload();">🔄 Refresh Resume</button>
-      <br />
-      <button class="btn-autofill" onclick="autofillResume()">✍️ Autofill Resume</button>
     </div>
-    </div>
-  </div>
+  </div> <!-- Close resume-sections -->
   <footer>
-    
+
   </footer>
   <script src="script.js"></script>
 </body>
+
 </html>
