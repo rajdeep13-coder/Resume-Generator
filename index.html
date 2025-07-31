@@ -150,12 +150,14 @@
       </div>
     </div>
 
-    <!-- Preview Section -->
-    <div class="preview-section fade-in" id="resumeContent">
-    <!--  <div id="controls">
+     <div class="preview-section fade-in" id="resumeContent">
+      <!-- Optional: keep control buttons as comment -->
+      <!--
+      <div id="controls">
         <button id="undoBtn">Undo</button>
         <button id="redoBtn">Redo</button>
-      </div> -->
+      </div>
+      -->
       <div id="resume-sections">
         <div class="header">
           <h1 id="preview-name">John Doe</h1>
@@ -166,16 +168,19 @@
             <span id="preview-github">github.com/john</span>
           </div>
         </div>
+
         <div class="section fade-in" draggable="true" data-id="summary">
           <h2>Professional Summary</h2>
           <p id="preview-about">Passionate developer with 3 years of experience...</p>
         </div>
+
         <div class="section fade-in" draggable="true" data-id="Education">
           <h2>Education</h2>
           <ul id="preview-education">
             <li><strong>IIT Bombay</strong>, B.Tech in Computer Science<br>GPA: 9.2 | Mumbai, India | 2018-2022</li>
           </ul>
         </div>
+
         <div class="section fade-in" draggable="true" data-id="skills-summary">
           <h2>Skills Summary</h2>
           <div class="skills-grid fade-in">
@@ -186,6 +191,7 @@
             <div><strong>Soft Skills:</strong> <span id="preview-soft-skills">Leadership, Communication</span></div>
           </div>
         </div>
+
         <div class="section fade-in" draggable="true" data-id="experience">
           <h2>Work Experience</h2>
           <ul id="preview-experience">
@@ -198,6 +204,7 @@
             </li>
           </ul>
         </div>
+
         <div class="section fade-in" draggable="true" data-id="Certificates">
           <h2>Certificates</h2>
           <ul id="preview-cert">
@@ -209,13 +216,15 @@
             </li>
           </ul>
         </div>
+
         <div class="section fade-in" draggable="true" data-id="Projects">
           <h2>Projects</h2>
           <ul id="preview-projects">
             <li>
               <strong>Resume Generator</strong>
-              <div class="project-links fade-in"><a href="https://github.com/john/resume-generator"
-                  target="_blank">LINK</a></div>
+              <div class="project-links fade-in">
+                <a href="https://github.com/john/resume-generator" target="_blank">LINK</a>
+              </div>
               <ul>
                 <li><strong>Built:</strong> Full-stack resume builder using React</li>
                 <li><strong>Integrated:</strong> PDF export feature</li>
@@ -223,18 +232,26 @@
             </li>
           </ul>
         </div>
+
         <div class="footer-actions no-print">
           <button class="btn-refresh" onclick="window.location.reload();">🔄 Refresh Resume</button>
           <br />
           <button class="btn-autofill" onclick="autofillResume()">✍️ Autofill Resume</button>
         </div>
-      </div>
-    </div>
-  </div> <!-- Close resume-sections -->
+      </div> <!-- /resume-sections -->
+    </div> <!-- /preview-section -->
+  </div> <!-- /main-container -->
+
   <footer>
-
+    <div class="footer-left">
+      <span>&#9679; &nbsp;&nbsp;© <strong>Resume-Generator</strong> - Built with by Rajdeep Paul</span>
+    </div>
+    <div class="footer-right">
+      <a href="https://github.com/rajdeep13-coder" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+      <a href="https://www.linkedin.com/in/rajdeep-paul-013z/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+    </div>
   </footer>
-  <script src="script.js"></script>
-</body>
 
+  <script src="script.js" defer></script>
+</body>
 </html>
