@@ -196,6 +196,20 @@ ul li::before {
   transform: translateY(0);
 }
 
+.scroll-up-btn {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  z-index: 999;
+  padding: 6px 12px;
+  cursor: pointer;
+  border: 2px solid var(--border);
+  background-color: var(--input-bg);
+  color: var(--text);
+  border-radius: 20%;
+}
+
+
 @media (max-width: 900px) {
   .main-container {
     flex-direction: column;
