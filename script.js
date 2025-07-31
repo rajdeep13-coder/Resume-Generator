@@ -343,3 +343,65 @@ toggle.addEventListener('click', () => {
         localStorage.setItem('theme', 'light');
     }
 });
+// --- Draggable Resume Section Reordering ---
+document.addEventListener("DOMContentLoaded", () => {
+    const container = document.getElementById("resume-sections");
+    let draggedItem = null;
+
+    container.addEventListener("dragstart", function (e) {
+        if (e.target.classList.contains("section")) {
+            draggedItem = e.target;
+            e.target.classList.add("dragging");
+        }
+    });
+
+    container.addEventListener("dragend", function (e) {
+    if (draggedItem) {
+        draggedItem.classList.remove("dragging");
+        saveCurrentOrder(); // Save new order
+        draggedItem = null;
+    }
+    });
+
+    container.addEventListener("dragover", function (e) {
+        e.preventDefault();
+        const afterElement = getDragAfterElement(container, e.clientY);
+        if (draggedItem && afterElement == null) {
+            container.appendChild(draggedItem);
+        } else if (draggedItem && afterElement) {
+            container.insertBefore(draggedItem, afterElement);
+        }
+    });
+
+    function getDragAfterElement(container, y) {
+        const draggableElements = [...container.querySelectorAll(".section:not(.dragging)")];
+        return draggableElements.reduce((closest, child) => {
+            const box = child.getBoundingClientRect();
+            const offset = y - box.top - box.height / 2;
+            if (offset < 0 && offset > closest.offset) {
+                return { offset: offset, element: child };
+            } else {
+                return closest;
+            }
+        }, { offset: Number.NEGATIVE_INFINITY }).element;
+    }
+});
+
+/*  // Undo Button
+  document.getElementById("undoBtn").addEventListener("click", () => {
+    if (undoStack.length > 1) {
+      const current = undoStack.pop();
+      redoStack.push(current);
+      restoreOrder(undoStack[undoStack.length - 1]);
+    }
+  });
+
+  // Redo Button
+  document.getElementById("redoBtn").addEventListener("click", () => {
+    if (redoStack.length > 0) {
+      const next = redoStack.pop();
+      undoStack.push(next);
+      restoreOrder(next);
+    }
+  }); */
+  

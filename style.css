@@ -371,3 +371,17 @@ margin-top: auto;
  }
 }
 }
+/* Highlight the section being dragged */
+.section.dragging {
+  opacity: 0.5;
+  background-color: #f0f0f0;
+  border: 2px dashed #007bff;
+  cursor: grabbing;
+  transform: scale(1.02);
+  transition: all 0.2s ease-in-out;
+}
+
+/* animate section positions */
+.section {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
