@@ -1,265 +1,182 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Resume Generator Pro</title>
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-
-  <!-- FontAwesome Icons -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
-
-  <!-- External Libraries -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html-docx-js/0.4.0/html-docx.min.js" defer></script>
-
-  <!-- Custom Styles -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Resume Generator</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html-docx-js/0.4.0/html-docx.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+/>
+
+
 </head>
-
 <body>
-  <!-- Animated Background -->
-  <div class="animated-bg" aria-hidden="true">
-    <div class="floating-shapes">
-      <div class="shape shape-1"></div>
-      <div class="shape shape-2"></div>
-      <div class="shape shape-3"></div>
-      <div class="shape shape-4"></div>
-      <div class="shape shape-5"></div>
-    </div>
-  </div>
+  <button id="themeToggle" aria-label="Toggle Theme">
+  <i class="fas fa-moon"></i>
+</button>
 
-  <!-- Custom Cursor -->
-  <div class="cursor" aria-hidden="true"></div>
-  <div class="cursor-follower" aria-hidden="true"></div>
-
-  <!-- Theme Toggle -->
-  <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme" type="button">
-    <i class="fas fa-moon"></i>
-    <i class="fas fa-sun"></i>
-  </button>
-
-  <!-- Header -->
-  <header class="app-header" role="banner">
-    <div class="header-content">
-      <h1 class="app-title">
-        <i class="fas fa-file-alt" aria-hidden="true"></i>
-        Resume Generator Pro
-      </h1>
-      <p class="app-subtitle">Create professional resumes in minutes</p>
-    </div>
-  </header>
-
-  <!-- Main Container -->
-  <main class="main-container" role="main">
+  <div class="main-container fade-in ">
     <!-- Form Section -->
-    <section class="form-section glass-card" aria-label="Resume form section">
-      <div class="section-header">
-        <h2><i class="fas fa-edit"></i> Resume Details</h2>
-        <div class="progress-bar" aria-hidden="true"><div class="progress-fill"></div></div>
+    <div class="form-section ">
+      <h2>Resume Details</h2>
+
+      <!-- Basic Info -->
+      <div class="form-group">
+        <label for="input-name">Full Name</label>
+        <input type="text" id="input-name" placeholder="John Doe" autofocus />
+        <span class="error-message" id="error-name"></span>
+      </div>
+      <div class="form-group">
+        <label for="input-email">Email</label>
+        <input type="email" id="input-email" placeholder="john@example.com" />
+        <span class="error-message" id="error-email"></span>
+      </div>
+      <div class="form-group">
+        <label for="input-phone">Phone</label>
+        <input type="tel" id="input-phone" placeholder="+91-9876543210" />
+        <span class="error-message" id="error-phone"></span>
+        </div>
+      <div class="form-group">
+        <label for="input-linkedin">LinkedIn</label>
+        <input type="url" id="input-linkedin" placeholder="linkedin.com/in/john" />
+        <span class="error-message" id="error-linkedin"></span>
+      </div>
+      <div class="form-group">
+        <label for="input-github">GitHub</label>
+        <input type="url" id="input-github" placeholder="github.com/john" />
+        <span class="error-message" id="error-github"></span>
+      </div>
+      <div class="form-group">
+        <label for="input-about">Professional Summary</label>
+        <textarea id="input-about" placeholder="Passionate developer with 3 years of experience..." maxlength="300"></textarea>
+        <span class="char-count" id="charCount-input-about"></span>
+        <span class="error-message" id="error-about"></span>
       </div>
 
-      <!-- Personal Info Inputs -->
-      <div class="form-group animate-on-scroll">
-        <label for="input-name"><i class="fas fa-user"></i> Full Name</label>
-        <input type="text" id="input-name" placeholder="John Doe" autofocus autocomplete="name" />
-        <span class="error-message" id="error-name" aria-live="polite"></span>
-      </div>
-      <div class="form-group animate-on-scroll">
-        <label for="input-email"><i class="fas fa-envelope"></i> Email</label>
-        <input type="email" id="input-email" placeholder="john@example.com" autocomplete="email" />
-        <span class="error-message" id="error-email" aria-live="polite"></span>
-      </div>
-      <div class="form-group animate-on-scroll">
-        <label for="input-phone"><i class="fas fa-phone"></i> Phone</label>
-        <input type="tel" id="input-phone" placeholder="+91-9876543210" autocomplete="tel" />
-        <span class="error-message" id="error-phone" aria-live="polite"></span>
-      </div>
-      <div class="form-group animate-on-scroll">
-        <label for="input-linkedin"><i class="fab fa-linkedin"></i> LinkedIn</label>
-        <input type="url" id="input-linkedin" placeholder="https://linkedin.com/in/john" autocomplete="url" />
-        <span class="error-message" id="error-linkedin" aria-live="polite"></span>
-      </div>
-      <div class="form-group animate-on-scroll">
-        <label for="input-github"><i class="fab fa-github"></i> GitHub</label>
-        <input type="url" id="input-github" placeholder="https://github.com/john" autocomplete="url" />
-        <span class="error-message" id="error-github" aria-live="polite"></span>
-      </div>
-      <div class="form-group animate-on-scroll">
-        <label for="input-about"><i class="fas fa-user-tie"></i> Professional Summary</label>
-        <textarea id="input-about" placeholder="Passionate developer with 3 years of experience..." maxlength="500"></textarea>
-        <div id="charCount-input-about" class="char-count" aria-live="polite">0/500 characters</div>
-        <span class="error-message" id="error-about" aria-live="polite"></span>
-      </div>
-
-      <!-- Dynamic Education Section -->
-      <div class="form-group animate-on-scroll">
-        <label><i class="fas fa-graduation-cap"></i> Education</label>
+      <!-- Education -->
+      <div class="form-group fade-in">
+        <label>Education</label>
         <div id="education-inputs">
-          <div class="education-inputs input-group">
+          <div class="education-inputs fade-in">
             <input type="text" placeholder="Institution" class="education-institution" />
             <input type="text" placeholder="Degree" class="education-degree" />
             <input type="text" placeholder="GPA" class="education-gpa" />
             <input type="text" placeholder="Location" class="education-location" />
             <input type="text" placeholder="Dates" class="education-dates" />
-            <button type="button" class="remove-btn" aria-label="Remove education section" onclick="removeEducation(this)">
-              <i class="fas fa-trash" aria-hidden="true"></i>
-            </button>
           </div>
         </div>
-        <button type="button" id="add-education" class="add-btn" aria-label="Add education section">
-          <i class="fas fa-plus"></i> Add Education
-        </button>
+        <button type="button" id="add-education" class="add-btn fade-in">+ Add Education</button>
       </div>
 
-      <!-- Skills Input Section -->
-      <div class="form-group animate-on-scroll">
-        <label><i class="fas fa-cogs"></i> Skills Summary</label>
-        <div class="skills-grid">
-          <div class="skill-category">
-            <label><i class="fas fa-code"></i> Languages</label>
+      <!-- Skills Summary -->
+      <div class="form-group fade-in">
+        <label>Skills Summary</label>
+        <div class="skills-grid fade-in">
+          <div>
+            <label>Languages</label>
             <textarea id="input-languages" placeholder="JavaScript, Python"></textarea>
           </div>
-          <div class="skill-category">
-            <label><i class="fas fa-layer-group"></i> Frameworks</label>
+          <div>
+            <label>Frameworks</label>
             <textarea id="input-frameworks" placeholder="React, Django"></textarea>
           </div>
-          <div class="skill-category">
-            <label><i class="fas fa-tools"></i> Tools</label>
+          <div>
+            <label>Tools</label>
             <textarea id="input-tools" placeholder="Git, VS Code"></textarea>
           </div>
-          <div class="skill-category">
-            <label><i class="fas fa-cloud"></i> Platforms</label>
+          <div>
+            <label>Platforms</label>
             <textarea id="input-platforms" placeholder="AWS, Firebase"></textarea>
           </div>
-          <div class="skill-category">
-            <label><i class="fas fa-handshake"></i> Soft Skills</label>
+          <div>
+            <label>Soft Skills</label>
             <textarea id="input-soft-skills" placeholder="Leadership, Communication"></textarea>
           </div>
         </div>
       </div>
 
-      <!-- Dynamic Work Experience -->
-      <div class="form-group animate-on-scroll">
-        <label><i class="fas fa-briefcase"></i> Work Experience</label>
+      <!-- Work Experience -->
+      <div class="form-group fade-in">
+        <label>Work Experience</label>
         <div id="experience-inputs">
-          <div class="experience-inputs input-group">
+          <div class="experience-inputs fade-in">
             <input type="text" placeholder="Role" class="experience-role" />
             <input type="text" placeholder="Company" class="experience-company" />
             <input type="text" placeholder="Company Link" class="experience-link" />
             <input type="text" placeholder="Dates" class="experience-dates" />
             <textarea placeholder="Key achievements (1 per line)" class="experience-desc"></textarea>
-            <button type="button" class="remove-btn" aria-label="Remove experience section" onclick="removeExperience(this)">
-              <i class="fas fa-trash" aria-hidden="true"></i>
-            </button>
           </div>
         </div>
-        <button type="button" id="add-experience" class="add-btn" aria-label="Add experience section">
-          <i class="fas fa-plus"></i> Add Experience
-        </button>
+        <button type="button" id="add-experience" class="add-btn fade-in">+ Add Experience</button>
       </div>
 
-      <!-- Dynamic Certificates -->
-      <div class="form-group animate-on-scroll">
-        <label><i class="fas fa-certificate"></i> Certificates</label>
+      <!-- Certificates -->
+      <div class="form-group fade-in">
+        <label>Certificates</label>
         <div id="certifications-inputs">
-          <div class="certifications-inputs input-group">
+          <div class="certifications-inputs fade-in">
             <input type="text" placeholder="Certificate Name" class="certificate-title" />
             <input type="text" placeholder="Issuing Organization" class="certificate-issuer" />
             <input type="text" placeholder="Date" class="certificate-date" />
             <textarea placeholder="Description (1 per line)" class="certificate-desc"></textarea>
-            <button type="button" class="remove-btn" aria-label="Remove certificate section" onclick="removeCertificate(this)">
-              <i class="fas fa-trash" aria-hidden="true"></i>
-            </button>
           </div>
         </div>
-        <button type="button" id="add-certificate" class="add-btn" aria-label="Add certificate section">
-          <i class="fas fa-plus"></i> Add Certificate
-        </button>
+        <button type="button" id="add-certificate" class="add-btn fade-in">+ Add Certificate</button>
       </div>
 
-      <!-- Dynamic Projects -->
-      <div class="form-group animate-on-scroll">
-        <label><i class="fas fa-project-diagram"></i> Projects</label>
+      <!-- Projects -->
+      <div class="form-group fade-in">
+        <label>Projects</label>
         <div id="projects-inputs">
-          <div class="project-input input-group">
+          <div class="project-input ">
             <input type="text" placeholder="Project Title" class="project-title" />
             <input type="url" placeholder="Project Link (URL)" class="project-link" />
             <textarea placeholder="Key achievements (1 per line)" class="project-desc"></textarea>
-            <button type="button" class="remove-btn" aria-label="Remove project section" onclick="removeProject(this)">
-              <i class="fas fa-trash" aria-hidden="true"></i>
-            </button>
           </div>
         </div>
-        <button type="button" id="add-project" class="add-btn" aria-label="Add project section">
-          <i class="fas fa-plus"></i> Add Project
-        </button>
+        <button type="button" id="add-project" class="add-btn fade-in">+ Add Project</button>
       </div>
 
-      <!-- Download Buttons -->
-      <div class="form-group download-section animate-on-scroll">
-        <button type="button" id="downloadBtn" class="download-btn primary" aria-label="Download resume as PDF">
-          <i class="fas fa-file-pdf"></i> Download PDF
-        </button>
-        <button type="button" id="downloadDocxBtn" class="download-btn secondary" aria-label="Download resume as Word document">
-          <i class="fas fa-file-word"></i> Download Word
-        </button>
-      </div>
+      <div class="form-group fade-in">
+        <button type="button" id="downloadBtn" class="download-btn fade-in">Download PDF</button>
+        <button type="button" id="downloadDocxBtn" class="download-btn fade-in">Download Word (.docx)</button>
 
-      <!-- Footer Actions -->
-      <div class="footer-actions no-print">
-        <button type="button" class="btn-refresh" aria-label="Refresh Resume" onclick="window.location.reload();">
-          <i class="fas fa-sync-alt"></i> Refresh Resume
-        </button>
-        <button type="button" class="btn-autofill" aria-label="Autofill Resume" onclick="autofillResume()">
-          <i class="fas fa-magic"></i> Autofill Resume
-        </button>
       </div>
-    </section>
+    </div>
 
-    <!-- Preview Section -->
-    <section class="preview-section glass-card" id="resumeContent" aria-label="Live resume preview">
-      <div class="preview-header">
-        <h3><i class="fas fa-eye"></i> Live Preview</h3>
-        <div class="preview-actions">
-          <button type="button" class="btn-icon" aria-label="Refresh preview" onclick="window.location.reload();">
-            <i class="fas fa-sync-alt"></i>
-          </button>
-          <button type="button" class="btn-icon" aria-label="Autofill preview" onclick="autofillResume()">
-            <i class="fas fa-magic"></i>
-          </button>
-        </div>
-      </div>
-
-      <div class="resume-content" tabindex="0" role="region" aria-live="polite">
-        <div class="header" style="text-align: center; margin-bottom: 1rem; border-bottom: 2px solid var(--primary); padding-bottom: 0.5rem;">
-          <h1 id="preview-name" style="font-size: 2rem; font-weight: 700; color: var(--primary); margin-bottom: 0.3rem;">John Doe</h1>
-          <div id="preview-contact" style="display: flex; justify-content: center; gap: 1.5rem; font-size: 0.9rem; color: var(--text-secondary);">
-            <span id="preview-github"><i class="fab fa-github"></i> github.com/john</span>
-            <span id="preview-linkedin"><i class="fab fa-linkedin"></i> linkedin.com/in/john</span>
-            <span id="preview-phone"><i class="fas fa-phone"></i> +91-9876543210</span>
+    <div class="preview-section fade-in" id="resumeContent">
+        <div class="header">
+          <h1 id="preview-name">John Doe</h1>
+          <div class="contact-info fade-in" id="preview-contact">
+            <span id="preview-email">john@example.com</span>
+            <span id="preview-phone">+91-9876543210</span>
+            <span id="preview-linkedin">linkedin.com/in/john</span>
+            <span id="preview-github">github.com/john</span>
           </div>
         </div>
 
-        <div class="section">
-          <h2><i class="fas fa-user-tie"></i> Professional Summary</h2>
+        <div class="section fade-in">
+          <h2>Professional Summary</h2>
           <p id="preview-about">Passionate developer with 3 years of experience...</p>
         </div>
 
-        <div class="section">
-          <h2><i class="fas fa-graduation-cap"></i> Education</h2>
+        <div class="section fade-in">
+          <h2>Education</h2>
           <ul id="preview-education">
-            <li><strong>IIT Bombay</strong>, B.Tech in Computer Science<br />GPA: 9.2 | Mumbai, India | 2018-2022</li>
+            <li><strong>IIT Bombay</strong>, B.Tech in Computer Science<br>GPA: 9.2 | Mumbai, India | 2018-2022</li>
           </ul>
         </div>
 
-        <div class="section">
-          <h2><i class="fas fa-cogs"></i> Skills Summary</h2>
-          <div class="skills-preview">
+        <div class="section fade-in">
+          <h2>Skills Summary</h2>
+          <div class="skills-grid fade-in">
             <div><strong>Languages:</strong> <span id="preview-languages">JavaScript, Python</span></div>
             <div><strong>Frameworks:</strong> <span id="preview-frameworks">React, Django</span></div>
             <div><strong>Tools:</strong> <span id="preview-tools">Git, VS Code</span></div>
@@ -268,11 +185,11 @@
           </div>
         </div>
 
-        <div class="section">
-          <h2><i class="fas fa-briefcase"></i> Work Experience</h2>
+        <div class="section fade-in">
+          <h2>Work Experience</h2>
           <ul id="preview-experience">
             <li>
-              <strong>Software Engineer</strong>, <a href="https://google.com" target="_blank" rel="noopener noreferrer">Google</a> | 2022-Present
+              <strong>Software Engineer</strong>, <a href="https://google.com" target="_blank">Google</a> | 2022-Present
               <ul>
                 <li><strong>Built:</strong> Scalable backend services using Node.js</li>
                 <li><strong>Optimized:</strong> API response times by 40%</li>
@@ -281,8 +198,8 @@
           </ul>
         </div>
 
-        <div class="section">
-          <h2><i class="fas fa-certificate"></i> Certificates</h2>
+        <div class="section fade-in">
+          <h2>Certificates</h2>
           <ul id="preview-cert">
             <li>
               <strong>AWS Certified Developer</strong> (AWS) | 2023
@@ -293,15 +210,13 @@
           </ul>
         </div>
 
-        <div class="section">
-          <h2><i class="fas fa-project-diagram"></i> Projects</h2>
+        <div class="section fade-in">
+          <h2>Projects</h2>
           <ul id="preview-projects">
             <li>
               <strong>Resume Generator</strong>
-              <div class="project-links">
-                <a href="https://github.com/john/resume-generator" target="_blank" rel="noopener noreferrer">
-                  <i class="fas fa-external-link-alt"></i> View Project
-                </a>
+              <div class="project-links fade-in">
+                <a href="https://github.com/john/resume-generator" target="_blank">LINK</a>
               </div>
               <ul>
                 <li><strong>Built:</strong> Full-stack resume builder using React</li>
@@ -310,26 +225,26 @@
             </li>
           </ul>
         </div>
-      </div>
-    </section>
+
+        <div class="footer-actions no-print">
+          <button class="btn-refresh" onclick="window.location.reload();">🔄 Refresh Resume</button>
+          <br />
+          <button class="btn-autofill" onclick="autofillResume()">✍️ Autofill Resume</button>
+        </div>
+      </div> <!-- preview-section -->
+    </div> <!-- main-container -->
   </main>
 
-<footer>
-  <div class="footer-left">
-    <span>&#9679; &nbsp; &nbsp;© <strong>Quiz Game</strong> - Built with ❤️ by Rajdeep Paul</span>
-  </div>
-  <div class="footer-right">
-    <a href="https://github.com" target="_blank">
-      <i class="fab fa-github"></i> GitHub
-    </a>
-    <a href="https://linkedin.com" target="_blank">
-      <i class="fab fa-linkedin"></i> LinkedIn
-    </a>
-  </div>
-</footer>
+  <footer>
+    <div class="footer-left">
+      <span>&#9679; &nbsp;&nbsp;© <strong>Quiz Game</strong> - Built with ❤️ by Rajdeep Paul</span>
+    </div>
+    <div class="footer-right">
+      <a href="https://github.com" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+      <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+    </div>
+  </footer>
 
-  <!-- Custom Script -->
   <script src="script.js" defer></script>
 </body>
-
 </html>
