@@ -387,6 +387,31 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+function bindInputToPreview(inputId, previewId, isLink = false) {
+    const input = document.getElementById(inputId);
+    const preview = document.getElementById(previewId);
+
+    input.addEventListener("input", () => {
+        const value = input.value.trim();
+
+        if (previewId === 'preview-email') {
+            preview.textContent = value ? `Email: ${value}` : '';
+        } else if (previewId === 'preview-phone') {
+            preview.textContent = value ? `Phone: ${value}` : '';
+        } else if (isLink && value) {
+            let label = 'Link';
+            if (previewId === 'preview-linkedin') label = 'LinkedIn';
+            else if (previewId === 'preview-github') label = 'GitHub';
+
+            preview.innerHTML = `<a href="${value}" target="_blank">${label}</a>`;
+        } else {
+            preview.textContent = value;
+        }
+    });
+}
+
+
+
 /*  // Undo Button
   document.getElementById("undoBtn").addEventListener("click", () => {
     if (undoStack.length > 1) {
