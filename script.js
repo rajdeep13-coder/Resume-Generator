@@ -240,7 +240,7 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
     }
 
     // If validation passes (validateForm() returned true), then proceed with download
-    const content = document.getElementById("resumeContent");
+    const content = document.querySelector('#resume-sections');
     const options = {
         margin: 0.5,
         filename: 'resume.pdf',
@@ -251,6 +251,7 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
     html2pdf().from(content).set(options).save();
 });
 
+
 // --- DOCX Download Button ---
 document.getElementById("downloadDocxBtn").addEventListener("click", () => {
     // Call validateForm() at the very beginning of the click handler
@@ -260,7 +261,7 @@ document.getElementById("downloadDocxBtn").addEventListener("click", () => {
     }
 
     // If validation passes (validateForm() returned true), then proceed with download
-    const resumeContent = document.getElementById("resumeContent").cloneNode(true);
+    const resumeContent = document.querySelector('#resume-sections').cloneNode(true);
 
     // Optional: remove animations if you want cleaner output
     resumeContent.querySelectorAll(".fade-in, .show").forEach(el => el.classList.remove("fade-in", "show"));
@@ -386,6 +387,30 @@ document.addEventListener("DOMContentLoaded", () => {
         }, { offset: Number.NEGATIVE_INFINITY }).element;
     }
 });
+
+
+function bindInputToPreview(inputId, previewId, isLink = false) {
+    const input = document.getElementById(inputId);
+    const preview = document.getElementById(previewId);
+
+    input.addEventListener("input", () => {
+        const value = input.value.trim();
+
+        if (previewId === 'preview-email') {
+            preview.textContent = value ? `Email: ${value}` : '';
+        } else if (previewId === 'preview-phone') {
+            preview.textContent = value ? `Phone: ${value}` : '';
+        } else if (isLink && value) {
+            let label = 'Link';
+            if (previewId === 'preview-linkedin') label = 'LinkedIn';
+            else if (previewId === 'preview-github') label = 'GitHub';
+
+            preview.innerHTML = `<a href="${value}" target="_blank">${label}</a>`;
+        } else {
+            preview.textContent = value;
+        }
+    });
+}
 
 const scrollUpBtn = document.querySelector(".scroll-up-btn");
 
