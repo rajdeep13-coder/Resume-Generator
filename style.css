@@ -306,49 +306,27 @@ main {
 
 /* Responsive Footer */
 
-footer{
-  background: linear-gradient(to bottom right, #007cf0, #00dfd8);
-  color:white;
-  padding:1.5rem 2.5rem;
-  display:flex;
-  flex-direction: row;
-  justify-content:space-between;
-  align-items: center;
-  font-size: 1rem;
-  flex-wrap: wrap;
-   border: 1.3px solid #ccc; 
-  border-radius: 10px; 
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
-margin-top: auto;
+.footer {
+  background-color: #f1f1f1; /* light mode background */
+  color: #333;
 }
 
-.footer-right a{
+.footer-link {
+  color: #333;
   text-decoration: none;
-  color:white;
 }
 
-.footer-right{
-  display:flex;
-  flex-wrap: wrap;
-  align-items:center;
-  margin-right:2rem;
-  gap:1.2rem;
+body.dark .footer {
+  background-color: #1a1a1a;  /* darker shade for footer in dark mode */
+  color: #eee;
+  border-top: 1px solid #444;  /* subtle top border */
+  box-shadow: 0 -2px 5px rgba(255, 255, 255, 0.05); /* soft top glow effect */
 }
 
-
-.footer-right i:hover{
-  color:#1a1a1a;
-  transform:translateY(-2px) scale(1);
+body.dark .footer-link {
+  color: #ffcc00; /* dark yellow for better contrast */
 }
 
-.footer-right a:hover{
-   color:#1a1a1a;
-   transform:translateY(-2px);
-}
-
-.footer-right a, .footer-right i {
-  transition: all 0.3s ease;
-}
 
 
 @media(max-width:768px){
