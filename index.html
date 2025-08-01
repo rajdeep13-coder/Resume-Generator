@@ -67,11 +67,11 @@
         <label>Education</label>
         <div id="education-inputs">
           <div class="education-inputs fade-in">
-            <input type="text" placeholder="Institution" class="education-institution" />
-            <input type="text" placeholder="Degree" class="education-degree" />
-            <input type="text" placeholder="GPA" class="education-gpa" />
-            <input type="text" placeholder="Location" class="education-location" />
-            <input type="text" placeholder="Dates" class="education-dates" />
+            <input type="text" placeholder="Institution" class="education-institution" id="education-institution" />
+            <input type="text" placeholder="Degree" class="education-degree" id="education-degree" />
+            <input type="text" placeholder="GPA" class="education-gpa" id="education-gpa"/>
+            <input type="text" placeholder="Location" class="education-location" id="education-location" />
+            <input type="text" placeholder="Dates" class="education-dates" id="education-dates" />
           </div>
         </div>
         <button type="button" id="add-education" class="add-btn fade-in">+ Add Education</button>
@@ -109,11 +109,11 @@
         <label>Work Experience</label>
         <div id="experience-inputs">
           <div class="experience-inputs fade-in">
-            <input type="text" placeholder="Role" class="experience-role" />
-            <input type="text" placeholder="Company" class="experience-company" />
-            <input type="text" placeholder="Company Link" class="experience-link" />
-            <input type="text" placeholder="Dates" class="experience-dates" />
-            <textarea placeholder="Key achievements (1 per line)" class="experience-desc"></textarea>
+            <input type="text" placeholder="Role" class="experience-role" id="experience-role" />
+            <input type="text" placeholder="Company" class="experience-company" id="experience-company" />
+            <input type="text" placeholder="Company Link" class="experience-link" id="experience-link" />
+            <input type="text" placeholder="Dates" class="experience-dates" id="experience-dates" />
+            <textarea placeholder="Key achievements (1 per line)" id="experience-desc" class="experience-desc"></textarea>
           </div>
         </div>
         <button type="button" id="add-experience" class="add-btn fade-in">+ Add Experience</button>
@@ -124,10 +124,10 @@
         <label>Certificates</label>
         <div id="certifications-inputs">
           <div class="certifications-inputs fade-in">
-            <input type="text" placeholder="Certificate Name" class="certificate-title" />
-            <input type="text" placeholder="Issuing Organization" class="certificate-issuer" />
-            <input type="text" placeholder="Date" class="certificate-date" />
-            <textarea placeholder="Description (1 per line)" class="certificate-desc"></textarea>
+            <input type="text" placeholder="Certificate Name" class="certificate-title" id="certificate-title" />
+            <input type="text" placeholder="Issuing Organization" class="certificate-issuer" id="certificate-issuer" />
+            <input type="text" placeholder="Date" class="certificate-date" id="certificate-date"/>
+            <textarea placeholder="Description (1 per line)" id="certificate-desc" class="certificate-desc"></textarea>
           </div>
         </div>
         <button type="button" id="add-certificate" class="add-btn fade-in">+ Add Certificate</button>
@@ -138,9 +138,9 @@
         <label>Projects</label>
         <div id="projects-inputs">
           <div class="project-input ">
-            <input type="text" placeholder="Project Title" class="project-title" />
-            <input type="url" placeholder="Project Link (URL)" class="project-link" />
-            <textarea placeholder="Key achievements (1 per line)" class="project-desc"></textarea>
+            <input type="text" placeholder="Project Title" class="project-title" id="project-title" />
+            <input type="url" placeholder="Project Link (URL)" class="project-link" id="project-link" />
+            <textarea placeholder="Key achievements (1 per line)" id="project-desc" class="project-desc"></textarea>
           </div>
         </div>
         <button type="button" id="add-project" class="add-btn fade-in">+ Add Project</button>
@@ -240,7 +240,7 @@
         
       </div> <!-- /resume-sections -->
       <div class="footer-actions no-print">
-          <button class="btn-refresh" onclick="window.location.reload();">🔄 Refresh Resume</button>
+          <button class="btn-refresh" onclick="clearAndReload()">🔄 Refresh Resume</button>
           <br />
           <button class="btn-autofill" onclick="autofillResume()">✍️ Autofill Resume</button>
         </div>
