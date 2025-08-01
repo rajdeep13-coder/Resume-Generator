@@ -322,10 +322,12 @@ window.addEventListener('DOMContentLoaded', () => {
         document.body.classList.add('dark');
         icon.classList.remove('fa-sun'); // Ensure sun is not there
         icon.classList.add('fa-moon');   // Add moon for dark mode
+        icon.style.color='white';
     } else {
         document.body.classList.remove('dark'); // Ensure light mode
         icon.classList.remove('fa-moon'); // Ensure moon is not there
         icon.classList.add('fa-sun');    // Add sun for light mode
+        icon.style.color='#FFB300';
     }
 });
 
