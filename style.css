@@ -411,7 +411,7 @@ margin-top: auto;
 
 
 
-@media (max-width: 480px) {
+/* @media (max-width: 480px) {
   input,
   textarea {
     width: 100%;
@@ -425,5 +425,5 @@ margin-top: auto;
   .preview-section {
     overflow-x: hidden;
   }
-}
+} */
 
