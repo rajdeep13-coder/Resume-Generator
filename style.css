@@ -408,3 +408,22 @@ margin-top: auto;
 .section {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
+
+
+@media (max-width: 480px) {
+  input,
+  textarea {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .form-section,
+  .preview-section {
+    overflow-x: hidden;
+  }
+}
+
