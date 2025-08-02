@@ -322,10 +322,12 @@ window.addEventListener('DOMContentLoaded', () => {
         document.body.classList.add('dark');
         icon.classList.remove('fa-sun'); // Ensure sun is not there
         icon.classList.add('fa-moon');   // Add moon for dark mode
+        icon.style.color='white';
     } else {
         document.body.classList.remove('dark'); // Ensure light mode
         icon.classList.remove('fa-moon'); // Ensure moon is not there
         icon.classList.add('fa-sun');    // Add sun for light mode
+        icon.style.color='#FFB300';
     }
 });
 
@@ -357,11 +359,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     container.addEventListener("dragend", function (e) {
-    if (draggedItem) {
-        draggedItem.classList.remove("dragging");
-        saveCurrentOrder(); // Save new order
-        draggedItem = null;
-    }
+        if (draggedItem) {
+            draggedItem.classList.remove("dragging");
+            saveCurrentOrder(); // Save new order
+            draggedItem = null;
+        }
     });
 
     container.addEventListener("dragover", function (e) {
@@ -387,6 +389,30 @@ document.addEventListener("DOMContentLoaded", () => {
         }, { offset: Number.NEGATIVE_INFINITY }).element;
     }
 });
+
+
+function bindInputToPreview(inputId, previewId, isLink = false) {
+    const input = document.getElementById(inputId);
+    const preview = document.getElementById(previewId);
+
+    input.addEventListener("input", () => {
+        const value = input.value.trim();
+
+        if (previewId === 'preview-email') {
+            preview.textContent = value ? `Email: ${value}` : '';
+        } else if (previewId === 'preview-phone') {
+            preview.textContent = value ? `Phone: ${value}` : '';
+        } else if (isLink && value) {
+            let label = 'Link';
+            if (previewId === 'preview-linkedin') label = 'LinkedIn';
+            else if (previewId === 'preview-github') label = 'GitHub';
+
+            preview.innerHTML = `<a href="${value}" target="_blank">${label}</a>`;
+        } else {
+            preview.textContent = value;
+        }
+    });
+}
 
 const scrollUpBtn = document.querySelector(".scroll-up-btn");
 
@@ -414,4 +440,70 @@ scrollUpBtn.addEventListener("click", () => {
       restoreOrder(next);
     }
   }); */
-  
+
+// Storing Inputs to SessionStorage
+function saveToSessionStorage(id) {
+    const input = document.getElementById(id)
+    if (input) {
+        input.addEventListener("input", () => {
+            sessionStorage.setItem(id, input.value)
+        })
+    }
+}
+
+function loadFromSessionStorage(id) {
+    const input = document.getElementById(id)
+    const storedInput = sessionStorage.getItem(id)
+
+    if (input && (storedInput != null)) {
+        input.value = storedInput
+        input.dispatchEvent(new Event("input"))
+    }
+
+}
+document.addEventListener("DOMContentLoaded", () => {
+    const inputIds = [
+        "input-name",
+        "input-email",
+        "input-phone",
+        "input-linkedin",
+        "input-github",
+        "input-about",
+        "input-languages",
+        "input-frameworks",
+        "input-tools",
+        "input-platforms",
+        "input-soft-skills",
+        "education-institution",
+        "education-degree",
+        "education-gpa",
+        "education-location",
+        "education-dates",
+        "experience-role",
+        "experience-company",
+        "experience-link",
+        "experience-dates",
+        "certificate-title",
+        "certificate-issuer",
+        "certificate-date",
+        "project-title",
+        "project-link",
+        "experience-desc",
+        "certificate-desc",
+        "project-desc",
+    ];
+
+    const textareaClass = [
+        "",
+    ]
+
+    inputIds.forEach(id => {
+        saveToSessionStorage(id); 
+        loadFromSessionStorage(id); 
+    });
+});
+
+function clearAndReload() {
+  sessionStorage.clear();        
+  window.location.reload();
+}

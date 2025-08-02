@@ -22,11 +22,7 @@
   <button id="themeToggle" aria-label="Toggle Theme">
     <i class="fas fa-moon"></i>
   </button>
-  <button class="scroll-up-btn">
-    <i class="ri-arrow-up-line"></i>
-  </button>
-
-
+ 
   <div class="main-container fade-in ">
     <!-- Form Section -->
     <div class="form-section ">
@@ -71,11 +67,11 @@
         <label>Education</label>
         <div id="education-inputs">
           <div class="education-inputs fade-in">
-            <input type="text" placeholder="Institution" class="education-institution" />
-            <input type="text" placeholder="Degree" class="education-degree" />
-            <input type="text" placeholder="GPA" class="education-gpa" />
-            <input type="text" placeholder="Location" class="education-location" />
-            <input type="text" placeholder="Dates" class="education-dates" />
+            <input type="text" placeholder="Institution" class="education-institution" id="education-institution" />
+            <input type="text" placeholder="Degree" class="education-degree" id="education-degree" />
+            <input type="text" placeholder="GPA" class="education-gpa" id="education-gpa"/>
+            <input type="text" placeholder="Location" class="education-location" id="education-location" />
+            <input type="text" placeholder="Dates" class="education-dates" id="education-dates" />
           </div>
         </div>
         <button type="button" id="add-education" class="add-btn fade-in">+ Add Education</button>
@@ -113,11 +109,11 @@
         <label>Work Experience</label>
         <div id="experience-inputs">
           <div class="experience-inputs fade-in">
-            <input type="text" placeholder="Role" class="experience-role" />
-            <input type="text" placeholder="Company" class="experience-company" />
-            <input type="text" placeholder="Company Link" class="experience-link" />
-            <input type="text" placeholder="Dates" class="experience-dates" />
-            <textarea placeholder="Key achievements (1 per line)" class="experience-desc"></textarea>
+            <input type="text" placeholder="Role" class="experience-role" id="experience-role" />
+            <input type="text" placeholder="Company" class="experience-company" id="experience-company" />
+            <input type="text" placeholder="Company Link" class="experience-link" id="experience-link" />
+            <input type="text" placeholder="Dates" class="experience-dates" id="experience-dates" />
+            <textarea placeholder="Key achievements (1 per line)" id="experience-desc" class="experience-desc"></textarea>
           </div>
         </div>
         <button type="button" id="add-experience" class="add-btn fade-in">+ Add Experience</button>
@@ -128,10 +124,10 @@
         <label>Certificates</label>
         <div id="certifications-inputs">
           <div class="certifications-inputs fade-in">
-            <input type="text" placeholder="Certificate Name" class="certificate-title" />
-            <input type="text" placeholder="Issuing Organization" class="certificate-issuer" />
-            <input type="text" placeholder="Date" class="certificate-date" />
-            <textarea placeholder="Description (1 per line)" class="certificate-desc"></textarea>
+            <input type="text" placeholder="Certificate Name" class="certificate-title" id="certificate-title" />
+            <input type="text" placeholder="Issuing Organization" class="certificate-issuer" id="certificate-issuer" />
+            <input type="text" placeholder="Date" class="certificate-date" id="certificate-date"/>
+            <textarea placeholder="Description (1 per line)" id="certificate-desc" class="certificate-desc"></textarea>
           </div>
         </div>
         <button type="button" id="add-certificate" class="add-btn fade-in">+ Add Certificate</button>
@@ -142,9 +138,9 @@
         <label>Projects</label>
         <div id="projects-inputs">
           <div class="project-input ">
-            <input type="text" placeholder="Project Title" class="project-title" />
-            <input type="url" placeholder="Project Link (URL)" class="project-link" />
-            <textarea placeholder="Key achievements (1 per line)" class="project-desc"></textarea>
+            <input type="text" placeholder="Project Title" class="project-title" id="project-title" />
+            <input type="url" placeholder="Project Link (URL)" class="project-link" id="project-link" />
+            <textarea placeholder="Key achievements (1 per line)" id="project-desc" class="project-desc"></textarea>
           </div>
         </div>
         <button type="button" id="add-project" class="add-btn fade-in">+ Add Project</button>
@@ -171,8 +167,9 @@
           <div class="contact-info fade-in" id="preview-contact">
             <span id="preview-email">john@example.com</span>
             <span id="preview-phone">+91-9876543210</span>
-            <span id="preview-linkedin">linkedin.com/in/john</span>
-            <span id="preview-github">github.com/john</span>
+            <span id="preview-linkedin"><a href="#" id="linkedin-link" target="_blank">LinkedIn</a></span>
+            <span id="preview-github"><a href="#" id="github-link" target="_blank">GitHub</a></span>
+
           </div>
         </div>
 
@@ -240,22 +237,28 @@
           </ul>
         </div>
 
-       
+</div> <!-- /resume-sections -->
 
-  <div class="resume-actions">
-  <button class="btn-refresh" onclick="window.location.reload();">🔄 Refresh Resume</button>
+<div class="footer-actions no-print">
+  <button class="btn-refresh" onclick="clearAndReload()">🔄 Refresh Resume</button>
+  <br />
   <button class="btn-autofill" onclick="autofillResume()">✍️ Autofill Resume</button>
 </div>
 
-  <footer>
-    <div class="footer-left">
-      <span>&#9679; &nbsp;&nbsp;© <strong>Resume-Generator</strong> - Built with by Rajdeep Paul</span>
-    </div>
-    <div class="footer-right">
-      <a href="https://github.com/rajdeep13-coder" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-      <a href="https://www.linkedin.com/in/rajdeep-paul-013z/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
-    </div>
-  </footer>
+</div> <!-- /preview-section -->
+</div> <!-- /main-container -->
+
+
+  <footer style="margin-top: 2rem; padding: 1rem 0; text-align: center; font-size: 0.9rem;" class="footer">
+  <div class="foot">
+    <p class="footer-text">&copy; 2025. All rights reserved.</p>
+    <p class="footer-text">
+      Built by 
+      <a href="https://github.com/rajdeep13-coder" target="_blank" class="footer-link">Rajdeep Paul</a>
+    </p>
+  </div>
+</footer>
+
 
   <script src="script.js" defer></script>
 </body>

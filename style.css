@@ -401,8 +401,6 @@ main {
 }
 
 
-
-
 /* Resume action buttons container */
 .resume-actions {
   display: flex;
@@ -438,7 +436,6 @@ main {
   border-top: 1px solid #ccc;
 }
 
-/* Footer links */
 .footer-links {
   margin-top: 10px;
 }
@@ -454,6 +451,29 @@ main {
 .footer-links a:hover {
   color: #007bff;
 }
+
+/* Light/Dark mode support for footer */
+.footer {
+  background-color: #f1f1f1;
+  color: #333;
+}
+
+.footer-link {
+  color: #333;
+  text-decoration: none;
+}
+
+body.dark .footer {
+  background-color: #1a1a1a;
+  color: #eee;
+  border-top: 1px solid #444;
+  box-shadow: 0 -2px 5px rgba(255, 255, 255, 0.05);
+}
+
+body.dark .footer-link {
+  color: #ffcc00;
+}
+
 
 /* Hide footer area in print mode */
 .no-print {
