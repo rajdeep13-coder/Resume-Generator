@@ -507,3 +507,70 @@ function clearAndReload() {
   sessionStorage.clear();        
   window.location.reload();
 }
+
+async function improveText(textareaId) {
+  const textarea = document.getElementById(textareaId);
+  const suggestionBox = document.getElementById(`suggestion-${textareaId}`);
+  let text = textarea.value;
+
+  // Show loading state
+  suggestionBox.classList.add("loading");
+  suggestionBox.style.display = "block";
+  suggestionBox.innerText = "Checking for improvements...";
+
+  try {
+    let improved = text;
+    let hasMoreErrors = true;
+    let safetyCounter = 0; // Avoid infinite loop
+
+    while (hasMoreErrors && safetyCounter < 5) {
+      const response = await fetch("https://api.languagetool.org/v2/check", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: new URLSearchParams({
+          text: improved,
+          language: "en-US"
+        })
+      });
+
+      const data = await response.json();
+      const matches = data.matches;
+
+      if (matches.length === 0) {
+        hasMoreErrors = false;
+        break;
+      }
+
+      // Fix matches from last to first
+      matches
+        .sort((a, b) => b.offset - a.offset)
+        .forEach(match => {
+          if (match.replacements.length > 0) {
+            const replacement = match.replacements[0].value;
+            improved =
+              improved.slice(0, match.offset) +
+              replacement +
+              improved.slice(match.offset + match.length);
+          }
+        });
+
+      safetyCounter++;
+    }
+
+    suggestionBox.classList.remove("loading");
+
+    if (improved !== text) {
+      suggestionBox.innerHTML = `✨ <strong>Suggested:</strong> "${improved}"`;
+    } else {
+      suggestionBox.innerText = "✅ Your text looks good!";
+    }
+
+  } catch (error) {
+    suggestionBox.classList.remove("loading");
+    suggestionBox.innerText = "❌ Error checking grammar.";
+    console.error(error);
+  }
+}
+
