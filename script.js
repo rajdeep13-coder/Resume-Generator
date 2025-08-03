@@ -176,73 +176,70 @@ function clearErrors() {
     });
 }
 
-function clearErrors() {
-    const errorFields = document.querySelectorAll(".error-message");
-    errorFields.forEach(field => field.textContent = "");
-}
-
 function validateForm() {
-    clearErrors();
+    clearErrors(); // Clear any existing errors first
 
-    let isValid = true;
-    let incompleteFields = [];
+    let isValid = true; // Assume valid until an error is found
 
+    // Validate Full Name: Minimum 3 characters
     const nameInput = document.getElementById('input-name');
     if (nameInput.value.trim().length < 3) {
         document.getElementById('error-name').textContent = 'Full Name must be at least 3 characters.';
         isValid = false;
-        incompleteFields.push("Full Name");
     }
 
+    // Validate Email: Basic email format (e.g., user@example.com)
     const emailInput = document.getElementById('input-email');
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(emailInput.value.trim())) {
         document.getElementById('error-email').textContent = 'Please enter a valid email address.';
         isValid = false;
-        incompleteFields.push("Email");
     }
 
+    // Validate Phone Number: At least 10 digits (allowing optional + and spaces/hyphens)
     const phoneInput = document.getElementById('input-phone');
     const phonePattern = /^\+?[0-9\s-]{10,}$/;
     if (!phonePattern.test(phoneInput.value.trim())) {
-        document.getElementById('error-phone').textContent = 'Please enter a valid phone number.';
+        document.getElementById('error-phone').textContent = 'Please enter a valid phone number (at least 10 digits).';
         isValid = false;
-        incompleteFields.push("Phone");
     }
 
+    // Validate LinkedIn Link (optional field, so only validate if value exists)
     const linkedinInput = document.getElementById('input-linkedin');
     const linkedinPattern = /^(https?:\/\/(www\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?)$/i;
     if (linkedinInput.value.trim() && !linkedinPattern.test(linkedinInput.value.trim())) {
-        document.getElementById('error-linkedin').textContent = 'Please enter a valid LinkedIn URL.';
+        document.getElementById('error-linkedin').textContent = 'Please enter a valid LinkedIn profile URL.';
         isValid = false;
-        incompleteFields.push("LinkedIn");
     }
 
+    // Validate GitHub Link (optional field, so only validate if value exists)
     const githubInput = document.getElementById('input-github');
     const githubPattern = /^(https?:\/\/(www\.)?github\.com\/[a-zA-Z0-9_-]+\/?)$/i;
     if (githubInput.value.trim() && !githubPattern.test(githubInput.value.trim())) {
-        document.getElementById('error-github').textContent = 'Please enter a valid GitHub URL.';
+        document.getElementById('error-github').textContent = 'Please enter a valid GitHub profile URL.';
         isValid = false;
-        incompleteFields.push("GitHub");
     }
 
+    // Validate Professional Summary: Minimum 50 characters
     const aboutInput = document.getElementById('input-about');
     if (aboutInput.value.trim().length < 50) {
         document.getElementById('error-about').textContent = 'Professional Summary should be at least 50 characters.';
         isValid = false;
-        incompleteFields.push("Professional Summary");
     }
 
-    // If all good, return true
-    if (isValid) return true;
-
-    // Else ask user if they want to proceed anyway
-    return confirm("Please correct the highlighted errors in the form before downloading your resume.");
+    return isValid;
 }
 
-document.getElementById("downloadBtn").addEventListener("click", () => {
-    if (!validateForm()) return;
 
+// --- PDF Download Button ---
+document.getElementById("downloadBtn").addEventListener("click", () => {
+    // Call validateForm() at the very beginning of the click handler
+    if (!validateForm()) { // If validation returns false (meaning there are errors)
+        alert("Please correct the highlighted errors in the form before downloading your resume.");
+        return; // STOP the function execution here. This prevents the PDF download.
+    }
+
+    // If validation passes (validateForm() returned true), then proceed with download
     const content = document.querySelector('#resume-sections');
     const options = {
         margin: 0.5,
@@ -255,30 +252,40 @@ document.getElementById("downloadBtn").addEventListener("click", () => {
 });
 
 
+// --- DOCX Download Button ---
 document.getElementById("downloadDocxBtn").addEventListener("click", () => {
-    if (!validateForm()) return;
+    // Call validateForm() at the very beginning of the click handler
+    if (!validateForm()) { // If validation returns false (meaning there are errors)
+        alert("Please correct the highlighted errors in the form before downloading your resume.");
+        return; // STOP the function execution here. This prevents the DOCX download.
+    }
 
+    // If validation passes (validateForm() returned true), then proceed with download
     const resumeContent = document.querySelector('#resume-sections').cloneNode(true);
-    const preHtml = `
-        <html>
-        <head><meta charset='utf-8'></head>
-        <body>`;
-    const postHtml = "</body></html>";
-    const html = preHtml + resumeContent.innerHTML + postHtml;
+
+    // Optional: remove animations if you want cleaner output
+    resumeContent.querySelectorAll(".fade-in, .show").forEach(el => el.classList.remove("fade-in", "show"));
+
+    const html = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office'
+              xmlns:w='urn:schemas-microsoft-com:office:word'
+              xmlns='http://www.w3.org/TR/REC-html40'>
+          <head><meta charset='utf-8'><title>Export HTML to Word</title></head>
+          <body>${resumeContent.innerHTML}</body>
+        </html>`;
 
     const blob = new Blob(['\ufeff', html], {
         type: 'application/msword'
     });
 
-    const url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(html);
-    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
     link.href = url;
     link.download = 'resume.doc';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
 });
-
 
 // --- DOMContentLoaded Listener for fade-in animations ---
 document.addEventListener("DOMContentLoaded", () => {
