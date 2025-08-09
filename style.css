@@ -65,8 +65,13 @@ body.dark .preview-section {
 .preview-section {
   flex: 2 1 600px;
   font-size: 14px;
-  background: white !important;
-  color: #2d3748 !important;
+  background: white;
+  color: white;
+}
+
+body.dark .preview-section {
+  background: white;
+  color: white;
 }
 
 .form-section h2 {
@@ -189,9 +194,9 @@ textarea {
   border-bottom: 2px solid #667eea;
 }
 
-.header h1 {
+.preview-section .header h1 {
   font-size: 2.5rem;
-  color: #667eea !important;
+  color: #667eea;
   margin-bottom: 0.5rem;
   font-weight: 700;
 }
@@ -200,7 +205,7 @@ textarea {
   display: flex;
   flex-wrap: wrap;
   gap: 1.5rem;
-  color: #4a5568 !important;
+  color: #4a5568;
   font-size: 14px;
   margin-bottom: 0;
 }
@@ -211,12 +216,12 @@ textarea {
   gap: 0.3rem;
 }
 
-.contact-info a {
-  color: #667eea !important;
+.preview-section .contact-info a {
+  color: #667eea;
   text-decoration: none;
 }
 
-.contact-info a:hover {
+.preview-section .contact-info a:hover {
   text-decoration: underline;
 }
 
@@ -225,17 +230,17 @@ textarea {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.section h2 {
+.preview-section .section h2 {
   font-size: 1.25rem;
-  color: #667eea !important;
+  color: #667eea;
   border-bottom: 1px solid #e2e8f0;
   padding-bottom: 0.5rem;
   margin-bottom: 1rem;
   font-weight: 700;
 }
 
-.section p {
-  color: #4a5568 !important;
+.preview-section .section p {
+  color: #4a5568;
   line-height: 1.7;
   margin-bottom: 1rem;
 }
@@ -246,24 +251,24 @@ ul {
   list-style: none;
 }
 
-ul li {
+.preview-section ul li {
   margin-bottom: 1rem;
   position: relative;
-  color: #2d3748 !important;
+  color: #2d3748;
   line-height: 1.6;
 }
 
-ul li::before {
+.preview-section ul li::before {
   content: "•";
-  color: #667eea !important;
+  color: #667eea;
   font-weight: bold;
   position: absolute;
   left: -1.5rem;
   top: 0;
 }
 
-ul li strong {
-  color: #2d3748 !important;
+.preview-section ul li strong {
+  color: #2d3748;
   font-weight: 600;
 }
 
@@ -272,15 +277,15 @@ ul li ul {
   padding-left: 1.2rem;
 }
 
-ul li ul li {
+.preview-section ul li ul li {
   margin-bottom: 0.3rem;
   font-size: 0.95rem;
-  color: #4a5568 !important;
+  color: #4a5568;
 }
 
-ul li ul li::before {
+.preview-section ul li ul li::before {
   content: "◦";
-  color: #667eea !important;
+  color: #667eea;
   left: -1.2rem;
 }
 
@@ -295,21 +300,21 @@ ul li ul li::before {
   margin-bottom: 0.8rem;
 }
 
-.skills-grid strong {
-  color: #2d3748 !important;
+.preview-section .skills-grid strong {
+  color: #2d3748;
   font-weight: 600;
 }
 
-.skills-grid span {
-  color: #4a5568 !important;
+.preview-section .skills-grid span {
+  color: #4a5568;
 }
 
 .project-links {
   margin: 0.5rem 0;
 }
 
-.project-links a {
-  color: #667eea !important;
+.preview-section .project-links a {
+  color: #667eea;
   text-decoration: none;
   font-size: 13px;
   font-weight: 500;
@@ -319,12 +324,12 @@ ul li ul li::before {
   gap: 0.3rem;
 }
 
-.project-links a::before {
+.preview-section .project-links a::before {
   content: "🔗";
   font-size: 12px;
 }
 
-.project-links a:hover {
+.preview-section .project-links a:hover {
   text-decoration: underline;
 }
 
@@ -462,7 +467,7 @@ ul li ul li::before {
     gap: 0.8rem;
   }
 
-  .header h1 {
+  .preview-section .header h1 {
     font-size: 2rem;
   }
 }
@@ -484,12 +489,12 @@ ul li ul li::before {
 
 @media print {
   .no-print {
-    display: none !important;
+    display: none;
   }
   
   .preview-section {
     box-shadow: none;
     border: none;
-    background: white !important;
+    background: white;
   }
 }
