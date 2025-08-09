@@ -399,6 +399,7 @@ ul li ul {
 }
 
 .footer {
+
   background: rgba(26, 32, 44, 0.95);
   color: #f5f5f5;
   margin-top: 3rem;
@@ -415,6 +416,9 @@ ul li ul {
 .footer-link:hover {
   text-decoration: underline;
 }
+
+
+ 
 
 .char-count {
   font-size: 0.8rem;

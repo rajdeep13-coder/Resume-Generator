@@ -54,13 +54,22 @@
         <input type="url" id="input-github" placeholder="github.com/john" />
         <span class="error-message" id="error-github"></span>
       </div>
+      
       <div class="form-group">
-        <label for="input-about">Professional Summary</label>
-        <textarea id="input-about" placeholder="Passionate developer with 3 years of experience..."
-          maxlength="300"></textarea>
-        <span class="char-count" id="charCount-input-about"></span>
-        <span class="error-message" id="error-about"></span>
-      </div>
+  <label for="input-about">Professional Summary</label>
+  <textarea id="input-about" placeholder="Passionate developer with 3 years of experience..." maxlength="300"></textarea>
+  <span class="char-count" id="charCount-input-about"></span>
+  <span class="error-message" id="error-about"></span>
+
+  <!-- 💡 Grammar Improve Button -->
+  <button type="button" class="improve-btn" onclick="improveText('input-about')">
+    💡 GrammarCheck
+  </button>
+
+  <!-- 🌟 Suggestion Output -->
+  <div id="suggestion-input-about" class="suggestion-box"></div>
+</div>
+
 
       <!-- Education -->
       <div class="form-group fade-in">
