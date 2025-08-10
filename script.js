@@ -508,6 +508,28 @@ function clearAndReload() {
   window.location.reload();
 }
 
+//back to top button
+// Back to Top Button Functionality
+document.addEventListener("DOMContentLoaded", function () {
+  const backToTopBtn = document.createElement("button");
+  backToTopBtn.id = "backToTopBtn";
+  backToTopBtn.title = "Go to top";
+  backToTopBtn.textContent = "↑";
+  document.body.appendChild(backToTopBtn);
+
+  window.addEventListener("scroll", function () {
+    if (window.scrollY > 50) {
+      backToTopBtn.classList.add("show");
+    } else {
+      backToTopBtn.classList.remove("show");
+    }
+  });
+
+  backToTopBtn.addEventListener("click", function () {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+});
+
 async function improveText(textareaId) {
   const textarea = document.getElementById(textareaId);
   const suggestionBox = document.getElementById(`suggestion-${textareaId}`);
@@ -573,4 +595,5 @@ async function improveText(textareaId) {
     console.error(error);
   }
 }
+
 
