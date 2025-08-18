@@ -343,6 +343,36 @@ toggle.addEventListener('click', () => {
         localStorage.setItem('theme', 'light');
     }
 });
+// back to top section
+const backToTopButton = document.getElementById('backToTop');
+
+        // Show/hide button based on scroll position
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('show');
+            } else {
+                backToTopButton.classList.remove('show');
+            }
+        });
+
+        // Smooth scroll to top when button is clicked
+        backToTopButton.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Optional: Add keyboard support (Enter or Space key)
+        backToTopButton.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
+        });
 // --- Draggable Resume Section Reordering ---
 document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("resume-sections");
