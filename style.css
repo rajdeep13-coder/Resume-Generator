@@ -9,6 +9,13 @@
   --accent: #667eea;
 }
 
+/* Make layout math predictable everywhere */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body.dark {
   --primary: #667eea;
   --primary-hover: #5a67d8;
@@ -21,7 +28,8 @@ body.dark {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, sans-serif;
   line-height: 1.6;
   color: var(--text);
   background: linear-gradient(135deg, #1a202c 0%, #2d3748 50%, #4a5568 100%);
@@ -31,6 +39,7 @@ body {
   min-height: 100vh;
 }
 
+/* Main layout */
 .main-container {
   display: flex;
   flex-wrap: wrap;
@@ -40,16 +49,20 @@ body {
   background: transparent;
 }
 
-.form-section, .preview-section {
+/* Cards */
+.form-section,
+.preview-section {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   border-radius: 16px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
   padding: 2rem;
-  min-width: 320px;
+  /* allow these cards to shrink when screen is narrow */
+  min-width: 0;
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* dark-mode tint */
 body.dark .form-section,
 body.dark .preview-section {
   background: rgba(45, 55, 72, 0.95);
@@ -62,16 +75,18 @@ body.dark .preview-section {
   max-width: 500px;
 }
 
+/* FIX: ensure readable text on white background */
 .preview-section {
   flex: 2 1 600px;
   font-size: 14px;
   background: white;
-  color: white;
+  color: #1f2937; /* was white; causes white-on-white */
 }
 
+/* keep preview readable in dark mode too */
 body.dark .preview-section {
   background: white;
-  color: white;
+  color: #1f2937; /* keep text dark on white sheet */
 }
 
 .form-section h2 {
@@ -94,25 +109,51 @@ label {
   color: var(--text);
 }
 
-input, textarea {
-  width: calc(100% - 32px);
-  max-width: 450px;
+/* ======= FIXED INPUTS & TEXTAREAS (no overflow) =======
+   - Use width:100% and box-sizing to avoid overflow.
+   - Remove centering margin that caused calc + padding conflicts.
+   - Keep padding, border, radius and other visuals intact.
+*/
+input,
+textarea {
+  width: 100%;
+  max-width: 100%;
   padding: 12px 16px;
   border: 2px solid var(--border);
   border-radius: 12px;
   font-size: 14px;
-  margin: 0 auto 0.5rem auto;
+  margin: 0 0 0.5rem 0; /* normal stacked spacing (no auto centering) */
   background-color: var(--input-bg);
   color: var(--text);
   transition: all 0.3s ease;
   font-family: inherit;
   display: block;
+  box-sizing: border-box;
+  min-width: 0; /* allow flex children to shrink */
 }
 
-input:focus, textarea:focus {
+/* keep specific grouped inputs still full width (explicitly) */
+.education-inputs input,
+.experience-inputs input,
+.experience-inputs textarea,
+.certifications-inputs input,
+.certifications-inputs textarea,
+.project-input input,
+.project-input textarea,
+.skills-grid input,
+.skills-grid textarea {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 0 0.5rem 0;
+  box-sizing: border-box;
+}
+
+/* focus state preserved */
+input:focus,
+textarea:focus {
   border-color: var(--accent);
   outline: none;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12);
   transform: translateY(-1px);
 }
 
@@ -121,8 +162,14 @@ textarea {
   resize: vertical;
 }
 
-.add-btn, .download-btn {
-  background: linear-gradient(135deg, var(--accent) 0%, var(--primary-hover) 100%);
+/* Buttons */
+.add-btn,
+.download-btn {
+  background: linear-gradient(
+    135deg,
+    var(--accent) 0%,
+    var(--primary-hover) 100%
+  );
   color: white;
   border: none;
   padding: 12px 24px;
@@ -136,38 +183,100 @@ textarea {
   box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
 
-.add-btn:hover, .download-btn:hover {
+.add-btn:hover,
+.download-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
 }
 
-.education-inputs, .experience-inputs, .certifications-inputs, .project-input {
+/* Remove button inserted by JS */
+.remove-btn {
+  display: inline-block;
+  margin-top: 0.5rem;
+  background: linear-gradient(135deg, #ef4444, #f97316);
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+}
+.remove-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(249, 115, 22, 0.35);
+}
+.remove-btn:active {
+  transform: translateY(0);
+}
+
+/* Grammar improve / suggestion UI (JS referenced) */
+.improve-btn {
+  display: inline-block;
+  margin: 0.25rem 0 0.75rem 0;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.25);
+}
+.improve-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(22, 163, 74, 0.35);
+}
+.improve-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.suggestion-box {
+  display: none;
+  margin-top: 0.5rem;
+  border: 1px dashed #86efac;
+  background: #ecfdf5;
+  color: #065f46;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+body.dark .suggestion-box {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.6);
+  color: #d1fae5;
+}
+.suggestion-box.loading {
+  display: block;
+  opacity: 0.9;
+}
+
+/* Cards / grouped inputs */
+.education-inputs,
+.experience-inputs,
+.certifications-inputs,
+.project-input {
   margin-bottom: 1rem;
   border: 2px solid var(--border);
   border-radius: 12px;
   padding: 1.5rem;
   background: rgba(102, 126, 234, 0.05);
   transition: all 0.3s ease;
+  min-width: 0; /* allow inner content to shrink on small screens */
 }
 
-.education-inputs:hover, .experience-inputs:hover, 
-.certifications-inputs:hover, .project-input:hover {
+.education-inputs:hover,
+.experience-inputs:hover,
+.certifications-inputs:hover,
+.project-input:hover {
   border-color: var(--accent);
   background: rgba(102, 126, 234, 0.08);
-}
-
-.education-inputs input, 
-.experience-inputs input, 
-.experience-inputs textarea,
-.certifications-inputs input, 
-.certifications-inputs textarea,
-.project-input input, 
-.project-input textarea,
-.skills-grid input,
-.skills-grid textarea {
-  width: 100%;
-  max-width: none;
-  margin: 0 0 0.5rem 0;
 }
 
 .skills-grid {
@@ -175,6 +284,11 @@ textarea {
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
   margin-bottom: 1rem;
+}
+
+/* make grid children able to shrink */
+.skills-grid > * {
+  min-width: 0;
 }
 
 .skills-grid > div {
@@ -201,6 +315,7 @@ textarea {
   font-weight: 700;
 }
 
+/* contact info */
 .contact-info {
   display: flex;
   flex-wrap: wrap;
@@ -210,7 +325,9 @@ textarea {
   margin-bottom: 0;
 }
 
+/* allow contact items to wrap and shrink */
 .contact-info span {
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: 0.3rem;
@@ -228,6 +345,11 @@ textarea {
 .section {
   margin-bottom: 1.5rem;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: grab; /* visual hint that sections are draggable */
+}
+
+.section:active {
+  cursor: grabbing;
 }
 
 .preview-section .section h2 {
@@ -333,6 +455,7 @@ ul li ul {
   text-decoration: underline;
 }
 
+/* Fade in animations */
 .fade-in {
   opacity: 0;
   transform: translateY(20px);
@@ -345,6 +468,7 @@ ul li ul {
   transform: translateY(0);
 }
 
+/* Theme toggle button */
 #themeToggle {
   position: fixed;
   top: 20px;
@@ -367,6 +491,7 @@ ul li ul {
   box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
 }
 
+/* Footer actions */
 .footer-actions {
   display: flex;
   justify-content: center;
@@ -399,7 +524,6 @@ ul li ul {
 }
 
 .footer {
-
   background: rgba(26, 32, 44, 0.95);
   color: #f5f5f5;
   margin-top: 3rem;
@@ -417,9 +541,7 @@ ul li ul {
   text-decoration: underline;
 }
 
-
- 
-
+/* Character count */
 .char-count {
   font-size: 0.8rem;
   color: var(--muted);
@@ -427,6 +549,12 @@ ul li ul {
   margin-top: -0.3rem;
   text-align: right;
   padding-right: 0.7rem;
+}
+
+/* exceed color referenced in JS */
+.char-count.exceeded {
+  color: #ef4444;
+  font-weight: 600;
 }
 
 .error-message {
@@ -456,7 +584,8 @@ ul li ul {
     padding: 0 0.5rem;
   }
 
-  .form-section, .preview-section {
+  .form-section,
+  .preview-section {
     max-width: 100%;
     min-width: 0;
     padding: 1.5rem;
@@ -490,78 +619,136 @@ ul li ul {
     padding: 10px;
   }
 }
+
 /* back-to-top button section */
 .back-to-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: linear-gradient(135deg, #2563eb, #3b82f6);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            font-size: 24px;
-            cursor: pointer;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-        .back-to-top.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
+.back-to-top.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
 
-        .back-to-top:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-            background: linear-gradient(135deg,#1481ca);
-        }
+.back-to-top:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, #1481ca, #2563eb);
+}
 
-        .back-to-top:active {
-            transform: translateY(-1px);
-        }
+.back-to-top:active {
+  transform: translateY(-1px);
+}
 
-        /* Arrow icon */
-        .back-to-top::before {
-            content: '↑';
-            font-weight: bold;
-        }
+/* Arrow icon */
+.back-to-top::before {
+  content: "↑";
+  font-weight: bold;
+}
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .container {
-                margin: 10px;
-                border-radius: 0;
-            }
-            
-            .header, .section {
-                padding: 20px;
-            }
-            
-            .back-to-top {
-                bottom: 20px;
-                right: 20px;
-                width: 50px;
-                height: 50px;
-                font-size: 20px;
-            }
-        }
+/* Responsive tweaks for back-to-top container mention retained */
+@media (max-width: 768px) {
+  .container {
+    margin: 10px;
+    border-radius: 0;
+  }
+
+  .header,
+  .section {
+    padding: 20px;
+  }
+
+  .back-to-top {
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+}
+
+/* Print layout */
 @media print {
   .no-print {
     display: none;
   }
-  
+
   .preview-section {
     box-shadow: none;
     border: none;
     background: white;
+    color: #111827; /* ensure readable when printing */
   }
+
+  body {
+    background: white !important;
+  }
+}
+
+/* Accessibility improvements (no HTML/JS changes needed) */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid rgba(102, 126, 234, 0.4);
+  outline-offset: 2px;
+  border-radius: 12px;
+}
+
+/* Optional subtle hover for cards */
+.education-inputs:hover,
+.experience-inputs:hover,
+.certifications-inputs:hover,
+.project-input:hover {
+  box-shadow: 0 6px 18px rgba(102, 126, 234, 0.18);
+}
+
+/* Keep links inside preview readable and consistent */
+.preview-section a {
+  color: #4f46e5;
+}
+.preview-section a:hover {
+  text-decoration: underline;
+}
+
+/* Subtle divider for footer actions when printing disabled */
+.footer-actions.no-print {
+  border-top: 1px solid #e5e7eb;
+}
+
+/* Ensure long URLs wrap in preview (avoids overflow) */
+.preview-section .contact-info span,
+.preview-section .project-links a {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* Smooth transitions for theme toggling without layout shifts */
+.form-section,
+.preview-section,
+input,
+textarea,
+.add-btn,
+.download-btn {
+  transition: background-color 0.25s ease, color 0.25s ease,
+    border-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
 }
