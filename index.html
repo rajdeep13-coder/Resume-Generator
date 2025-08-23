@@ -9,13 +9,7 @@
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html-docx-js/0.4.0/html-docx.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link
-    href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
-    rel="stylesheet"
-  />
-
 </head>
 
 <body>
@@ -24,11 +18,29 @@
   </button>
  
   <div class="main-container fade-in ">
-    <!-- Form Section -->
     <div class="form-section ">
       <h2>Resume Details</h2>
 
-      <!-- Basic Info -->
+      <div class="form-group">
+        <label for="template-selector">Resume Template</label>
+        <select id="template-selector">
+          <option value="classic">Classic Single-Column</option>
+          <option value="modern">Modern Two-Column</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="page-limit-selector">Page Limit</label>
+        <select id="page-limit-selector">
+          <option value="unlimited">Unlimited Pages</option>
+          <option value="one-page">Fit to 1 Page</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="input-photo">Profile Photo</label>
+        <input type="file" id="input-photo" accept="image/*" />
+      </div>
       <div class="form-group">
         <label for="input-name">Full Name</label>
         <input type="text" id="input-name" placeholder="John Doe" autofocus />
@@ -56,24 +68,20 @@
       </div>
       
       <div class="form-group">
-  <label for="input-about">Professional Summary</label>
-  <textarea id="input-about" placeholder="Passionate developer with 3 years of experience..." maxlength="300"></textarea>
-  <span class="char-count" id="charCount-input-about"></span>
-  <span class="error-message" id="error-about"></span>
-
-  <!-- 💡 Grammar Improve Button -->
-  <button type="button" class="improve-btn" onclick="improveText('input-about')">
-    💡 GrammarCheck
-  </button>
-
-  <!-- 🌟 Suggestion Output -->
-  <div id="suggestion-input-about" class="suggestion-box"></div>
-</div>
+        <label for="title-about">Summary Section Title</label>
+        <input type="text" id="title-about" value="Professional Summary" />
+        <label for="input-about">Professional Summary</label>
+        <textarea id="input-about" placeholder="Passionate developer with 3 years of experience..." maxlength="300"></textarea>
+        <span class="char-count" id="charCount-input-about"></span>
+        <span class="error-message" id="error-about"></span>
+        <button type="button" class="improve-btn" onclick="improveText('input-about')">💡 GrammarCheck</button>
+        <div id="suggestion-input-about" class="suggestion-box"></div>
+      </div>
 
 
-      <!-- Education -->
       <div class="form-group fade-in">
-        <label>Education</label>
+        <label for="title-education">Education Section Title</label>
+        <input type="text" id="title-education" value="Education" />
         <div id="education-inputs">
           <div class="education-inputs fade-in">
             <input type="text" placeholder="Institution" class="education-institution" id="education-institution" />
@@ -86,36 +94,21 @@
         <button type="button" id="add-education" class="add-btn fade-in">+ Add Education</button>
       </div>
 
-      <!-- Skills Summary -->
       <div class="form-group fade-in">
-        <label>Skills Summary</label>
+        <label for="title-skills">Skills Section Title</label>
+        <input type="text" id="title-skills" value="Skills Summary" />
         <div class="skills-grid fade-in">
-          <div>
-            <label>Languages</label>
-            <textarea id="input-languages" placeholder="JavaScript, Python"></textarea>
-          </div>
-          <div>
-            <label>Frameworks</label>
-            <textarea id="input-frameworks" placeholder="React, Django"></textarea>
-          </div>
-          <div>
-            <label>Tools</label>
-            <textarea id="input-tools" placeholder="Git, VS Code"></textarea>
-          </div>
-          <div>
-            <label>Platforms</label>
-            <textarea id="input-platforms" placeholder="AWS, Firebase"></textarea>
-          </div>
-          <div>
-            <label>Soft Skills</label>
-            <textarea id="input-soft-skills" placeholder="Leadership, Communication"></textarea>
-          </div>
+          <div><label>Languages</label><textarea id="input-languages" placeholder="JavaScript, Python"></textarea></div>
+          <div><label>Frameworks</label><textarea id="input-frameworks" placeholder="React, Django"></textarea></div>
+          <div><label>Tools</label><textarea id="input-tools" placeholder="Git, VS Code"></textarea></div>
+          <div><label>Platforms</label><textarea id="input-platforms" placeholder="AWS, Firebase"></textarea></div>
+          <div><label>Soft Skills</label><textarea id="input-soft-skills" placeholder="Leadership, Communication"></textarea></div>
         </div>
       </div>
 
-      <!-- Work Experience -->
       <div class="form-group fade-in">
-        <label>Work Experience</label>
+        <label for="title-experience">Experience Section Title</label>
+        <input type="text" id="title-experience" value="Work Experience" />
         <div id="experience-inputs">
           <div class="experience-inputs fade-in">
             <input type="text" placeholder="Role" class="experience-role" id="experience-role" />
@@ -128,9 +121,9 @@
         <button type="button" id="add-experience" class="add-btn fade-in">+ Add Experience</button>
       </div>
 
-      <!-- Certificates -->
       <div class="form-group fade-in">
-        <label>Certificates</label>
+        <label for="title-certificates">Certificates Section Title</label>
+        <input type="text" id="title-certificates" value="Certificates" />
         <div id="certifications-inputs">
           <div class="certifications-inputs fade-in">
             <input type="text" placeholder="Certificate Name" class="certificate-title" id="certificate-title" />
@@ -142,9 +135,9 @@
         <button type="button" id="add-certificate" class="add-btn fade-in">+ Add Certificate</button>
       </div>
 
-      <!-- Projects -->
       <div class="form-group fade-in">
-        <label>Projects</label>
+        <label for="title-projects">Projects Section Title</label>
+        <input type="text" id="title-projects" value="Projects" />
         <div id="projects-inputs">
           <div class="project-input ">
             <input type="text" placeholder="Project Title" class="project-title" id="project-title" />
@@ -154,123 +147,117 @@
         </div>
         <button type="button" id="add-project" class="add-btn fade-in">+ Add Project</button>
       </div>
-
+      
+      <div class="form-group action-buttons fade-in">
+        <div id="controls">
+          <button id="undoBtn" class="tool-btn">↩️ Undo</button>
+          <button id="redoBtn" class="tool-btn">↪️ Redo</button>
+        </div>
+        <div class="footer-actions">
+            <button class="tool-btn" onclick="clearAndReload()">🔄 Refresh</button>
+            <button class="tool-btn" onclick="autofillResume()">✍️ Autofill</button>
+        </div>
+      </div>
+      
       <div class="form-group fade-in">
         <button type="button" id="downloadBtn" class="download-btn fade-in">Download PDF</button>
         <button type="button" id="downloadDocxBtn" class="download-btn fade-in">Download Word (.docx)</button>
-
+      </div>
+      
+      <div class="form-group fade-in">
+        <button type="button" class="download-btn" id="saveDataBtn">Save Data (JSON)</button>
+        <label for="loadDataInput" class="download-btn" style="display: inline-block; text-align: center;">Load Data (JSON)</label>
+        <input type="file" id="loadDataInput" accept=".json" style="display: none;" />
       </div>
     </div>
 
      <div class="preview-section fade-in" id="resumeContent">
-      <!-- Optional: keep control buttons as comment -->
-      <!--
-      <div id="controls">
-        <button id="undoBtn">Undo</button>
-        <button id="redoBtn">Redo</button>
+      <div id="resume-page">
+        <div id="resume-sections">
+          <div class="header">
+            <img id="preview-photo" src="" alt="Profile Photo" class="hidden" />
+            <h1 id="preview-name">John Doe</h1>
+            <div class="contact-info fade-in" id="preview-contact">
+              <span id="preview-email">john@example.com</span>
+              <span id="preview-phone">+91-9876543210</span>
+              <span id="preview-linkedin"><a href="#" id="linkedin-link" target="_blank">LinkedIn</a></span>
+              <span id="preview-github"><a href="#" id="github-link" target="_blank">GitHub</a></span>
+            </div>
+          </div>
+
+          <div class="section fade-in" draggable="true" data-id="summary">
+            <h2 id="preview-title-about">Professional Summary</h2>
+            <p id="preview-about">Passionate developer with 3 years of experience...</p>
+          </div>
+
+          <div class="section fade-in" draggable="true" data-id="Education">
+            <h2 id="preview-title-education">Education</h2>
+            <ul id="preview-education">
+              <li><strong>IIT Bombay</strong>, B.Tech in Computer Science<br>GPA: 9.2 | Mumbai, India | 2018-2022</li>
+            </ul>
+          </div>
+
+          <div class="section fade-in" draggable="true" data-id="skills-summary">
+            <h2 id="preview-title-skills">Skills Summary</h2>
+            <div class="skills-grid fade-in">
+              <div><strong>Languages:</strong> <span id="preview-languages">JavaScript, Python</span></div>
+              <div><strong>Frameworks:</strong> <span id="preview-frameworks">React, Django</span></div>
+              <div><strong>Tools:</strong> <span id="preview-tools">Git, VS Code</span></div>
+              <div><strong>Platforms:</strong> <span id="preview-platforms">AWS, Firebase</span></div>
+              <div><strong>Soft Skills:</strong> <span id="preview-soft-skills">Leadership, Communication</span></div>
+            </div>
+          </div>
+
+          <div class="section fade-in" draggable="true" data-id="experience">
+            <h2 id="preview-title-experience">Work Experience</h2>
+            <ul id="preview-experience">
+              <li>
+                <strong>Software Engineer</strong>, <a href="https://google.com" target="_blank">Google</a> | 2022-Present
+                <ul>
+                  <li><strong>Built:</strong> Scalable backend services using Node.js</li>
+                  <li><strong>Optimized:</strong> API response times by 40%</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+
+          <div class="section fade-in" draggable="true" data-id="Certificates">
+            <h2 id="preview-title-certificates">Certificates</h2>
+            <ul id="preview-cert">
+              <li>
+                <strong>AWS Certified Developer</strong> (AWS) | 2023
+                <ul>
+                  <li>Demonstrated proficiency in cloud architecture</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+
+          <div class="section fade-in" draggable="true" data-id="Projects">
+            <h2 id="preview-title-projects">Projects</h2>
+            <ul id="preview-projects">
+              <li>
+                <strong>Resume Generator</strong>
+                <div class="project-links fade-in">
+                  <a href="https://github.com/john/resume-generator" target="_blank">LINK</a>
+                </div>
+                <ul>
+                  <li><strong>Built:</strong> Full-stack resume builder using React</li>
+                  <li><strong>Integrated:</strong> PDF export feature</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div> 
       </div>
-      -->
-      <div id="resume-sections">
-        <div class="header">
-          <h1 id="preview-name">John Doe</h1>
-          <div class="contact-info fade-in" id="preview-contact">
-            <span id="preview-email">john@example.com</span>
-            <span id="preview-phone">+91-9876543210</span>
-            <span id="preview-linkedin"><a href="#" id="linkedin-link" target="_blank">LinkedIn</a></span>
-            <span id="preview-github"><a href="#" id="github-link" target="_blank">GitHub</a></span>
-
-          </div>
-        </div>
-
-        <div class="section fade-in" draggable="true" data-id="summary">
-          <h2>Professional Summary</h2>
-          <p id="preview-about">Passionate developer with 3 years of experience...</p>
-        </div>
-
-        <div class="section fade-in" draggable="true" data-id="Education">
-          <h2>Education</h2>
-          <ul id="preview-education">
-            <li><strong>IIT Bombay</strong>, B.Tech in Computer Science<br>GPA: 9.2 | Mumbai, India | 2018-2022</li>
-          </ul>
-        </div>
-
-        <div class="section fade-in" draggable="true" data-id="skills-summary">
-          <h2>Skills Summary</h2>
-          <div class="skills-grid fade-in">
-            <div><strong>Languages:</strong> <span id="preview-languages">JavaScript, Python</span></div>
-            <div><strong>Frameworks:</strong> <span id="preview-frameworks">React, Django</span></div>
-            <div><strong>Tools:</strong> <span id="preview-tools">Git, VS Code</span></div>
-            <div><strong>Platforms:</strong> <span id="preview-platforms">AWS, Firebase</span></div>
-            <div><strong>Soft Skills:</strong> <span id="preview-soft-skills">Leadership, Communication</span></div>
-          </div>
-        </div>
-
-        <div class="section fade-in" draggable="true" data-id="experience">
-          <h2>Work Experience</h2>
-          <ul id="preview-experience">
-            <li>
-              <strong>Software Engineer</strong>, <a href="https://google.com" target="_blank">Google</a> | 2022-Present
-              <ul>
-                <li><strong>Built:</strong> Scalable backend services using Node.js</li>
-                <li><strong>Optimized:</strong> API response times by 40%</li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-
-        <div class="section fade-in" draggable="true" data-id="Certificates">
-          <h2>Certificates</h2>
-          <ul id="preview-cert">
-            <li>
-              <strong>AWS Certified Developer</strong> (AWS) | 2023
-              <ul>
-                <li>Demonstrated proficiency in cloud architecture</li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-
-        <div class="section fade-in" draggable="true" data-id="Projects">
-          <h2>Projects</h2>
-          <ul id="preview-projects">
-            <li>
-              <strong>Resume Generator</strong>
-              <div class="project-links fade-in">
-                <a href="https://github.com/john/resume-generator" target="_blank">LINK</a>
-              </div>
-              <ul>
-                <li><strong>Built:</strong> Full-stack resume builder using React</li>
-                <li><strong>Integrated:</strong> PDF export feature</li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-        
-
-        
-      </div> <!-- /resume-sections -->
-      <div class="footer-actions no-print">
-          <button class="btn-refresh" onclick="clearAndReload()">🔄 Refresh Resume</button>
-          <br />
-          <button class="btn-autofill" onclick="autofillResume()">✍️ Autofill Resume</button>
-        </div>
-    </div> <!-- /preview-section -->
-  </div> <!-- /main-container -->
-  <!-- back-to-top button -->
- <button class="back-to-top" id="backToTop" title="Back to Top"></button>
+    </div> 
+  </div> 
+  
+  <button class="back-to-top" id="backToTop" title="Back to Top"></button>
 
   <footer style="margin-top: 2rem; padding: 1rem 0; text-align: center; font-size: 0.9rem;" class="footer">
-  <div class="foot">
-    <p class="footer-text">&copy; 2025. All rights reserved.</p>
-    <p class="footer-text">
-      Built by 
-      <a href="https://github.com/rajdeep13-coder" target="_blank" class="footer-link">Rajdeep Paul</a>
-    </p>
-  </div>
-</footer>
-
-
-
+    <p>&copy; 2025. All rights reserved. Built by <a href="https://github.com/rajdeep13-coder" target="_blank" class="footer-link">Rajdeep Paul</a></p>
+  </footer>
   <script src="script.js" defer></script>
 </body>
 </html>

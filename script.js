@@ -1,4 +1,26 @@
-// Live Preview Bindings
+// --- STATE MANAGEMENT (for Undo/Redo) ---
+let undoStack = [];
+let redoStack = [];
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Bindings for all form fields
+    bindInputToPreview("input-name", "preview-name");
+    bindInputToPreview("input-email", "preview-email");
+    
+    
+    setupCharacterCounter("input-about");
+    initializeDynamicSections();
+    setupValidationListeners();
+    initializeFeatures();
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add("show");
+        });
+    }, { threshold: 0.1 });
+    document.querySelectorAll(".fade-in").forEach(el => observer.observe(el));
+});
+// --- LIVE PREVIEW BINDINGS & HELPERS ---
 function bindInputToPreview(inputId, previewId, isLink = false) {
     const input = document.getElementById(inputId);
     const preview = document.getElementById(previewId);
@@ -12,19 +34,14 @@ function bindInputToPreview(inputId, previewId, isLink = false) {
     });
 }
 
-bindInputToPreview("input-name", "preview-name");
-bindInputToPreview("input-email", "preview-email");
-bindInputToPreview("input-phone", "preview-phone");
-bindInputToPreview("input-linkedin", "preview-linkedin", true);
-bindInputToPreview("input-github", "preview-github", true);
-bindInputToPreview("input-about", "preview-about");
-bindInputToPreview("input-languages", "preview-languages");
-bindInputToPreview("input-frameworks", "preview-frameworks");
-bindInputToPreview("input-tools", "preview-tools");
-bindInputToPreview("input-platforms", "preview-platforms");
-bindInputToPreview("input-soft-skills", "preview-soft-skills");
+function bindTitle(inputId, previewId) {
+    const input = document.getElementById(inputId);
+    const preview = document.getElementById(previewId);
+    input.addEventListener('input', () => {
+        preview.textContent = input.value;
+    });
+}
 
-// handles live character counting
 function setupCharacterCounter(inputId) {
     const inputElement = document.getElementById(inputId);
     const charCountElement = document.getElementById(`charCount-${inputId}`);
@@ -43,9 +60,51 @@ function setupCharacterCounter(inputId) {
         inputElement.addEventListener('input', updateCount);
     }
 }
-setupCharacterCounter("input-about");
 
-// Dynamic Section Helpers
+// --- INITIALIZE BINDINGS ON LOAD ---
+document.addEventListener("DOMContentLoaded", () => {
+    // Basic Info
+    bindInputToPreview("input-name", "preview-name");
+    bindInputToPreview("input-email", "preview-email");
+    bindInputToPreview("input-phone", "preview-phone");
+    bindInputToPreview("input-linkedin", "preview-linkedin", true);
+    bindInputToPreview("input-github", "preview-github", true);
+    bindInputToPreview("input-about", "preview-about");
+    // Skills
+    bindInputToPreview("input-languages", "preview-languages");
+    bindInputToPreview("input-frameworks", "preview-frameworks");
+    bindInputToPreview("input-tools", "preview-tools");
+    bindInputToPreview("input-platforms", "preview-platforms");
+    bindInputToPreview("input-soft-skills", "preview-soft-skills");
+    // Custom Section Titles
+    bindTitle("title-about", "preview-title-about");
+    bindTitle("title-education", "preview-title-education");
+    bindTitle("title-skills", "preview-title-skills");
+    bindTitle("title-experience", "preview-title-experience");
+    bindTitle("title-certificates", "preview-title-certificates");
+    bindTitle("title-projects", "preview-title-projects");
+    
+    setupCharacterCounter("input-about");
+    initializeDynamicSections();
+    setupValidationListeners();
+    initializeFeatures();
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("show");
+            }
+        });
+    }, {
+        threshold: 0.1
+    });
+
+    document.querySelectorAll(".fade-in").forEach(el => {
+        observer.observe(el);
+    });
+});
+
+// --- DYNAMIC SECTION MANAGEMENT ---
 function createRemoveBtn() {
     const btn = document.createElement("button");
     btn.className = "remove-btn";
@@ -62,8 +121,8 @@ function handleAddSection(buttonId, containerId, inputClass, previewContainerId,
         const original = container.querySelector(`.${inputClass}`);
         const clone = original.cloneNode(true);
         clone.querySelectorAll("input, textarea").forEach(input => input.value = "");
+        
         const removeBtn = createRemoveBtn();
-
         removeBtn.addEventListener("click", () => {
             clone.remove();
             updatePreviewList(container, previewContainer, inputClass, generateHTML);
@@ -88,10 +147,9 @@ function updatePreviewList(container, previewContainer, inputClass, generateHTML
     });
 }
 
-// Education Section
-handleAddSection(
-    "add-education", "education-inputs", "education-inputs", "preview-education",
-    (entry) => {
+function initializeDynamicSections() {
+    // Education Section
+    handleAddSection("add-education", "education-inputs", "education-inputs", "preview-education", (entry) => {
         const inst = entry.querySelector(".education-institution").value;
         const deg = entry.querySelector(".education-degree").value;
         const gpa = entry.querySelector(".education-gpa").value;
@@ -101,503 +159,399 @@ handleAddSection(
             return `<li><strong>${inst}</strong>, ${deg}<br>GPA: ${gpa} | ${loc} | ${dates}</li>`;
         }
         return "";
-    }
-);
+    });
 
-// Experience Section
-handleAddSection(
-    "add-experience", "experience-inputs", "experience-inputs", "preview-experience",
-    (entry) => {
+    // Experience Section
+    handleAddSection("add-experience", "experience-inputs", "experience-inputs", "preview-experience", (entry) => {
         const role = entry.querySelector(".experience-role").value;
         const comp = entry.querySelector(".experience-company").value;
         const link = entry.querySelector(".experience-link").value;
         const dates = entry.querySelector(".experience-dates").value;
         const desc = entry.querySelector(".experience-desc").value.trim().split("\n").filter(l => l).map(l => `<li>${l}</li>`).join("");
-
         if (role || comp || dates || desc) {
-            return `
-                <li>
-                    <strong>${role}</strong>, <a href="${link}" target="_blank">${comp}</a> | ${dates}
-                    <ul>${desc}</ul>
-                </li>
-            `;
+            return `<li><strong>${role}</strong>, <a href="${link}" target="_blank">${comp}</a> | ${dates}<ul>${desc}</ul></li>`;
         }
         return "";
-    }
-);
+    });
 
-// Certificates Section
-handleAddSection(
-    "add-certificate", "certifications-inputs", "certifications-inputs", "preview-cert",
-    (entry) => {
+    // Certificates Section
+    handleAddSection("add-certificate", "certifications-inputs", "certifications-inputs", "preview-cert", (entry) => {
         const title = entry.querySelector(".certificate-title").value;
         const issuer = entry.querySelector(".certificate-issuer").value;
         const date = entry.querySelector(".certificate-date").value;
         const desc = entry.querySelector(".certificate-desc").value.trim().split("\n").filter(l => l).map(l => `<li>${l}</li>`).join("");
-
         if (title || issuer || date || desc) {
-            return `
-                <li>
-                    <strong>${title}</strong> (${issuer}) | ${date}
-                    <ul>${desc}</ul>
-                </li>
-            `;
+            return `<li><strong>${title}</strong> (${issuer}) | ${date}<ul>${desc}</ul></li>`;
         }
         return "";
-    }
-);
+    });
 
-// Projects Section
-handleAddSection(
-    "add-project", "projects-inputs", "project-input", "preview-projects",
-    (entry) => {
+    // Projects Section
+    handleAddSection("add-project", "projects-inputs", "project-input", "preview-projects", (entry) => {
         const title = entry.querySelector(".project-title").value;
         const link = entry.querySelector(".project-link").value;
         const desc = entry.querySelector(".project-desc").value.trim().split("\n").filter(l => l).map(l => `<li>${l}</li>`).join("");
-
         if (title || link || desc) {
-            return `
-                <li>
-                    <strong>${title}</strong>
-                    <div class="project-links"><a href="${link}" target="_blank">LINK</a></div>
-                    <ul>${desc}</ul>
-                </li>
-            `;
+            return `<li><strong>${title}</strong><div class="project-links"><a href="${link}" target="_blank">LINK</a></div><ul>${desc}</ul></li>`;
         }
         return "";
-    }
-);
-
-
-// --- GLOBAL FUNCTIONS FOR VALIDATION ---
-function clearErrors() {
-    document.querySelectorAll('.error-message').forEach(span => {
-        span.textContent = '';
     });
 }
+
+// --- FORM VALIDATION ---
 function clearErrors() {
-    const errorFields = document.querySelectorAll(".error-message");
-    errorFields.forEach(field => field.textContent = "");
+    document.querySelectorAll('.error-message').forEach(span => span.textContent = '');
+}
+
+function validateField(input, errorEl, validationFn, message) {
+    if (!validationFn(input.value.trim())) {
+        errorEl.textContent = message;
+        return false;
+    }
+    errorEl.textContent = '';
+    return true;
 }
 
 function validateForm() {
     clearErrors();
-
     let isValid = true;
-    let incompleteFields = [];
+    
+    isValid &= validateField(document.getElementById('input-name'), document.getElementById('error-name'), val => val.length >= 3, 'Full Name must be at least 3 characters.');
+    isValid &= validateField(document.getElementById('input-email'), document.getElementById('error-email'), val => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val), 'Please enter a valid email address.');
+    isValid &= validateField(document.getElementById('input-phone'), document.getElementById('error-phone'), val => /^\+?[0-9\s-]{10,}$/.test(val), 'Please enter a valid phone number.');
+    isValid &= validateField(document.getElementById('input-linkedin'), document.getElementById('error-linkedin'), val => !val || /^(https?:\/\/(www\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?)$/i.test(val), 'Please enter a valid LinkedIn URL.');
+    isValid &= validateField(document.getElementById('input-github'), document.getElementById('error-github'), val => !val || /^(https?:\/\/(www\.)?github\.com\/[a-zA-Z0-9_-]+\/?)$/i.test(val), 'Please enter a valid GitHub URL.');
+    isValid &= validateField(document.getElementById('input-about'), document.getElementById('error-about'), val => val.length >= 50, 'Professional Summary should be at least 50 characters.');
 
-    const nameInput = document.getElementById('input-name');
-    if (nameInput.value.trim().length < 3) {
-        document.getElementById('error-name').textContent = 'Full Name must be at least 3 characters.';
-        isValid = false;
-        incompleteFields.push("Full Name");
+    if (!isValid) {
+      alert("Please correct the highlighted errors in the form before downloading your resume.");
     }
-
-    const emailInput = document.getElementById('input-email');
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(emailInput.value.trim())) {
-        document.getElementById('error-email').textContent = 'Please enter a valid email address.';
-        isValid = false;
-        incompleteFields.push("Email");
-    }
-
-    const phoneInput = document.getElementById('input-phone');
-    const phonePattern = /^\+?[0-9\s-]{10,}$/;
-    if (!phonePattern.test(phoneInput.value.trim())) {
-        document.getElementById('error-phone').textContent = 'Please enter a valid phone number.';
-        isValid = false;
-        incompleteFields.push("Phone");
-    }
-
-    const linkedinInput = document.getElementById('input-linkedin');
-    const linkedinPattern = /^(https?:\/\/(www\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?)$/i;
-    if (linkedinInput.value.trim() && !linkedinPattern.test(linkedinInput.value.trim())) {
-        document.getElementById('error-linkedin').textContent = 'Please enter a valid LinkedIn URL.';
-        isValid = false;
-        incompleteFields.push("LinkedIn");
-    }
-
-    const githubInput = document.getElementById('input-github');
-    const githubPattern = /^(https?:\/\/(www\.)?github\.com\/[a-zA-Z0-9_-]+\/?)$/i;
-    if (githubInput.value.trim() && !githubPattern.test(githubInput.value.trim())) {
-        document.getElementById('error-github').textContent = 'Please enter a valid GitHub URL.';
-        isValid = false;
-        incompleteFields.push("GitHub");
-    }
-
-    const aboutInput = document.getElementById('input-about');
-    if (aboutInput.value.trim().length < 50) {
-        document.getElementById('error-about').textContent = 'Professional Summary should be at least 50 characters.';
-        isValid = false;
-        incompleteFields.push("Professional Summary");
-    }
-
-    // If all good, return true
-    if (isValid) return true;
-
-    // Else ask user if they want to proceed anyway
-    return confirm("Please correct the highlighted errors in the form before downloading your resume.");
+    return !!isValid;
 }
 
+function setupValidationListeners() {
+    document.getElementById('input-name').addEventListener('blur', (e) => validateField(e.target, document.getElementById('error-name'), val => val.length >= 3, 'Full Name must be at least 3 characters.'));
+    document.getElementById('input-email').addEventListener('blur', (e) => validateField(e.target, document.getElementById('error-email'), val => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val), 'Please enter a valid email address.'));
+    document.getElementById('input-phone').addEventListener('blur', (e) => validateField(e.target, document.getElementById('error-phone'), val => /^\+?[0-9\s-]{10,}$/.test(val), 'Please enter a valid phone number.'));
+    document.getElementById('input-linkedin').addEventListener('blur', (e) => validateField(e.target, document.getElementById('error-linkedin'), val => !val || /^(https?:\/\/(www\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?)$/i.test(val), 'Please enter a valid LinkedIn URL.'));
+    document.getElementById('input-github').addEventListener('blur', (e) => validateField(e.target, document.getElementById('error-github'), val => !val || /^(https?:\/\/(www\.)?github\.com\/[a-zA-Z0-9_-]+\/?)$/i.test(val), 'Please enter a valid GitHub URL.'));
+    document.getElementById('input-about').addEventListener('blur', (e) => validateField(e.target, document.getElementById('error-about'), val => val.length >= 50, 'Professional Summary should be at least 50 characters.'));
+}
 
+// --- FEATURE INITIALIZATION ---
+function initializeFeatures() {
+    // PDF Download
+    document.getElementById("downloadBtn").addEventListener("click", () => {
+        if (!validateForm()) return;
 
-document.getElementById("downloadBtn").addEventListener("click", () => {
-    if (!validateForm()) return;
+        // Hide non-printable elements before generating PDF
+        const nonPrintable = document.querySelectorAll('.no-print');
+        nonPrintable.forEach(el => el.style.display = 'none');
 
-// --- PDF Download Button ---
+        const content = document.querySelector('#resumeContent');
+        const options = { 
+            margin: 0.5, 
+            filename: 'resume.pdf', 
+            image: { type: 'jpeg', quality: 0.98 }, 
+            html2canvas: { scale: 2 }, 
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+            pagebreak: { mode: ['css', 'legacy'] } // Better page break handling
+        };
 
-    const content = document.querySelector('#resume-sections');
-    const options = {
-        margin: 0.5,
-        filename: 'resume.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-    };
-    html2pdf().from(content).set(options).save();
-
-})
-
-// --- DOCX Download Button ---
-document.getElementById("downloadDocxBtn").addEventListener("click", () => {
-    if (!validateForm()) return;
-
-    const resumeContent = document.querySelector('#resume-sections').cloneNode(true);
-    const preHtml = `
-        <html>
-        <head><meta charset='utf-8'></head>
-        <body>`;
-    const postHtml = "</body></html>";
-    const html = preHtml + resumeContent.innerHTML + postHtml;
-
-    const blob = new Blob(['\ufeff', html], {
-        type: 'application/msword'
-    });
-
-    const url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(html);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = 'resume.doc';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-});
-
-
-// --- DOMContentLoaded Listener for fade-in animations ---
-document.addEventListener("DOMContentLoaded", () => {
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add("show");
-                observer.unobserve(entry.target); // Animate only once
-            }
+        html2pdf().from(content).set(options).save().then(() => {
+            // Restore non-printable elements after PDF is saved
+            nonPrintable.forEach(el => el.style.display = ''); 
         });
-    }, {
-        threshold: 0.1
     });
 
-    document.querySelectorAll(".fade-in").forEach(el => {
-        observer.observe(el);
+    // DOCX Download
+    document.getElementById("downloadDocxBtn").addEventListener("click", () => {
+        if (!validateForm()) return;
+        // Clone the content to avoid modifying the live preview
+        const resumeContent = document.querySelector('#resume-sections').cloneNode(true);
+        // Remove non-printable elements from the clone
+        resumeContent.querySelectorAll('.no-print').forEach(el => el.remove());
+        
+        const content = resumeContent.innerHTML;
+        const html = `<html><head><meta charset='utf-8'></head><body>${content}</body></html>`;
+        const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+        saveAs(blob, 'resume.docx');
     });
-});
-window.history.scrollRestoration = "manual";
-window.scrollTo(0, 0);
-if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    // Run observer code if motion is not reduced
-}
-
-// --- Theme Toggle functionality ---
-const toggle = document.getElementById('themeToggle');
-const icon = toggle.querySelector('i');
-
-// Check localStorage on load
-window.addEventListener('DOMContentLoaded', () => {
-    const savedTheme = localStorage.getItem('theme');
-
-    if (savedTheme === 'dark') {
+    
+    // Theme Toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const icon = themeToggle.querySelector('i');
+    if (localStorage.getItem('theme') === 'dark') {
         document.body.classList.add('dark');
-        icon.classList.remove('fa-sun'); // Ensure sun is not there
-        icon.classList.add('fa-moon');   // Add moon for dark mode
-        icon.style.color='white';
-    } else {
-        document.body.classList.remove('dark'); // Ensure light mode
-        icon.classList.remove('fa-moon'); // Ensure moon is not there
-        icon.classList.add('fa-sun');    // Add sun for light mode
-        icon.style.color='#FFB300';
+        icon.classList.replace('fa-sun', 'fa-moon');
     }
-});
+    themeToggle.addEventListener('click', () => {
+        const isDark = document.body.classList.toggle('dark');
+        icon.classList.toggle('fa-sun', !isDark);
+        icon.classList.toggle('fa-moon', isDark);
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
 
-toggle.addEventListener('click', () => {
-    const isDark = document.body.classList.toggle('dark');
+    // Back to Top Button
+    const backToTopButton = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+        backToTopButton.classList.toggle('show', window.pageYOffset > 300);
+    });
+    backToTopButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-    if (isDark) {
-        icon.classList.remove('fa-sun');   // Remove sun
-        icon.classList.add('fa-moon');     // Add moon for dark mode
-        icon.style.color = 'white';
-        localStorage.setItem('theme', 'dark');
-    } else {
-        icon.classList.remove('fa-moon');  // Remove moon
-        icon.classList.add('fa-sun');      // Add sun for light mode
-        icon.style.color = '#FFB300';
-        localStorage.setItem('theme', 'light');
-    }
-});
-// back to top section
-const backToTopButton = document.getElementById('backToTop');
-
-        // Show/hide button based on scroll position
-        window.addEventListener('scroll', function() {
-            if (window.pageYOffset > 300) {
-                backToTopButton.classList.add('show');
-            } else {
-                backToTopButton.classList.remove('show');
-            }
-        });
-
-        // Smooth scroll to top when button is clicked
-        backToTopButton.addEventListener('click', function() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-
-        // Optional: Add keyboard support (Enter or Space key)
-        backToTopButton.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            }
-        });
-// --- Draggable Resume Section Reordering ---
-document.addEventListener("DOMContentLoaded", () => {
+    // Draggable Sections & Undo/Redo
     const container = document.getElementById("resume-sections");
     let draggedItem = null;
-
-    container.addEventListener("dragstart", function (e) {
+    container.addEventListener("dragstart", e => {
         if (e.target.classList.contains("section")) {
             draggedItem = e.target;
-            e.target.classList.add("dragging");
+            setTimeout(() => e.target.classList.add("dragging"), 0);
         }
     });
-
-    container.addEventListener("dragend", function (e) {
-        if (draggedItem) {
+    container.addEventListener("dragend", e => {
+        if(draggedItem) {
             draggedItem.classList.remove("dragging");
-            saveCurrentOrder(); // Save new order
+            saveOrder();
             draggedItem = null;
         }
     });
-
-    container.addEventListener("dragover", function (e) {
+    container.addEventListener("dragover", e => {
         e.preventDefault();
         const afterElement = getDragAfterElement(container, e.clientY);
-        if (draggedItem && afterElement == null) {
-            container.appendChild(draggedItem);
-        } else if (draggedItem && afterElement) {
-            container.insertBefore(draggedItem, afterElement);
+        if (draggedItem) {
+            if (afterElement == null) container.appendChild(draggedItem);
+            else container.insertBefore(draggedItem, afterElement);
         }
     });
-
-    function getDragAfterElement(container, y) {
-        const draggableElements = [...container.querySelectorAll(".section:not(.dragging)")];
-        return draggableElements.reduce((closest, child) => {
-            const box = child.getBoundingClientRect();
-            const offset = y - box.top - box.height / 2;
-            if (offset < 0 && offset > closest.offset) {
-                return { offset: offset, element: child };
-            } else {
-                return closest;
-            }
-        }, { offset: Number.NEGATIVE_INFINITY }).element;
-    }
-});
-
-
-function bindInputToPreview(inputId, previewId, isLink = false) {
-    const input = document.getElementById(inputId);
-    const preview = document.getElementById(previewId);
-
-    input.addEventListener("input", () => {
-        const value = input.value.trim();
-
-        if (previewId === 'preview-email') {
-            preview.textContent = value ? `Email: ${value}` : '';
-        } else if (previewId === 'preview-phone') {
-            preview.textContent = value ? `Phone: ${value}` : '';
-        } else if (isLink && value) {
-            let label = 'Link';
-            if (previewId === 'preview-linkedin') label = 'LinkedIn';
-            else if (previewId === 'preview-github') label = 'GitHub';
-
-            preview.innerHTML = `<a href="${value}" target="_blank">${label}</a>`;
+    const pageLimitSelector = document.getElementById('page-limit-selector');
+    const resumePage = document.getElementById('resume-page');
+    
+    function checkPageOverflow() {
+        if (pageLimitSelector.value === 'one-page') {
+            const isOverflowing = resumePage.scrollHeight > resumePage.clientHeight;
+            resumePage.classList.toggle('overflowing', isOverflowing);
         } else {
-            preview.textContent = value;
+            resumePage.classList.remove('overflowing');
+        }
+    }
+    
+    pageLimitSelector.addEventListener('change', () => {
+        resumePage.classList.toggle('one-page-limit', pageLimitSelector.value === 'one-page');
+        checkPageOverflow();
+    });
+
+    // Re-check overflow whenever the content might change
+    const formSection = document.querySelector('.form-section');
+    formSection.addEventListener('input', checkPageOverflow);
+    formSection.addEventListener('click', (e) => {
+        if (e.target.classList.contains('add-btn') || e.target.classList.contains('remove-btn')) {
+            // Use a small timeout to allow the DOM to update before checking height
+            setTimeout(checkPageOverflow, 100);
         }
     });
+    // Photo Uploader
+    document.getElementById('input-photo').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const photoPreview = document.getElementById('preview-photo');
+                photoPreview.src = e.target.result;
+                photoPreview.classList.remove('hidden');
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Template Selector
+    document.getElementById('template-selector').addEventListener('change', function(event) {
+        const previewSection = document.getElementById('resumeContent');
+        previewSection.classList.remove('template-classic', 'template-modern');
+        if (event.target.value === 'modern') {
+            previewSection.classList.add('template-modern');
+        } else {
+            previewSection.classList.add('template-classic');
+        }
+    });
+
+    // Save/Load Data
+    document.getElementById('saveDataBtn').addEventListener('click', saveData);
+    document.getElementById('loadDataInput').addEventListener('change', loadData);
 }
 
-const scrollUpBtn = document.querySelector(".scroll-up-btn");
+function getDragAfterElement(container, y) {
+    const draggableElements = [...container.querySelectorAll(".section:not(.dragging)")];
+    return draggableElements.reduce((closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
+        if (offset < 0 && offset > closest.offset) {
+            return { offset: offset, element: child };
+        } else {
+            return closest;
+        }
+    }, { offset: Number.NEGATIVE_INFINITY }).element;
+}
 
-scrollUpBtn.addEventListener("click", () => {
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-});
-
-/*  // Undo Button
-  document.getElementById("undoBtn").addEventListener("click", () => {
+// --- UNDO/REDO LOGIC ---
+function saveOrder() {
+    const currentOrder = [...document.querySelectorAll('#resume-sections .section')].map(el => el.dataset.id);
+    undoStack.push(currentOrder);
+    redoStack = []; // Clear redo stack on new action
+}
+document.getElementById('undoBtn').addEventListener('click', () => {
     if (undoStack.length > 1) {
-      const current = undoStack.pop();
-      redoStack.push(current);
-      restoreOrder(undoStack[undoStack.length - 1]);
+        redoStack.push(undoStack.pop());
+        const lastOrder = undoStack[undoStack.length - 1];
+        restoreOrder(lastOrder);
     }
-  });
-
-  // Redo Button
-  document.getElementById("redoBtn").addEventListener("click", () => {
-    if (redoStack.length > 0) {
-      const next = redoStack.pop();
-      undoStack.push(next);
-      restoreOrder(next);
-    }
-  }); */
-
-// Storing Inputs to SessionStorage
-function saveToSessionStorage(id) {
-    const input = document.getElementById(id)
-    if (input) {
-        input.addEventListener("input", () => {
-            sessionStorage.setItem(id, input.value)
-        })
-    }
-}
-
-function loadFromSessionStorage(id) {
-    const input = document.getElementById(id)
-    const storedInput = sessionStorage.getItem(id)
-
-    if (input && (storedInput != null)) {
-        input.value = storedInput
-        input.dispatchEvent(new Event("input"))
-    }
-
-}
-document.addEventListener("DOMContentLoaded", () => {
-    const inputIds = [
-        "input-name",
-        "input-email",
-        "input-phone",
-        "input-linkedin",
-        "input-github",
-        "input-about",
-        "input-languages",
-        "input-frameworks",
-        "input-tools",
-        "input-platforms",
-        "input-soft-skills",
-        "education-institution",
-        "education-degree",
-        "education-gpa",
-        "education-location",
-        "education-dates",
-        "experience-role",
-        "experience-company",
-        "experience-link",
-        "experience-dates",
-        "certificate-title",
-        "certificate-issuer",
-        "certificate-date",
-        "project-title",
-        "project-link",
-        "experience-desc",
-        "certificate-desc",
-        "project-desc",
-    ];
-
-    const textareaClass = [
-        "",
-    ]
-
-    inputIds.forEach(id => {
-        saveToSessionStorage(id); 
-        loadFromSessionStorage(id); 
-    });
 });
+document.getElementById('redoBtn').addEventListener('click', () => {
+    if (redoStack.length > 0) {
+        const nextOrder = redoStack.pop();
+        undoStack.push(nextOrder);
+        restoreOrder(nextOrder);
+    }
+});
+function restoreOrder(order) {
+    const container = document.getElementById('resume-sections');
+    const sections = new Map([...container.querySelectorAll('.section')].map(el => [el.dataset.id, el]));
+    order.forEach(id => container.appendChild(sections.get(id)));
+}
 
+// --- SAVE/LOAD DATA ---
+function saveData() {
+    const data = {
+        inputs: {},
+        textareas: {},
+        dynamic: {}
+    };
+    // Save simple inputs and textareas
+    document.querySelectorAll('.form-section input[type="text"], .form-section input[type="email"], .form-section input[type="tel"], .form-section input[type="url"], .form-section select').forEach(el => data.inputs[el.id] = el.value);
+    document.querySelectorAll('.form-section textarea').forEach(el => data.textareas[el.id] = el.value);
+    
+    // Save dynamic sections
+    const dynamicSections = {
+        'education-inputs': ['institution', 'degree', 'gpa', 'location', 'dates'],
+        'experience-inputs': ['role', 'company', 'link', 'dates', 'desc'],
+        'certifications-inputs': ['title', 'issuer', 'date', 'desc'],
+        'project-input': ['title', 'link', 'desc']
+    };
+    for (const className in dynamicSections) {
+        data.dynamic[className] = [];
+        document.querySelectorAll(`#${className.replace('-input', 's')} > .${className}`).forEach(section => {
+            const entry = {};
+            dynamicSections[className].forEach(field => {
+                entry[field] = section.querySelector(`.${className.split('-')[0]}-${field}`).value;
+            });
+            data.dynamic[className].push(entry);
+        });
+    }
+
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    saveAs(blob, 'resume-data.json');
+}
+
+function loadData(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const data = JSON.parse(e.target.result);
+            // Load simple inputs and textareas
+            Object.keys(data.inputs).forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = data.inputs[id];
+            });
+            Object.keys(data.textareas).forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = data.textareas[id];
+            });
+
+            // Trigger input event for all loaded fields to update preview
+            document.querySelectorAll('.form-section input, .form-section textarea, .form-section select').forEach(el => el.dispatchEvent(new Event('input')));
+        };
+        reader.readAsText(file);
+    }
+}
+
+// --- UTILITY FUNCTIONS ---
 function clearAndReload() {
-  sessionStorage.clear();        
-  window.location.reload();
+    sessionStorage.clear();
+    window.location.reload();
+}
+
+function autofillResume() {
+    const dummyData = {
+        'input-name': 'Amelia Chen',
+        'input-email': 'amelia.chen@email.com',
+        'input-phone': '+1-555-010-2345',
+        'input-linkedin': 'https://linkedin.com/in/ameliachen',
+        'input-github': 'https://github.com/ameliachen',
+        'input-about': 'Highly motivated and detail-oriented software engineer with 5 years of experience in developing scalable web applications. Proficient in full-stack development with a strong focus on user-centric design and performance optimization. Eager to contribute to a dynamic team and tackle challenging projects.',
+        'education-institution': 'University of Technology',
+        'education-degree': 'B.S. in Computer Science',
+        'education-gpa': '3.9',
+        'education-location': 'Metropolis, USA',
+        'education-dates': '2015 - 2019',
+        'input-languages': 'JavaScript (ES6+), Python, HTML5, CSS3',
+        'input-frameworks': 'React, Node.js, Express, Django',
+        'input-tools': 'Git, Docker, Webpack, Jenkins',
+        'input-platforms': 'AWS, Vercel, Firebase',
+        'input-soft-skills': 'Agile Methodologies, Team Collaboration, Problem Solving, Communication',
+        'experience-role': 'Senior Software Engineer',
+        'experience-company': 'Innovatech Solutions Inc.',
+        'experience-link': 'https://innovatech.com',
+        'experience-dates': '2021 - Present',
+        'experience-desc': 'Led the development of a new client-facing analytics dashboard, improving data visualization and user engagement by 30%.\nMentored junior developers, providing code reviews and guidance on best practices.',
+        'certificate-title': 'AWS Certified Solutions Architect',
+        'certificate-issuer': 'Amazon Web Services',
+        'certificate-date': '2022',
+        'certificate-desc': 'Validated technical expertise in designing and deploying scalable, highly available, and fault-tolerant systems on AWS.',
+        'project-title': 'Real-Time Collaborative Code Editor',
+        'project-link': 'https://github.com/ameliachen/code-editor',
+        'project-desc': 'Developed a web-based code editor using React and WebSockets, allowing multiple users to edit code simultaneously.\nImplemented syntax highlighting for multiple languages.'
+    };
+    for (const id in dummyData) {
+        const element = document.getElementById(id);
+        if (element) {
+            element.value = dummyData[id];
+            element.dispatchEvent(new Event('input'));
+        }
+    }
 }
 
 async function improveText(textareaId) {
-  const textarea = document.getElementById(textareaId);
-  const suggestionBox = document.getElementById(`suggestion-${textareaId}`);
-  let text = textarea.value;
+    const textarea = document.getElementById(textareaId);
+    const suggestionBox = document.getElementById(`suggestion-${textareaId}`);
+    let text = textarea.value;
 
-  // Show loading state
-  suggestionBox.classList.add("loading");
-  suggestionBox.style.display = "block";
-  suggestionBox.innerText = "Checking for improvements...";
+    suggestionBox.classList.add("loading");
+    suggestionBox.style.display = "block";
+    suggestionBox.innerText = "Checking for improvements...";
 
-  try {
-    let improved = text;
-    let hasMoreErrors = true;
-    let safetyCounter = 0; // Avoid infinite loop
-
-    while (hasMoreErrors && safetyCounter < 5) {
-      const response = await fetch("https://api.languagetool.org/v2/check", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: new URLSearchParams({
-          text: improved,
-          language: "en-US"
-        })
-      });
-
-      const data = await response.json();
-      const matches = data.matches;
-
-      if (matches.length === 0) {
-        hasMoreErrors = false;
-        break;
-      }
-
-      // Fix matches from last to first
-      matches
-        .sort((a, b) => b.offset - a.offset)
-        .forEach(match => {
-          if (match.replacements.length > 0) {
-            const replacement = match.replacements[0].value;
-            improved =
-              improved.slice(0, match.offset) +
-              replacement +
-              improved.slice(match.offset + match.length);
-          }
+    try {
+        const response = await fetch("https://api.languagetool.org/v2/check", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({ text: text, language: "en-US" })
         });
-
-      safetyCounter++;
+        const data = await response.json();
+        let improved = text;
+        data.matches.sort((a, b) => b.offset - a.offset).forEach(match => {
+            if (match.replacements.length > 0) {
+                improved = improved.slice(0, match.offset) + match.replacements[0].value + improved.slice(match.offset + match.length);
+            }
+        });
+        
+        suggestionBox.classList.remove("loading");
+        if (improved !== text) {
+            suggestionBox.innerHTML = `✨ <strong>Suggested:</strong> "${improved}"`;
+        } else {
+            suggestionBox.innerText = "✅ Your text looks good!";
+        }
+    } catch (error) {
+        suggestionBox.classList.remove("loading");
+        suggestionBox.innerText = "❌ Error checking grammar.";
+        console.error(error);
     }
-
-    suggestionBox.classList.remove("loading");
-
-    if (improved !== text) {
-      suggestionBox.innerHTML = `✨ <strong>Suggested:</strong> "${improved}"`;
-    } else {
-      suggestionBox.innerText = "✅ Your text looks good!";
-    }
-
-  } catch (error) {
-    suggestionBox.classList.remove("loading");
-    suggestionBox.innerText = "❌ Error checking grammar.";
-    console.error(error);
-  }
 }
-
